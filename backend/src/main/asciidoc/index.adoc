@@ -1,0 +1,14 @@
+= Code review assistant
+
+This is the main page of our application wiki. Here you can find links to the Spring and React modules.
+
+== Spring Module
+
+The Spring module consists of various documentations on backend implementation of the Code
+review application, refer to:
+link:spring/spring.adoc[Backend documentation]
+
+== Interface Module
+
+The interface module consists of simple user guideline and more in depth documentation files regarding implementation
+link:front/front.adoc[Frontend documentation]
