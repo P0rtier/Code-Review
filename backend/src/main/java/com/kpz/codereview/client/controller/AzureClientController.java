@@ -1,21 +1,58 @@
 package com.kpz.codereview.client.controller;
 
-import com.kpz.codereview.client.service.AzureClientServiceMock;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.kpz.codereview.client.model.wrapper.MemberSearchQuery;
+import com.kpz.codereview.client.model.wrapper.ProjectSearchQuery;
+import com.kpz.codereview.client.model.wrapper.TeamSearchQuery;
+import com.kpz.codereview.client.model.WorkItem;
+import com.kpz.codereview.client.service.AzureClientService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import java.util.List;
 
 @RestController
-@RequestMapping(name = "/azure")
+@RequestMapping("/azure")
 public class AzureClientController {
-
     @Autowired
-    private AzureClientServiceMock azureClientServiceMock;
+    private AzureClientService service;
 
-    @GetMapping(name = "/test")
-    public ResponseEntity<String> testGetAzureClient(){
-        return ResponseEntity.ok("Azure client accepted");
+    @GetMapping("/work-items/{id}")
+    public WorkItem getWorkItemById(@PathVariable int id,
+                                    @RequestParam(name = "project") String projectName) throws JsonProcessingException {
+        return service.getWorkItemById(id, projectName);
+    }
+
+    @GetMapping("/work-items/review")
+    public List<WorkItem> getReviewWorkItems(@RequestParam(name = "project") String projectName) throws JsonProcessingException {
+        return service.getCodeReviewItemList(projectName);
+    }
+
+    @GetMapping("/work-items")
+    public List<WorkItem> getWorkItemList(@RequestBody String jsonQuery,
+                                          @RequestParam(name = "project") String projectName) throws JsonProcessingException {
+        var query = service.extractQueryFromBody(jsonQuery);
+        return service.getWorkItemListFromQuery(query, projectName);
+    }
+
+    @GetMapping("/projects")
+    public ProjectSearchQuery getOrgProjectList() throws JsonProcessingException {
+        return service.getProjectList();
+    }
+
+    @GetMapping("/teams")
+    public TeamSearchQuery getProjectTeamList(@RequestParam(name = "project")  String projectId) throws JsonProcessingException {
+        return service.getTeamList(projectId);
+    }
+
+    @GetMapping("/members")
+    public MemberSearchQuery getProjectUserList(@RequestParam(name = "project") String projectId,
+                                                @RequestParam(name = "team") String teamId) throws JsonProcessingException {
+        return service.getMemberList(projectId, teamId);
     }
 }
