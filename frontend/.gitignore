@@ -12,11 +12,26 @@
 /build
 
 # misc
-.DS_Store
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# WebStorm
+.idea
 
 npm-debug.log*
 yarn-debug.log*

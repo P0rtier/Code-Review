@@ -1,0 +1,47 @@
+@import "../../../../assets/styles/colors.module";
+@import "../../../../assets/styles/fonts.module";
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
+  background-color: $primary-component;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+  padding: 1rem 2rem;
+
+  .header {
+    font-family: $spaceMono;
+    font-size: 1.5rem;
+    color: $primary-font;
+    margin-bottom: 1rem;
+  }
+
+  .reviewContainer {
+    padding: 0 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+    row-gap: 1rem;
+    margin-bottom: 1rem;
+
+    .review {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      width: 100%;
+      gap: 3rem;
+
+      .bold {
+        font-family: $robotoMono;
+        font-size: 1rem;
+        font-weight: 700;
+        color: $primary-font;
+      }
+    }
+  }
+}

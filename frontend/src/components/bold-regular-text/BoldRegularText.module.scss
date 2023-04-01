@@ -1,0 +1,28 @@
+@import "../../assets/styles/fonts.module";
+@import "../../assets/styles/colors.module";
+
+.container {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+
+  .bold {
+    font-family: $robotoMono;
+    font-size: 1rem;
+    font-weight: 700;
+    color: $primary-font;
+  }
+
+  .regular {
+    font-family: $robotoMono;
+    font-size: 1rem;
+    font-weight: 400;
+    color: $primary-font;
+  }
+}
+
+.containerColumn {
+  flex-direction: column;
+  justify-items: center;
+  align-items: unset;
+}

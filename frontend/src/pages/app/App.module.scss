@@ -1,0 +1,16 @@
+@import "../../assets/styles/colors.module";
+
+body {
+    background-color: $primary-background;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+}
+
+.appContainer {
+    min-height: 100dvh;
+}

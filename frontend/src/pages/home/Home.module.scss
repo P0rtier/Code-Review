@@ -1,0 +1,26 @@
+.homeContainer {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    column-gap: 0.625rem;
+    height: clamp(800px, 100dvh, 1500px);
+    width: 100%;
+    align-items: flex-start;
+
+    .background {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        justify-self: center;
+        object-fit: cover;
+        z-index: -10;
+    }
+
+    .componentContainer {
+        grid-column: 3 / 11;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        gap: 3rem;
+    }
+}

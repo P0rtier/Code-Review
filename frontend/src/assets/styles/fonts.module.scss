@@ -1,0 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap');
+
+$spaceMono: 'Space Mono', monospace;
+$robotoMono: 'Roboto Mono', monospace;
+
+:export {
+    spaceMono: $spaceMono;
+    robotoMono: $robotoMono;
+}

@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Route, Routes } from 'react-router';
 import styles from './App.module.scss';
-import Home from './home/Home';
-import Navbar from './navbar/Navbar';
-import Stats from './stats/Stats';
+import { Home } from '../home/Home';
+import { Navbar } from '../../components/navbar/Navbar';
+import { Stats } from '../stats/Stats';
 
 const App = () => {
   return (

@@ -1,0 +1,30 @@
+@import "../../../../../assets/styles/colors.module";
+@import "../../../../../assets/styles/fonts.module";
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 1rem 2rem;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+  background-color: $secondary-component;
+  width: clamp(18.75rem, 100%, 23rem);
+
+  .header {
+    font-family: $spaceMono;
+    font-size: 1.25rem;
+    color: $secondary-font;
+    margin-bottom: 1rem;
+  }
+
+  .description {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+}

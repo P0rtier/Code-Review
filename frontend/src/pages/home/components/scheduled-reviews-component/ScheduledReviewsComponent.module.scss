@@ -1,0 +1,51 @@
+@import "../../../../assets/styles/colors.module";
+@import "../../../../assets/styles/fonts.module";
+
+.container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
+  min-height: 15rem;
+
+  .colorPanel {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -5;
+    background-color: $primary-component;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+    width: 100%;
+    height: 75%;
+  }
+
+  .wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+    height: 100%;
+    padding: 1rem 2rem;
+
+    .header {
+      font-family: $spaceMono;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      color: $primary-font;
+    }
+
+    .reviewContainer {
+      padding: 0 2rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+  }
+}
