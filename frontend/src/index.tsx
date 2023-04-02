@@ -2,15 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './pages/app/App';
 import { BrowserRouter } from "react-router-dom";
-import { ChakraBaseProvider, extendBaseTheme } from '@chakra-ui/react'
-import chakraTheme from '@chakra-ui/theme'
-
-const { Menu } = chakraTheme.components
-const theme = extendBaseTheme({
-  components: {
-    Menu,
-  },
-})
+import { ChakraBaseProvider } from '@chakra-ui/react'
+import theme from './common/utils/theme';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

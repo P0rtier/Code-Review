@@ -1,44 +1,53 @@
 import React from "react";
 import styles from "./ScheduledReviewsComponent.module.scss";
-import {ScheduledReviewElement} from "./scheduled-review-element/ScheduledReviewElement";
+import { ScheduledReviewElement } from "./scheduled-review-element/ScheduledReviewElement";
+import ISchedultedReview from "../../../../common/interfaces/ISchedultedReview";
 
-const mockData = {
-    'review1': {
+const mockData: ISchedultedReview[] = [
+    {
+        id: '1',
         title: 'Review #1',
         scheduledTo: 'Name Surname',
-        scheduled: '25/03/2023',
+        scheduled: new Date('25/03/2023'),
         team: 'Team',
         pullRequest: 'info',
         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque ut felis eget nisl finibus ultrices sed eget dui. Proin a purus leo.'
     },
-    'review2': {
+    {
+        id: '2',
         title: 'Review #2',
         scheduledTo: 'Name Surname',
-        scheduled: '25/03/2023',
+        scheduled: new Date('25/03/2023'),
         team: 'Team',
         pullRequest: 'info',
         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque ut felis eget nisl finibus ultrices sed eget dui. Proin a purus leo.'
     },
-    'review3': {
+    {
+        id: '3',
         title: 'Review #3',
         scheduledTo: 'Name Surname',
-        scheduled: '25/03/2023',
+        scheduled: new Date('25/03/2023'),
         team: 'Team',
         pullRequest: 'info',
         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque ut felis eget nisl finibus ultrices sed eget dui. Proin a purus leo.'
     }
-}
+];
 
 export const ScheduledReviewsComponent = () => {
     const getData = () => {
-        return Object.keys(mockData).map((review, index) => {
-            return (
-                <ScheduledReviewElement header={mockData[review as keyof typeof mockData].title} scheduledTo={mockData[review as keyof typeof mockData].scheduledTo} scheduled={mockData[review as keyof typeof mockData].scheduled} team={mockData[review as keyof typeof mockData].team} pullRequest={mockData[review as keyof typeof mockData].pullRequest} description={mockData[review as keyof typeof mockData].description} key={index}/>
-            );
-        });
+        return mockData.map((review) => (
+            <ScheduledReviewElement
+                header={review.title}
+                scheduledTo={review.scheduledTo}
+                scheduled={review.scheduled.toLocaleDateString()}
+                team={review.team} pullRequest={review.pullRequest}
+                description={review.description}
+                key={review.id}
+            />
+        ));
     }
 
-    return(
+    return (
         <div className={styles.container}>
             <div className={styles.colorPanel}></div>
             <div className={styles.wrapper}>
