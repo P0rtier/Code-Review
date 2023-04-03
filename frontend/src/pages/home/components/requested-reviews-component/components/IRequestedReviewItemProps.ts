@@ -1,5 +1,4 @@
-export interface IRequestedReview {
-  id: string;
+export interface IRequestedReviewItemProps {
   header: string;
   scheduledTo: string;
   scheduled: Date;

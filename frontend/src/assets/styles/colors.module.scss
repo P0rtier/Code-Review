@@ -6,9 +6,13 @@ $primary-orange: #ffc796;
 
 $primary-component: #fdfdfe;
 $secondary-component: #4affed;
+$bar-component: #00f2da;
 
 $primary-font: #000000;
 $secondary-font: #2b5b80;
+
+$light-background: $primary-background url("../../assets/images/lightBackground.svg")
+    no-repeat center;
 
 // DARK MODE
 
@@ -22,11 +26,19 @@ $dark-secondary-component: #2f3232;
 $dark-primary-font: #000000;
 $dark-secondary-font: #2b5b80;
 
+$dark-background: $primary-background url("../../assets/images/darkBackground.svg")
+    no-repeat center;
+
 :export {
   lightPrimaryBackground: $primary-background;
-  darkPrimaryBackground: $dark-primary-background;
   lightPrimaryComponent: $primary-component;
-  darkPrimaryComponent: $dark-primary-component;
   lightSecondaryComponent: $secondary-component;
+  lightPrimaryOrangeComponent: $primary-orange;
+  lightBackground: $light-background;
+
+  darkPrimaryBackground: $dark-primary-background;
+  darkPrimaryComponent: $dark-primary-component;
   darkSecondaryComponent: $dark-secondary-component;
+  darkPrimaryOrangeComponent: $dark-primary-orange;
+  darkBackground: $dark-background;
 }

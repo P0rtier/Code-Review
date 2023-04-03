@@ -14,7 +14,9 @@ export const Navbar = () => {
     <>
       <div className={styles.navbarContainer}>
         <div className={styles.navbarWrapper}>
-          <div className={styles.navbarLogo}>code review</div>
+          <Link to={"/home"}>
+            <div className={styles.navbarLogo}>code review</div>
+          </Link>
           <div className={styles.navbarLinks}>
             <Link to="/home">
               <HomeIcon />

@@ -4,18 +4,24 @@ import styles from "./App.module.scss";
 import { Home } from "../home/Home";
 import { Navbar } from "../../components/navbar/Navbar";
 import { Stats } from "../stats/Stats";
+import { ReviewerChoice } from "../reviewer-choice/ReviewerChoice";
+import { Box, useStyleConfig } from "@chakra-ui/react";
+import { StyledComponents } from "../../common/enums/StyledComponents";
 
 const App = () => {
+  const background = useStyleConfig(StyledComponents.Background);
+
   return (
-    <div className={styles.appContainer}>
+    <Box className={styles.appContainer} __css={background}>
       <Routes>
         <Route element={<Navbar />}>
           <Route index element={<Home />} />
           <Route path="home" element={<Home />} />
           <Route path="stats" element={<Stats />} />
+          <Route path="reviewer" element={<ReviewerChoice />} />
         </Route>
       </Routes>
-    </div>
+    </Box>
   );
 };
 

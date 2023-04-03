@@ -25,20 +25,5 @@
     width: 100%;
     row-gap: 1rem;
     margin-bottom: 1rem;
-
-    .review {
-      display: flex;
-      justify-content: flex-start;
-      align-items: center;
-      width: 100%;
-      gap: 3rem;
-
-      .bold {
-        font-family: $robotoMono;
-        font-size: 1rem;
-        font-weight: 700;
-        color: $primary-font;
-      }
-    }
   }
 }

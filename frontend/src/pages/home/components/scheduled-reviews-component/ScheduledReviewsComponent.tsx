@@ -1,9 +1,9 @@
 import React from "react";
 import styles from "./ScheduledReviewsComponent.module.scss";
-import { ScheduledReviewElement } from "./scheduled-review-element/ScheduledReviewElement";
 import IScheduledReview from "../../../../common/interfaces/IScheduledReview";
 import { Box, useStyleConfig } from "@chakra-ui/react";
 import { StyledComponents } from "../../../../common/enums/StyledComponents";
+import { ReviewInfo } from "../../../../components/review-info/ReviewInfo";
 
 const mockData: IScheduledReview[] = [
   {
@@ -40,16 +40,18 @@ const mockData: IScheduledReview[] = [
 
 export const ScheduledReviewsComponent = () => {
   const primaryStyles = useStyleConfig(StyledComponents.PrimaryComponent);
+  const secondaryStyles = useStyleConfig(StyledComponents.SecondaryComponent);
 
   const getData = () => {
     return mockData.map((review) => (
-      <ScheduledReviewElement
+      <ReviewInfo
         header={review.title}
         scheduledTo={review.scheduledTo}
         scheduled={review.scheduled.toLocaleDateString()}
         team={review.team}
         pullRequest={review.pullRequest}
         description={review.description}
+        style={secondaryStyles}
         key={review.id}
       />
     ));

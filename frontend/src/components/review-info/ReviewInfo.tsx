@@ -1,15 +1,12 @@
 import React from "react";
-import styles from "./ScheduledReviewElement.module.scss";
-import { BoldRegularText } from "../../../../../components/bold-regular-text/BoldRegularText";
-import { IScheduledReviewElementProps } from "./IScheduledReviewElementProps";
-import { Box, useStyleConfig } from "@chakra-ui/react";
-import { StyledComponents } from "../../../../../common/enums/StyledComponents";
+import styles from "./ReviewInfo.module.scss";
+import { BoldRegularText } from "../bold-regular-text/BoldRegularText";
+import { Box } from "@chakra-ui/react";
+import { IReviewInfoProps } from "./IReviewInfoProps";
 
-export const ScheduledReviewElement = (props: IScheduledReviewElementProps) => {
-  const secondaryStyles = useStyleConfig(StyledComponents.SecondaryComponent);
-
+export const ReviewInfo = (props: IReviewInfoProps) => {
   return (
-    <Box className={styles.container} __css={secondaryStyles}>
+    <Box className={styles.container} __css={props.style}>
       <div className={styles.header}>{props.header}</div>
       <div className={styles.description}>
         <BoldRegularText

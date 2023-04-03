@@ -1,9 +1,5 @@
 @import "../../assets/styles/colors.module";
 
-body {
-  background-color: $primary-background;
-}
-
 * {
   box-sizing: border-box;
   margin: 0;
@@ -13,4 +9,7 @@ body {
 
 .appContainer {
   min-height: 100dvh;
+  width: 100%;
+  position: absolute;
+  z-index: -10;
 }

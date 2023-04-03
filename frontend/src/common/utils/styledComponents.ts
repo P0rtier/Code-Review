@@ -1,4 +1,4 @@
-import { StyleFunctionProps, defineStyleConfig } from "@chakra-ui/react";
+import { defineStyleConfig, StyleFunctionProps } from "@chakra-ui/react";
 import colors from "../../assets/styles/colors.module.scss";
 import { mode } from "@chakra-ui/theme-tools";
 
@@ -21,5 +21,23 @@ export const SecondaryComponent = defineStyleConfig({
     )(props),
     boxShadow: "0 4px 4px rgba(0, 0, 0, 0.25)",
     borderRadius: "10px",
+  }),
+});
+
+export const PrimaryOrangeComponent = defineStyleConfig({
+  baseStyle: (props: StyleFunctionProps) => ({
+    backgroundColor: mode(
+      colors.lightPrimaryOrangeComponent,
+      colors.darkPrimaryOrangeComponent
+    )(props),
+    boxShadow: "0 4px 4px rgba(0, 0, 0, 0.25)",
+    borderRadius: "10px",
+  }),
+});
+
+export const Background = defineStyleConfig({
+  baseStyle: (props: StyleFunctionProps) => ({
+    background: mode(colors.lightBackground, colors.darkBackground)(props),
+    backgroundSize: "cover",
   }),
 });

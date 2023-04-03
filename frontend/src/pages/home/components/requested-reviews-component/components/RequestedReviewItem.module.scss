@@ -1,0 +1,22 @@
+@import "../../../../../assets/styles/colors.module";
+@import "../../../../../assets/styles/fonts.module";
+
+.review {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  gap: 3rem;
+
+  .bold {
+    font-family: $robotoMono;
+    font-size: 1rem;
+    font-weight: 700;
+    color: $primary-font;
+  }
+}
+
+.review:hover {
+  cursor: pointer;
+  opacity: 0.7;
+}

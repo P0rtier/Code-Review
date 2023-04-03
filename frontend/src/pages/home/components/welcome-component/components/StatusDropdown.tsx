@@ -13,11 +13,7 @@ export const StatusDropdown = () => {
       <MenuButton
         as={Button}
         rightIcon={<ChevronDownIcon />}
-        bg="#FDFDFE"
-        borderRadius="md"
-        w="100%"
-        h="2.5rem"
-        boxShadow="0 4px 4px rgba(0, 0, 0, 0.25)"
+        variant={"welcome"}
       >
         <div className={styles.container}>
           <BoldRegularText boldText={"Status: "} regularText={status} />
