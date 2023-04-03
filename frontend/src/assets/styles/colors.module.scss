@@ -9,3 +9,26 @@ $secondary-component: #4AFFED;
 
 $primary-font: #000000;
 $secondary-font: #2B5B80;
+
+
+// DARK MODE
+
+$dark-primary-background: #3f3e3d;
+$dark-navbar-blue: #57B6FF;
+$dark-primary-orange: #FFC796;
+
+$dark-primary-component: #434347;
+$dark-secondary-component: #2f3232;
+
+$dark-primary-font: #000000;
+$dark-secondary-font: #2B5B80;
+
+
+:export {
+    lightPrimaryBackground: $primary-background;
+    darkPrimaryBackground: $dark-primary-background;
+    lightPrimaryComponent: $primary-component;
+    darkPrimaryComponent: $dark-primary-component;
+    lightSecondaryComponent: $secondary-component;
+    darkSecondaryComponent: $dark-secondary-component;
+}

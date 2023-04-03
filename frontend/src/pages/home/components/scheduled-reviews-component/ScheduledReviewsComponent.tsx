@@ -2,6 +2,8 @@ import React from "react";
 import styles from "./ScheduledReviewsComponent.module.scss";
 import { ScheduledReviewElement } from "./scheduled-review-element/ScheduledReviewElement";
 import ISchedultedReview from "../../../../common/interfaces/ISchedultedReview";
+import { Box, useStyleConfig } from "@chakra-ui/react";
+import { StyledComponents } from "../../../../common/enums/StyledComponents";
 
 const mockData: ISchedultedReview[] = [
     {
@@ -34,6 +36,8 @@ const mockData: ISchedultedReview[] = [
 ];
 
 export const ScheduledReviewsComponent = () => {
+    const primaryStyles = useStyleConfig(StyledComponents.PrimaryComponent);
+
     const getData = () => {
         return mockData.map((review) => (
             <ScheduledReviewElement
@@ -49,7 +53,7 @@ export const ScheduledReviewsComponent = () => {
 
     return (
         <div className={styles.container}>
-            <div className={styles.colorPanel}></div>
+            <Box className={styles.colorPanel} __css={primaryStyles}></Box>
             <div className={styles.wrapper}>
                 <div className={styles.header}>
                     Scheduled reviews

@@ -7,6 +7,7 @@ import { NotificationsIcon } from "../../assets/icons/NotificationsIcon";
 import { StatsIcon } from "../../assets/icons/StatsIcon";
 import { SettingsIcon } from "../../assets/icons/SettingsIcon";
 import { LogoutIcon } from "../../assets/icons/LogoutIcon";
+import ToggleThemeButton from '../toggle-theme-button/ToggleThemeButton';
 
 export const Navbar = () => {
     return (
@@ -17,11 +18,12 @@ export const Navbar = () => {
                         code review
                     </div>
                     <div className={styles.navbarLinks}>
-                        <Link to='/home'><HomeIcon/></Link>
-                        <Link to='/notifications'><NotificationsIcon/></Link>
-                        <Link to='/stats'><StatsIcon/></Link>
-                        <Link to='/settings'><SettingsIcon/></Link>
-                        <Link to='/logout'><LogoutIcon/></Link>
+                        <Link to='/home'><HomeIcon /></Link>
+                        <Link to='/notifications'><NotificationsIcon /></Link>
+                        <Link to='/stats'><StatsIcon /></Link>
+                        <Link to='/settings'><SettingsIcon /></Link>
+                        <ToggleThemeButton />
+                        <Link to='/logout'><LogoutIcon /></Link>
                     </div>
                 </div>
             </div>

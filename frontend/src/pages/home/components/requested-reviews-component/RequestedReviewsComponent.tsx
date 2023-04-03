@@ -1,7 +1,9 @@
-import React from "react";
+import * as React from 'react';
 import styles from "./RequestedReviewsComponent.module.scss";
 import { BoldRegularText } from "../../../../components/bold-regular-text/BoldRegularText";
 import { IRequestedReview } from "../../../../common/interfaces/IRequestedReview";
+import { Box, useStyleConfig } from "@chakra-ui/react";
+import { StyledComponents } from '../../../../common/enums/StyledComponents';
 
 const mockData: IRequestedReview[] = [
     {
@@ -28,6 +30,8 @@ const mockData: IRequestedReview[] = [
 ];
 
 export const RequestedReviewsComponent = () => {
+    const primaryStyles = useStyleConfig(StyledComponents.PrimaryComponent);
+    
     const getData = () => {
         return mockData.map((review) => (
             <div className={styles.review} key={review.id}>
@@ -51,13 +55,13 @@ export const RequestedReviewsComponent = () => {
     }
 
     return (
-        <div className={styles.container}>
+        <Box className={styles.container} __css={primaryStyles}>
             <div className={styles.header}>
                 Requested reviews
             </div>
             <div className={styles.reviewContainer}>
                 {getData()}
             </div>
-        </div>
+        </Box>
     );
 }

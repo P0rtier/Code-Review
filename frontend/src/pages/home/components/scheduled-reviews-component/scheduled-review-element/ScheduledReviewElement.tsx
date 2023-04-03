@@ -2,11 +2,15 @@ import React from "react";
 import styles from "./ScheduledReviewElement.module.scss";
 import { BoldRegularText } from "../../../../../components/bold-regular-text/BoldRegularText";
 import { IScheduledReviewElementProps } from "./IScheduledReviewElementProps";
+import { Box, useStyleConfig } from "@chakra-ui/react";
+import { StyledComponents } from "../../../../../common/enums/StyledComponents";
 
 
 export const ScheduledReviewElement = (props: IScheduledReviewElementProps) => {
+    const secondaryStyles = useStyleConfig(StyledComponents.SecondaryComponent);
+
     return (
-        <div className={styles.container}>
+        <Box className={styles.container} __css={secondaryStyles}>
             <div className={styles.header}>
                 {props.header}
             </div>
@@ -33,6 +37,6 @@ export const ScheduledReviewElement = (props: IScheduledReviewElementProps) => {
                     column={true}
                 />
             </div>
-        </div>
+        </Box>
     );
 }
