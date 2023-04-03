@@ -1,4 +1,4 @@
 export enum StyledComponents {
-    PrimaryComponent = 'PrimaryComponent',
-    SecondaryComponent = 'SecondaryComponent',
+  PrimaryComponent = "PrimaryComponent",
+  SecondaryComponent = "SecondaryComponent",
 }

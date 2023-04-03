@@ -1,5 +1,3 @@
-const agent = {
-
-}
+const agent = {};
 
 export default agent;

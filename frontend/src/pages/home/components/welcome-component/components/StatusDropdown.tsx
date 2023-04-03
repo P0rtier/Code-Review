@@ -13,8 +13,10 @@ export const StatusDropdown = () => {
       <MenuButton
         as={Button}
         rightIcon={<ChevronDownIcon />}
-        bg="#FDFDFE" borderRadius='md'
-        w="100%" h="2.5rem"
+        bg="#FDFDFE"
+        borderRadius="md"
+        w="100%"
+        h="2.5rem"
         boxShadow="0 4px 4px rgba(0, 0, 0, 0.25)"
       >
         <div className={styles.container}>
@@ -34,4 +36,4 @@ export const StatusDropdown = () => {
       </MenuList>
     </Menu>
   );
-}
+};

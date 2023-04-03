@@ -1,5 +1,5 @@
 export interface IBoldRegularTextProps {
-    boldText: string,
-    regularText: string,
-    column?: boolean
+  boldText: string;
+  regularText: string;
+  column?: boolean;
 }
