@@ -3,6 +3,7 @@ import colors from "../../assets/styles/colors.module.scss";
 import { mode } from "@chakra-ui/theme-tools";
 import {
   Background,
+  Navbar,
   PrimaryComponent,
   PrimaryOrangeComponent,
   SecondaryComponent,
@@ -17,6 +18,10 @@ const theme = extendTheme({
           colors.lightPrimaryBackground,
           colors.darkPrimaryBackground
         )(props),
+        color: mode(
+          colors.lightPrimaryFont, 
+          colors.darkPrimaryFont
+        )(props),
       },
     }),
   },
@@ -25,6 +30,7 @@ const theme = extendTheme({
     SecondaryComponent,
     PrimaryOrangeComponent,
     Background,
+    Navbar,
     Input: {
       variants: {
         search: {
@@ -61,13 +67,16 @@ const theme = extendTheme({
             borderColor: "#4affed",
           },
         },
-        welcome: {
-          bg: "#fdfdfe",
+        welcome:(props: StyleFunctionProps) => ({
+          bg: mode(
+            colors.lightPrimaryBackground,
+            colors.darkPrimaryBackground
+          )(props),
           borderRadius: "md",
           width: "100%",
           height: "2.5rem",
           boxShadow: "0 4px 4px rgba(0, 0, 0, 0.25)",
-        },
+        }),
       },
     },
   },

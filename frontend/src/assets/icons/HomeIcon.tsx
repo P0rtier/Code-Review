@@ -1,6 +1,10 @@
 import React from "react";
+import { useColorMode } from "@chakra-ui/react";
+import { getIconColor } from "../../common/utils/themeHelpers";
 
 export const HomeIcon = () => {
+  const { colorMode } = useColorMode();
+
   return (
     <svg
       width={30}
@@ -11,13 +15,13 @@ export const HomeIcon = () => {
     >
       <path
         d="M1.25 15L15 3.53748L28.75 15"
-        stroke="black"
+        stroke={getIconColor(colorMode)}
         strokeWidth={2.5}
         strokeMiterlimit={10}
       />
       <path
         d="M24.1624 11.5625V26.4625H18.4374V17.2875H11.5624V26.4625H5.8374V11.5625"
-        stroke="black"
+        stroke={getIconColor(colorMode)}
         strokeWidth={2.5}
         strokeMiterlimit={10}
       />

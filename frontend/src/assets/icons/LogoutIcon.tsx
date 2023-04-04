@@ -1,6 +1,10 @@
 import React from "react";
+import { useColorMode } from "@chakra-ui/react";
+import { getIconColor } from "../../common/utils/themeHelpers";
 
 export const LogoutIcon = () => {
+  const { colorMode } = useColorMode();
+  
   return (
     <svg
       width={25}
@@ -11,14 +15,14 @@ export const LogoutIcon = () => {
     >
       <path
         d="M12.231 2V11.6923"
-        stroke="black"
+        stroke={getIconColor(colorMode)}
         strokeWidth={2.75}
         strokeLinecap="round"
         strokeLinejoin="round"
       />
       <path
         d="M5.86078 4.69226C-2.0287 12.4461 3.14027 24.0769 12.6621 24.0769C20.2795 24.0769 23 17.7076 23 13.5538C23 9.39995 20.8236 6.3538 18.9192 4.69226"
-        stroke="black"
+        stroke={getIconColor(colorMode)}
         strokeWidth={2.75}
         strokeLinecap="round"
         strokeLinejoin="round"

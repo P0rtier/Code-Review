@@ -17,13 +17,13 @@ $light-background: $primary-background url("../../assets/images/lightBackground.
 // DARK MODE
 
 $dark-primary-background: #3f3e3d;
-$dark-navbar-blue: #57b6ff;
-$dark-primary-orange: #ffc796;
+$dark-navbar-blue: #2B5B80;
+$dark-primary-orange: #009161;
 
 $dark-primary-component: #434347;
 $dark-secondary-component: #2f3232;
 
-$dark-primary-font: #000000;
+$dark-primary-font: #e6d2d2;
 $dark-secondary-font: #2b5b80;
 
 $dark-background: $primary-background url("../../assets/images/darkBackground.svg")
@@ -35,10 +35,14 @@ $dark-background: $primary-background url("../../assets/images/darkBackground.sv
   lightSecondaryComponent: $secondary-component;
   lightPrimaryOrangeComponent: $primary-orange;
   lightBackground: $light-background;
+  lightPrimaryFont: $primary-font;
+  lightNavbarBlue: $navbar-blue;
 
   darkPrimaryBackground: $dark-primary-background;
   darkPrimaryComponent: $dark-primary-component;
   darkSecondaryComponent: $dark-secondary-component;
   darkPrimaryOrangeComponent: $dark-primary-orange;
   darkBackground: $dark-background;
+  darkPrimaryFont: $dark-primary-font;
+  darkNavbarBlue: $dark-navbar-blue;
 }

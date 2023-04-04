@@ -41,3 +41,11 @@ export const Background = defineStyleConfig({
     backgroundSize: "cover",
   }),
 });
+
+export const Navbar = defineStyleConfig({
+  baseStyle: (props: StyleFunctionProps) => ({
+    background: mode(colors.lightNavbarBlue, colors.darkNavbarBlue)(props),
+    boxShadow: '0 4px 4px rgba(0, 0, 0, 0.3)',
+    borderRadius: '10px'
+  }),
+});

@@ -8,11 +8,15 @@ import { StatsIcon } from "../../assets/icons/StatsIcon";
 import { SettingsIcon } from "../../assets/icons/SettingsIcon";
 import { LogoutIcon } from "../../assets/icons/LogoutIcon";
 import ToggleThemeButton from "../toggle-theme-button/ToggleThemeButton";
+import { Box, useStyleConfig } from "@chakra-ui/react";
+import { StyledComponents } from "../../common/enums/StyledComponents";
 
 export const Navbar = () => {
+  const navbarStyles = useStyleConfig(StyledComponents.Navbar);
+  
   return (
     <>
-      <div className={styles.navbarContainer}>
+      <Box className={styles.navbarContainer} __css={navbarStyles}>
         <div className={styles.navbarWrapper}>
           <Link to={"/home"}>
             <div className={styles.navbarLogo}>code review</div>
@@ -36,7 +40,7 @@ export const Navbar = () => {
             </Link>
           </div>
         </div>
-      </div>
+      </Box>
       <Outlet />
     </>
   );

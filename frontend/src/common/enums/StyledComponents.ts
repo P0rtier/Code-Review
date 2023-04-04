@@ -3,4 +3,5 @@ export enum StyledComponents {
   SecondaryComponent = "SecondaryComponent",
   PrimaryOrangeComponent = "PrimaryOrangeComponent",
   Background = "Background",
+  Navbar = "Navbar",
 }
