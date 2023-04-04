@@ -9,5 +9,4 @@ public class CodeReviewApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(CodeReviewApplication.class, args);
 	}
-
 }
