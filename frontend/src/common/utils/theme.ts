@@ -48,6 +48,19 @@ const theme = extendTheme({
             },
           },
         },
+        login:(props: StyleFunctionProps) => ({
+          field: {
+            borderRadius: "10px",
+            boxShadow: "0 4px 4px rgba(0, 0, 0, 0.25)",
+            fontFamily: fonts.robotoMono,
+            fontWeight: "700",
+            width: "70%",
+            bg: mode(
+              colors.lightLoginInput, 
+              colors.darkLoginInput
+            )(props),
+          }
+        }),
       },
     },
     Button: {
@@ -74,6 +87,16 @@ const theme = extendTheme({
           )(props),
           borderRadius: "md",
           width: "100%",
+          height: "2.5rem",
+          boxShadow: "0 4px 4px rgba(0, 0, 0, 0.25)",
+        }),
+        login:(props: StyleFunctionProps) => ({
+          bg: mode(
+            colors.lightPrimaryBackground,
+            colors.darkPrimaryComponent
+          )(props),
+          borderRadius: "md",
+          width: "30%",
           height: "2.5rem",
           boxShadow: "0 4px 4px rgba(0, 0, 0, 0.25)",
         }),

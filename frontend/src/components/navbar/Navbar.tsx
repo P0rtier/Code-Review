@@ -35,7 +35,7 @@ export const Navbar = () => {
               <SettingsIcon />
             </Link>
             <ToggleThemeButton />
-            <Link to="/logout">
+            <Link to="/login">
               <LogoutIcon />
             </Link>
           </div>

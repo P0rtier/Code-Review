@@ -1,0 +1,61 @@
+@import "../../assets/styles/fonts.module.scss";
+
+.container {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    column-gap: 0.625rem;
+    height: clamp(800px, 100dvh, 1500px);
+    width: 100%;
+    align-items: flex-start;
+
+    .componentContainer {
+        grid-column: 5 / 9;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 10rem;
+        position: relative;
+    }
+
+    .header {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: -5;
+        height: 60%;
+        width: 100%;
+        padding: 1.5rem;
+        font-family: $spaceMono;
+        font-size: 1.5rem;
+    }
+
+    .content {
+        width: 85%;
+        padding: 2rem;
+        margin: 5rem;
+        display: flex;
+        flex-direction: column;
+        row-gap: 1.5rem;
+    }
+
+    .inputContainer {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+
+        label {
+            font-family: $spaceMono;
+        }
+    }
+
+    .buttonContainer {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+
+        button {
+            font-family: $spaceMono;
+        }
+    }
+}
