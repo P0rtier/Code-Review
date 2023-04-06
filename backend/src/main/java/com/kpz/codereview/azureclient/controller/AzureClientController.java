@@ -55,4 +55,10 @@ public class AzureClientController {
                                                 @RequestParam(name = "team") String teamId) throws JsonProcessingException {
         return service.getMemberList(projectId, teamId);
     }
+
+    @GetMapping("/work-items/review/assigned")
+    public List<WorkItem> getReviewWorkItems(@RequestParam(name = "project") String projectName,
+                                             @RequestParam(name = "user") String userEmail ) throws JsonProcessingException {
+        return service.getAssignedCodeReviewItemsByUser(userEmail, projectName);
+    }
 }

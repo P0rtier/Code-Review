@@ -23,4 +23,6 @@ public interface AzureClientService {
     TeamSearchQuery getTeamList(String projectId) throws JsonProcessingException;
 
     MemberSearchQuery getMemberList(String projectId, String teamId) throws JsonProcessingException;
+
+    List<WorkItem> getAssignedCodeReviewItemsByUser(String userEmail, String projectName) throws JsonProcessingException;
 }
