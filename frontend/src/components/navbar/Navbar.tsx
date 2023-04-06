@@ -13,11 +13,11 @@ import { StyledComponents } from "../../common/enums/StyledComponents";
 
 export const Navbar = () => {
   const navbarStyles = useStyleConfig(StyledComponents.Navbar);
-  
+
   return (
     <>
-      <Box className={styles.navbarContainer} __css={navbarStyles}>
-        <div className={styles.navbarWrapper}>
+      <div className={styles.navbarContainer}>
+        <Box className={styles.navbarWrapper} __css={navbarStyles}>
           <Link to={"/home"}>
             <div className={styles.navbarLogo}>code review</div>
           </Link>
@@ -39,8 +39,8 @@ export const Navbar = () => {
               <LogoutIcon />
             </Link>
           </div>
-        </div>
-      </Box>
+        </Box>
+      </div>
       <Outlet />
     </>
   );
