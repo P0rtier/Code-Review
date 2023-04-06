@@ -14,6 +14,8 @@ public interface AzureClientService {
 
     List<WorkItem> getCodeReviewItemList(String projectName) throws JsonProcessingException;
 
+    List<WorkItem> getUnassignedCodeReviewItemsByUser(String userEmail, String projectName) throws JsonProcessingException;
+
     List<WorkItem> getWorkItemListFromQuery(String query, String projectName) throws JsonProcessingException;
 
     String extractQueryFromBody(String requestBody);

@@ -33,6 +33,12 @@ public class AzureClientController {
         return service.getCodeReviewItemList(projectName);
     }
 
+    @GetMapping("/work-items/review/unassigned")
+    public List<WorkItem> getReviewWorkItems(@RequestParam(name = "project") String projectName,
+                                             @RequestParam(name = "user") String userEmail ) throws JsonProcessingException {
+        return service.getUnassignedCodeReviewItemsByUser(userEmail, projectName);
+    }
+
     @GetMapping("/work-items")
     public List<WorkItem> getWorkItemList(@RequestBody String jsonQuery,
                                           @RequestParam(name = "project") String projectName) throws JsonProcessingException {
@@ -54,11 +60,5 @@ public class AzureClientController {
     public MemberSearchQuery getProjectUserList(@RequestParam(name = "project") String projectId,
                                                 @RequestParam(name = "team") String teamId) throws JsonProcessingException {
         return service.getMemberList(projectId, teamId);
-    }
-
-    @GetMapping("/work-items/review/assigned")
-    public List<WorkItem> getReviewWorkItems(@RequestParam(name = "project") String projectName,
-                                             @RequestParam(name = "user") String userEmail ) throws JsonProcessingException {
-        return service.getAssignedCodeReviewItemsByUser(userEmail, projectName);
     }
 }

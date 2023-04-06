@@ -37,11 +37,19 @@ public class AzureClientServiceImpl implements AzureClientService {
     @Value("${AZURE_ORGANIZATION_NAME}")
     private String ORGANIZATION_NAME;
 
-    private static final String WIQL_GET_ALL_REVIEW_WORK_ITEMS = "Select * From WorkItems Where [System.WorkItemType] = 'Code Review'";
     private static final String WIQL_GET_ASSIGNED_CODE_REVIEW_ITEMS = """
             Select * From WorkItems
             Where [System.WorkItemType] = 'Code Review'
             And [System.AssignedTo] = '%s'
+            """;
+    private static final String WIQL_GET_ALL_REVIEW_WORK_ITEMS = """
+    Select * From WorkItems Where [System.WorkItemType] = 'Code Review'
+    """;
+    private static final String WIQL_GET_UNASSIGNED_CODE_REVIEW_ITEMS = """
+            Select * From WorkItems
+            Where [System.WorkItemType] = 'Code Review'
+            And [System.CreatedBy] = '%s'
+            And [System.AssignedTo] = ' '
             """;
     private static final String AZURE_DEVOPS_BASE_URL = "https://dev.azure.com";
     private static final String GET_WORK_ITEM_BY_ID_URI_TEMPLATE= "%s/%s/%s/_apis/wit/workitems/%s?api-version=%s";
@@ -69,6 +77,11 @@ public class AzureClientServiceImpl implements AzureClientService {
                 response.getBody(),
                 WorkItem.class
         );
+    }
+
+    @Override
+    public List<WorkItem> getUnassignedCodeReviewItemsByUser(String userEmail, String projectName) throws JsonProcessingException {
+        return getWorkItemListFromQuery(WIQL_GET_UNASSIGNED_CODE_REVIEW_ITEMS.formatted(userEmail), projectName);
     }
 
     @Override
