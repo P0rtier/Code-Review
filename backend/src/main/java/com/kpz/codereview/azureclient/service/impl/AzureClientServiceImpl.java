@@ -32,9 +32,9 @@ public class AzureClientServiceImpl implements AzureClientService {
     @Autowired
     private RestTemplate restTemplate;
 
-    @Value("${AZURE_API_ACCESS_TOKEN}")
+    @Value("${azure.api.access.token}")
     private String PERSONAL_ACCESS_TOKEN;
-    @Value("${AZURE_ORGANIZATION_NAME}")
+    @Value("${azure.organization.name}")
     private String ORGANIZATION_NAME;
 
     private static final String WIQL_GET_ASSIGNED_CODE_REVIEW_ITEMS = """
