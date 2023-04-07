@@ -36,11 +36,13 @@
       justify-content: space-around;
       align-items: center;
       width: 25rem;
+      height: 100%;
 
-      * > svg {
+      * > a {
         display: flex;
         justify-content: center;
         align-items: center;
+        height: 100%;
       }
       * > svg:hover {
         cursor: pointer;

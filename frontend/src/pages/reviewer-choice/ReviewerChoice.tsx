@@ -1,5 +1,6 @@
 import React from "react";
 import {
+  Box,
   Button,
   Input,
   InputGroup,
@@ -19,6 +20,8 @@ export const ReviewerChoice = () => {
   const primaryOrangeComponent = useStyleConfig(
     StyledComponents.PrimaryOrangeComponent
   );
+  const filterBarStyles = useStyleConfig(StyledComponents.FilterBar);
+  const primaryComponent = useStyleConfig(StyledComponents.PrimaryComponent);
 
   const location = useLocation();
   const review = location.state.review;
@@ -38,12 +41,15 @@ export const ReviewerChoice = () => {
           />
         </div>
         <div className={styles.filterContainer}>
-          <div className={joinClasses(styles.bar, styles.filterBar)}>
+          <Box
+            className={joinClasses(styles.bar, styles.filterBar)}
+            __css={filterBarStyles}
+          >
             <div className={styles.filterTitle}>
               <SortIcon />
               Sort by: ...
             </div>
-          </div>
+          </Box>
           <div className={joinClasses(styles.bar, styles.searchBarContainer)}>
             <InputGroup>
               <InputLeftElement
@@ -57,7 +63,7 @@ export const ReviewerChoice = () => {
             </InputGroup>
             <Button variant={"search"}>Search</Button>
           </div>
-          <div className={styles.searchResult}></div>
+          <Box className={styles.searchResult} __css={primaryComponent}></Box>
         </div>
       </div>
     </PageWrapper>

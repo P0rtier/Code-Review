@@ -1,13 +1,18 @@
 import React from "react";
 import styles from "./ReviewInfo.module.scss";
 import { BoldRegularText } from "../bold-regular-text/BoldRegularText";
-import { Box } from "@chakra-ui/react";
+import { Box, useStyleConfig } from "@chakra-ui/react";
 import { IReviewInfoProps } from "./IReviewInfoProps";
+import { StyledComponents } from "../../common/enums/StyledComponents";
 
 export const ReviewInfo = (props: IReviewInfoProps) => {
+  const headerStyles = useStyleConfig(StyledComponents.ReviewHeader);
+
   return (
     <Box className={styles.container} __css={props.style}>
-      <div className={styles.header}>{props.header}</div>
+      <Box className={styles.header} __css={headerStyles}>
+        {props.header}
+      </Box>
       <div className={styles.description}>
         <BoldRegularText
           boldText={"Scheduled to: "}

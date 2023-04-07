@@ -3,18 +3,31 @@ import styles from "./Stats.module.scss";
 import { PageWrapper } from "../../components/page-wrapper/PageWrapper";
 import { SortIcon } from "../../assets/icons/SortIcon";
 import { joinClasses } from "../../common/utils/joinClasses";
-import { Button, Input, InputGroup, InputLeftElement } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Input,
+  InputGroup,
+  InputLeftElement,
+  useStyleConfig,
+} from "@chakra-ui/react";
 import { SearchIcon } from "@chakra-ui/icons";
+import { StyledComponents } from "../../common/enums/StyledComponents";
 
 export const Stats = () => {
+  const filterBarStyles = useStyleConfig(StyledComponents.FilterBar);
+
   return (
     <PageWrapper smallGap={true}>
-      <div className={joinClasses(styles.bar, styles.filterBar)}>
+      <Box
+        className={joinClasses(styles.bar, styles.filterBar)}
+        __css={filterBarStyles}
+      >
         <div className={styles.filterTitle}>
           <SortIcon />
           Sort by: ...
         </div>
-      </div>
+      </Box>
       <div className={joinClasses(styles.bar, styles.searchBarContainer)}>
         <InputGroup>
           <InputLeftElement

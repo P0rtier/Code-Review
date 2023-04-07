@@ -4,4 +4,6 @@ export enum StyledComponents {
   PrimaryOrangeComponent = "PrimaryOrangeComponent",
   Background = "Background",
   Navbar = "Navbar",
+  ReviewHeader = "ReviewHeader",
+  FilterBar = "FilterBar",
 }

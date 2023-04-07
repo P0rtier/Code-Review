@@ -9,6 +9,7 @@
   align-items: flex-start;
   width: 100%;
   min-height: 15rem;
+  margin-bottom: 5rem;
 
   .colorPanel {
     position: absolute;
@@ -26,12 +27,13 @@
     align-items: flex-start;
     width: 100%;
     height: 100%;
-    padding: 1rem 2rem;
+    padding: 1rem 1rem;
 
     .header {
       font-family: $spaceMono;
       font-size: 1.5rem;
       margin-bottom: 1rem;
+      padding: 0 1rem;
     }
 
     .reviewContainer {

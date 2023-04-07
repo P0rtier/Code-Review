@@ -1,50 +1,67 @@
-// LIGHT MODE
+// --- GENERAL ---
 
-$primary-background: #f5f5fb;
-$navbar-blue: #57b6ff;
-$primary-orange: #ffc796;
+$box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
 
-$primary-component: #fdfdfe;
-$secondary-component: #4affed;
-$bar-component: #00f2da;
+// --- LIGHT MODE ---
 
-$primary-font: #000000;
-$secondary-font: #2b5b80;
+$light-background-layer-primary: #f5f5fb;
+$light-background-layer-secondary: #4affed;
 
-$light-background: $primary-background url("../../assets/images/lightBackground.svg")
+$light-navbar-layer: #57b6ff;
+
+$light-component-layer-beige: #fdfdfe;
+$light-component-layer-darker-beige: #4affed;
+$light-component-layer-orange: #ffc796;
+
+$light-filter-bar-layer: #00f2da;
+
+$light-text-primary: #000;
+$light-text-secondary: #2b5b80;
+
+$light-background: $light-background-layer-primary url("../../assets/images/lightBackground.svg")
     no-repeat center;
 
-// DARK MODE
+// --- DARK MODE ---
 
-$dark-primary-background: #3f3e3d;
-$dark-navbar-blue: #2B5B80;
-$dark-primary-orange: #009161;
+$dark-background-layer-primary: #121212;
+$dark-background-layer-secondary: #2A2A2A;
 
-$dark-primary-component: #434347;
-$dark-secondary-component: #2f3232;
+$dark-navbar-layer: #2B5B80;
 
-$dark-primary-font: #e6d2d2;
-$dark-secondary-font: #2b5b80;
+$dark-component-layer-beige: #2A2A2A;
+$dark-component-layer-darker-beige: #1F2124;
+$dark-component-layer-orange: #006645;
 
-$dark-background: $primary-background url("../../assets/images/darkBackground.svg")
+$dark-filter-bar-layer: #1F2124;
+
+$dark-text-primary: #fff;
+$dark-text-secondary: #fff;
+
+$dark-background: $dark-background-layer-primary url("../../assets/images/darkBackground.svg")
     no-repeat center;
 
 :export {
-  lightPrimaryBackground: $primary-background;
-  lightPrimaryComponent: $primary-component;
-  lightSecondaryComponent: $secondary-component;
-  lightPrimaryOrangeComponent: $primary-orange;
-  lightBackground: $light-background;
-  lightPrimaryFont: $primary-font;
-  lightNavbarBlue: $navbar-blue;
-  lightLoginInput: $primary-orange;
+  boxShadow: $box-shadow;
 
-  darkPrimaryBackground: $dark-primary-background;
-  darkPrimaryComponent: $dark-primary-component;
-  darkSecondaryComponent: $dark-secondary-component;
-  darkPrimaryOrangeComponent: $dark-primary-orange;
+  lightBackgroundLayerPrimary: $light-background-layer-primary;
+  lightBackgroundLayerSecondary: $light-background-layer-secondary;
+  lightNavbarLayer: $light-navbar-layer;
+  lightComponentLayerBeige: $light-component-layer-beige;
+  lightComponentLayerDarkerBeige: $light-component-layer-darker-beige;
+  lightComponentLayerOrange: $light-component-layer-orange;
+  lightFilterBarLayer: $light-filter-bar-layer;
+  lightTextPrimary: $light-text-primary;
+  lightTextSecondary: $light-text-secondary;
+  lightBackground: $light-background;
+
+  darkBackgroundLayerPrimary: $dark-background-layer-primary;
+  darkBackgroundLayerSecondary: $dark-background-layer-secondary;
+  darkNavbarLayer: $dark-navbar-layer;
+  darkComponentLayerBeige: $dark-component-layer-beige;
+  darkComponentLayerDarkerBeige: $dark-component-layer-darker-beige;
+  darkComponentLayerOrange: $dark-component-layer-orange;
+  darkFilterBarLayer: $dark-filter-bar-layer;
+  darkTextPrimary: $dark-text-primary;
+  darkTextSecondary: $dark-text-secondary;
   darkBackground: $dark-background;
-  darkPrimaryFont: $dark-primary-font;
-  darkNavbarBlue: $dark-navbar-blue;
-  darkLoginInput: $dark-primary-orange;
 }

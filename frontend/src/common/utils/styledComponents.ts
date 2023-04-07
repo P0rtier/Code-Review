@@ -5,10 +5,10 @@ import { mode } from "@chakra-ui/theme-tools";
 export const PrimaryComponent = defineStyleConfig({
   baseStyle: (props: StyleFunctionProps) => ({
     backgroundColor: mode(
-      colors.lightPrimaryComponent,
-      colors.darkPrimaryComponent
+      colors.lightComponentLayerBeige,
+      colors.darkComponentLayerBeige
     )(props),
-    boxShadow: "0 4px 4px rgba(0, 0, 0, 0.25)",
+    boxShadow: colors.boxShadow,
     borderRadius: "10px",
   }),
 });
@@ -16,10 +16,10 @@ export const PrimaryComponent = defineStyleConfig({
 export const SecondaryComponent = defineStyleConfig({
   baseStyle: (props: StyleFunctionProps) => ({
     backgroundColor: mode(
-      colors.lightSecondaryComponent,
-      colors.darkSecondaryComponent
+      colors.lightComponentLayerDarkerBeige,
+      colors.darkComponentLayerDarkerBeige
     )(props),
-    boxShadow: "0 4px 4px rgba(0, 0, 0, 0.25)",
+    boxShadow: colors.boxShadow,
     borderRadius: "10px",
   }),
 });
@@ -27,10 +27,10 @@ export const SecondaryComponent = defineStyleConfig({
 export const PrimaryOrangeComponent = defineStyleConfig({
   baseStyle: (props: StyleFunctionProps) => ({
     backgroundColor: mode(
-      colors.lightPrimaryOrangeComponent,
-      colors.darkPrimaryOrangeComponent
+      colors.lightComponentLayerOrange,
+      colors.darkComponentLayerOrange
     )(props),
-    boxShadow: "0 4px 4px rgba(0, 0, 0, 0.25)",
+    boxShadow: colors.boxShadow,
     borderRadius: "10px",
   }),
 });
@@ -38,14 +38,28 @@ export const PrimaryOrangeComponent = defineStyleConfig({
 export const Background = defineStyleConfig({
   baseStyle: (props: StyleFunctionProps) => ({
     background: mode(colors.lightBackground, colors.darkBackground)(props),
-    backgroundSize: "cover",
+    backgroundSize: "contain",
   }),
 });
 
 export const Navbar = defineStyleConfig({
   baseStyle: (props: StyleFunctionProps) => ({
-    background: mode(colors.lightNavbarBlue, colors.darkNavbarBlue)(props),
-    boxShadow: '0 4px 4px rgba(0, 0, 0, 0.3)',
-    borderRadius: '10px'
+    background: mode(colors.lightNavbarLayer, colors.darkNavbarLayer)(props),
+    boxShadow: "0 4px 4px rgba(0, 0, 0, 0.3)",
+    borderRadius: "10px",
+  }),
+});
+
+export const ReviewHeader = defineStyleConfig({
+  baseStyle: (props: StyleFunctionProps) => ({
+    color: mode(colors.lightTextSecondary, colors.darkTextSecondary)(props),
+  }),
+});
+
+export const FilterBar = defineStyleConfig({
+  baseStyle: (props: StyleFunctionProps) => ({
+    bg: mode(colors.lightFilterBarLayer, colors.darkFilterBarLayer)(props),
+    boxShadow: colors.boxShadow,
+    borderRadius: "10px",
   }),
 });

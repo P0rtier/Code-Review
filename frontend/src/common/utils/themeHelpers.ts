@@ -1,13 +1,15 @@
 import colors from "../../assets/styles/colors.module.scss";
 
 export const isLightMode = (colorMode: string) => {
-    return colorMode === "light";
+  return colorMode === "light";
 };
 
 export const isDarkMode = (colorMode: string) => {
-    return colorMode === "dark";
+  return colorMode === "dark";
 };
 
 export const getIconColor = (colorMode: string) => {
-    return isLightMode(colorMode) ? colors.lightPrimaryFont : colors.darkPrimaryFont;
-}
+  return isLightMode(colorMode)
+    ? colors.lightTextPrimary
+    : colors.darkTextPrimary;
+};
