@@ -1,4 +1,3 @@
-@import "../../assets/styles/colors.module";
 @import "../../assets/styles/fonts.module";
 
 .container {
@@ -7,12 +6,11 @@
   justify-content: flex-start;
   align-items: flex-start;
   padding: 1rem 2rem;
-  width: clamp(18.75rem, 100%, 23rem);
+  width: clamp(18.75rem, 100%, 21rem);
 
   .header {
     font-family: $spaceMono;
     font-size: 1.25rem;
-    color: $secondary-font;
     margin-bottom: 1rem;
   }
 

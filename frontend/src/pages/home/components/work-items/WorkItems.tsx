@@ -33,12 +33,13 @@ export const WorkItems = () => {
   const primaryStyles = useStyleConfig(StyledComponents.PrimaryComponent);
 
   const getData = () => {
-    return mockData.map((review) => (
+    return mockData.map((review, key) => (
       <WorkItemComponent
         header={review.header}
         activityDate={review.activityDate}
         state={review.state}
         tags={review.tags}
+        key={key}
       />
     ));
   };
