@@ -1,5 +1,4 @@
-export interface IRequestedReview {
-  id: string;
+export interface IWorkItemComponentProps {
   header: string;
   state: string;
   activityDate: Date;

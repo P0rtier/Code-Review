@@ -10,11 +10,11 @@ import {
 import { StyledComponents } from "../../common/enums/StyledComponents";
 import { useLocation } from "react-router";
 import { PageWrapper } from "../../components/page-wrapper/PageWrapper";
-import { ReviewInfo } from "../../components/review-info/ReviewInfo";
 import styles from "./ReviewerChoice.module.scss";
 import { joinClasses } from "../../common/utils/joinClasses";
 import { SortIcon } from "../../assets/icons/SortIcon";
 import { SearchIcon } from "@chakra-ui/icons";
+import { WorkItemInfo } from "../../components/work-item-info/WorkItemInfo";
 
 export const ReviewerChoice = () => {
   const primaryOrangeComponent = useStyleConfig(
@@ -30,13 +30,11 @@ export const ReviewerChoice = () => {
     <PageWrapper smallGap={true}>
       <div className={styles.container}>
         <div className={styles.reviewContainer}>
-          <ReviewInfo
+          <WorkItemInfo
             header={review.header}
-            scheduledTo={review.scheduledTo}
-            scheduled={String(review.scheduled)}
-            team={review.team}
-            pullRequest={review.pullRequest}
-            description={review.description}
+            activityDate={review.activityDate}
+            state={review.state}
+            tags={review.tags}
             style={primaryOrangeComponent}
           />
         </div>
