@@ -9,6 +9,11 @@ import org.springframework.context.annotation.PropertySource;
 public class CodeReviewApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(CodeReviewApplication.class, args);
+		SpringApplication application =
+				new SpringApplication(CodeReviewApplication.class);
+
+		//Current profiles = [dev, test]
+		application.setAdditionalProfiles("dev");
+		application.run(args);
 	}
 }

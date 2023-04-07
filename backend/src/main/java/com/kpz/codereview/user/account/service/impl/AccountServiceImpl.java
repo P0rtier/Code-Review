@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class AccountServiceImpl implements AccountService {
@@ -17,5 +18,10 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public List<Account> getAll() {
         return repo.findAll();
+    }
+
+    public Account getByEmail(String email) {
+        return repo.findByEmail(email)
+                .orElseThrow(NoSuchElementException::new);
     }
 }

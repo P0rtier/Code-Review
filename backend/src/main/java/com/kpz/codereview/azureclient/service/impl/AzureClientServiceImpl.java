@@ -1,6 +1,6 @@
 package com.kpz.codereview.azureclient.service.impl;
 
-import com.kpz.codereview.base.exception.BadRequestBodyException;
+import com.kpz.codereview.exception.model.BadRequestBodyException;
 import com.kpz.codereview.azureclient.model.wrapper.MemberSearchQuery;
 import com.kpz.codereview.azureclient.model.wrapper.ProjectSearchQuery;
 import com.kpz.codereview.azureclient.model.wrapper.TeamSearchQuery;
@@ -43,8 +43,8 @@ public class AzureClientServiceImpl implements AzureClientService {
             And [System.AssignedTo] = '%s'
             """;
     private static final String WIQL_GET_ALL_REVIEW_WORK_ITEMS = """
-    Select * From WorkItems Where [System.WorkItemType] = 'Code Review'
-    """;
+            Select * From WorkItems Where [System.WorkItemType] = 'Code Review'
+            """;
     private static final String WIQL_GET_UNASSIGNED_CODE_REVIEW_ITEMS = """
             Select * From WorkItems
             Where [System.WorkItemType] = 'Code Review'
@@ -52,8 +52,8 @@ public class AzureClientServiceImpl implements AzureClientService {
             And [System.AssignedTo] = ' '
             """;
     private static final String AZURE_DEVOPS_BASE_URL = "https://dev.azure.com";
-    private static final String GET_WORK_ITEM_BY_ID_URI_TEMPLATE= "%s/%s/%s/_apis/wit/workitems/%s?api-version=%s";
-    private static final String BASE_AZURE_REST_WIQL_URI_TEMPLATE= "%s/%s/%s/_apis/wit/wiql?api-version=%s";
+    private static final String GET_WORK_ITEM_BY_ID_URI_TEMPLATE = "%s/%s/%s/_apis/wit/workitems/%s?api-version=%s";
+    private static final String BASE_AZURE_REST_WIQL_URI_TEMPLATE = "%s/%s/%s/_apis/wit/wiql?api-version=%s";
     private static final String GET_PROJECTS_URI_TEMPLATE = "%s/%s/_apis/projects?api-version=%s";
     private static final String GET_TEAMS_URI_TEMPLATE = "%s/%s/_apis/projects/%s/teams?api-version=%s";
     private static final String GET_MEMBERS_URI_TEMPLATE = "%s/%s/_apis/projects/%s/teams/%s/members?api-version=%s";
@@ -183,7 +183,7 @@ public class AzureClientServiceImpl implements AzureClientService {
         );
     }
 
-    private HttpHeaders genAuthHeaderKey(){
+    private HttpHeaders genAuthHeaderKey() {
         String authHeaderString = BASIC_AUTHORIZATION_VALUE.formatted(
                 Base64.getEncoder().encodeToString((COLON + PERSONAL_ACCESS_TOKEN).getBytes())
         );

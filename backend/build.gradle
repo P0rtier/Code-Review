@@ -20,18 +20,30 @@ repositories {
 }
 
 dependencies {
+	//Core dependencies
 	implementation 'org.springframework.boot:spring-boot-starter'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	annotationProcessor 'org.projectlombok:lombok'
+	compileOnly 'org.projectlombok:lombok'
+
+	//Security dependencies
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.security:spring-security-web:6.0.2'
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+	implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+	implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
+
+	//Data dependencies
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation group: 'org.postgresql', name: 'postgresql', version: '42.2.27'
+	implementation 'org.liquibase:liquibase-core'
+	runtimeOnly 'org.postgresql:postgresql:+'
+	runtimeOnly 'com.h2database:h2:+'
+
+	//Swagger dependencies
 	implementation('org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.0')
 	implementation('org.hibernate.validator:hibernate-validator:8.0.0.Final')
-	implementation 'org.liquibase:liquibase-core'
-	compileOnly 'org.projectlombok:lombok'
-	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'com.h2database:h2:1.3.148'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testRuntimeOnly 'com.h2database:h2'
 }
 
 tasks.named('test') {

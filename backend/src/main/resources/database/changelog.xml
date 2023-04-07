@@ -3,8 +3,52 @@
         xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
-            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
-    <include file="database/scripts/create-accounts-and-vacations-tables.sql"/>
+<!--    <include file="database/scripts/create-accounts-and-vacations-tables.sql"/>-->
+    <changeSet id="1" author="Kacper Aleks">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="accounts"/>
+            </not>
+        </preConditions>
 
+        <createTable tableName="accounts">
+            <column name="id" type="uuid">
+                <constraints primaryKey="true"/>
+            </column>
+
+            <column name="email" type="varchar(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+
+            <column name="password_hash" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="salt" type="bytea">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="refresh_token" type="varchar(700)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2" author="Kacper Aleks">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="vacations"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="vacations">
+            <column name="email" type="varchar(255)">
+                <constraints primaryKey="true"/>
+            </column>
+
+            <column name="start_date" type="date"/>
+
+            <column name="end_date" type="date"/>
+        </createTable>
+    </changeSet>
 </databaseChangeLog>

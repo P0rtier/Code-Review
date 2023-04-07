@@ -1,4 +1,4 @@
-package com.kpz.codereview.base.model;
+package com.kpz.codereview.exception.model;
 
 import lombok.Builder;
 

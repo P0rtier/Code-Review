@@ -1,5 +1,6 @@
-package com.kpz.codereview.base.exception;
+package com.kpz.codereview.exception.service;
 
+import com.kpz.codereview.exception.model.BadAzureAPIResponse;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.stereotype.Component;

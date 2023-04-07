@@ -1,4 +1,4 @@
-package com.kpz.codereview.base.exception;
+package com.kpz.codereview.exception.model;
 
 public class BadRequestBodyException extends RuntimeException {
     public BadRequestBodyException() {

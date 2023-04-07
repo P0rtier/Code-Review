@@ -1,4 +1,4 @@
-package com.kpz.codereview.base.exception;
+package com.kpz.codereview.exception.model;
 
 public class BadAzureAPIResponse extends RuntimeException {
     public BadAzureAPIResponse() {
