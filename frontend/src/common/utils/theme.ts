@@ -115,6 +115,13 @@ const theme = extendTheme({
         }),
       },
     },
+    Popover: {
+      baseStyle: {
+        content: {
+          width: '30vw'
+        },
+      },
+    },
   },
 });
 

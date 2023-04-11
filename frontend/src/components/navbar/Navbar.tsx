@@ -3,13 +3,13 @@ import { Outlet } from "react-router";
 import { Link } from "react-router-dom";
 import styles from "./Navbar.module.scss";
 import { HomeIcon } from "../../assets/icons/HomeIcon";
-import { NotificationsIcon } from "../../assets/icons/NotificationsIcon";
 import { StatsIcon } from "../../assets/icons/StatsIcon";
 import { SettingsIcon } from "../../assets/icons/SettingsIcon";
 import { LogoutIcon } from "../../assets/icons/LogoutIcon";
 import ToggleThemeButton from "../toggle-theme-button/ToggleThemeButton";
 import { Box, useStyleConfig } from "@chakra-ui/react";
 import { StyledComponents } from "../../common/enums/StyledComponents";
+import { NotificationsPopover } from "../notifications/NotificationsPopover";
 
 export const Navbar = () => {
   const navbarStyles = useStyleConfig(StyledComponents.Navbar);
@@ -25,15 +25,13 @@ export const Navbar = () => {
             <Link to="/home">
               <HomeIcon />
             </Link>
-            <Link to="/notifications">
-              <NotificationsIcon />
-            </Link>
+            <NotificationsPopover />
             <Link to="/stats">
               <StatsIcon />
             </Link>
-            <Link to="/settings">
+            {/* <Link to="/settings"> */}
               <SettingsIcon />
-            </Link>
+            {/* </Link> */}
             <ToggleThemeButton />
             <Link to="/login">
               <LogoutIcon />
