@@ -9,6 +9,7 @@ import {
     PopoverContent,
     PopoverHeader,
     PopoverBody,
+    Button,
 } from "@chakra-ui/react";
 
 export const NotificationsPopover = () => {
@@ -59,11 +60,11 @@ export const NotificationsPopover = () => {
 
   return (
     <>
-      <Popover isLazy size="xl">
+      <Popover isLazy>
         <PopoverTrigger>
-          <a>
+          <button>
             <NotificationsIcon />
-          </a>
+          </button>
         </PopoverTrigger>
         <PopoverContent>
           <PopoverHeader><div className={styles.header}>Notifications</div></PopoverHeader>

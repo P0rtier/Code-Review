@@ -9,7 +9,7 @@ import { LogoutIcon } from "../../assets/icons/LogoutIcon";
 import ToggleThemeButton from "../toggle-theme-button/ToggleThemeButton";
 import { Box, useStyleConfig } from "@chakra-ui/react";
 import { StyledComponents } from "../../common/enums/StyledComponents";
-import { NotificationsPopover } from "../notifications/NotificationsPopover";
+import { NotificationsPopover } from "../notifications-popover/NotificationsPopover";
 
 export const Navbar = () => {
   const navbarStyles = useStyleConfig(StyledComponents.Navbar);
