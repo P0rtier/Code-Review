@@ -1,5 +1,6 @@
 package com.kpz.codereview;
 
+import com.kpz.codereview.config.model.AppProfiles;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.PropertySource;
@@ -12,8 +13,8 @@ public class CodeReviewApplication {
 		SpringApplication application =
 				new SpringApplication(CodeReviewApplication.class);
 
-		//Current profiles = [dev, test]
-		application.setAdditionalProfiles("dev");
+		//Current profiles = [DEV_PROFILE, TEST_PROFILE]
+		application.setAdditionalProfiles(AppProfiles.DEV_PROFILE.toString());
 		application.run(args);
 	}
 }

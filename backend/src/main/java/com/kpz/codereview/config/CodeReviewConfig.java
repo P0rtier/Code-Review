@@ -3,6 +3,7 @@ package com.kpz.codereview.config;
 import com.kpz.codereview.exception.service.RestTemplateResponseErrorHandler;
 import com.kpz.codereview.user.account.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,12 +14,23 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 @Configuration
 @RequiredArgsConstructor
 public class CodeReviewConfig {
+    @Value("${security.cors.allowed.origins}")
+    private List<String> ALLOWED_ORIGINS;
+
+    @Value("${security.cors.allowed.methods}")
+    private List<String> ALLOWED_METHODS;
+
     private final AccountRepository repo;
 
     @Bean
@@ -27,7 +39,6 @@ public class CodeReviewConfig {
         restTemplate.setErrorHandler(new RestTemplateResponseErrorHandler());
         return restTemplate;
     }
-
 
     @Bean
     public UserDetailsService userDetailsService() {
@@ -51,5 +62,17 @@ public class CodeReviewConfig {
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
+    }
+
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+
+        configuration.setAllowedOrigins(ALLOWED_ORIGINS);
+        configuration.setAllowedMethods(ALLOWED_METHODS);
+
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 }

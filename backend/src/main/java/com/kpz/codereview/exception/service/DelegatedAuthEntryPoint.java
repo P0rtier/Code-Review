@@ -42,7 +42,7 @@ public class DelegatedAuthEntryPoint implements AuthenticationEntryPoint {
         switch (responseStatus) {
             case 200 -> {
                 timeStamp = LocalDateTime.now().format(DATE_TIME_FORMATTER);
-                status = HttpStatus.FORBIDDEN;
+                status = HttpStatus.UNAUTHORIZED;
                 detail = ex.getMessage();
                 instance = request.getRequestURI();
             }
@@ -73,6 +73,7 @@ public class DelegatedAuthEntryPoint implements AuthenticationEntryPoint {
 
 
         response.setStatus(status.value());
+        response.setContentType("application/json ");
 
         var responseStream = response.getOutputStream();
         new ObjectMapper().writeValue(responseStream, error);
