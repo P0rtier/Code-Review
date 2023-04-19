@@ -1,12 +1,14 @@
-import * as React from 'react';
-import { Box, Button, Input, useStyleConfig } from '@chakra-ui/react';
-import { StyledComponents } from '../../common/enums/StyledComponents';
-import styles from './Login.module.scss';
-import { Link } from 'react-router-dom';
+import { Box, Button, Input, useStyleConfig } from "@chakra-ui/react";
+import react from "react";
+import { Link } from "react-router-dom";
+import { StyledComponents } from "../../common/enums/StyledComponents";
+import styles from './Register.module.scss';
 
-const Login = () => {
+
+const Register = () => {
     const primaryStyles = useStyleConfig(StyledComponents.PrimaryComponent);
     const secondaryStyles = useStyleConfig(StyledComponents.SecondaryComponent);
+
 
     return (
         <div className={styles.container}>
@@ -15,7 +17,7 @@ const Login = () => {
                     className={styles.header}
                     __css={primaryStyles}
                 >
-                    Log in
+                    Sign up
                 </Box>
                 <Box
                     className={styles.content}
@@ -29,14 +31,18 @@ const Login = () => {
                         <label>Password</label>
                         <Input variant='auth' type="password" />
                     </div>
+                    <div className={styles.inputContainer}>
+                        <label>Repeat password</label>
+                        <Input variant='auth' type="password" />
+                    </div>
                     <div className={styles.buttonContainer}>
-                        <Link to='/register'>No account?</Link> 
-                        <Button variant='auth'>Login</Button>
+                        <Link to='/login'>Already have an account?</Link>
+                        <Button variant='auth'>Register</Button>
                     </div>
                 </Box>
             </div>
         </div>
-    );
+    )
 }
 
-export default Login;
+export default Register;

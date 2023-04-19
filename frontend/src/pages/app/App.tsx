@@ -8,6 +8,7 @@ import { ReviewerChoice } from "../reviewer-choice/ReviewerChoice";
 import { Box, useStyleConfig } from "@chakra-ui/react";
 import { StyledComponents } from "../../common/enums/StyledComponents";
 import Login from "../login/Login";
+import Register from "../register/Register";
 
 const App = () => {
   const background = useStyleConfig(StyledComponents.Background);
@@ -21,6 +22,7 @@ const App = () => {
           <Route path="stats" element={<Stats />} />
           <Route path="reviewer" element={<ReviewerChoice />} />
           <Route path="login" element={<Login />} />
+          <Route path="register" element={<Register />} />
         </Route>
       </Routes>
     </Box>

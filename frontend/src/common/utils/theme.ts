@@ -55,7 +55,7 @@ const theme = extendTheme({
             },
           },
         }),
-        login: (props: StyleFunctionProps) => ({
+        auth: (props: StyleFunctionProps) => ({
           field: {
             borderRadius: "10px",
             boxShadow: colors.boxShadow,
@@ -103,7 +103,7 @@ const theme = extendTheme({
           height: "2.5rem",
           boxShadow: colors.boxShadow,
         }),
-        login: (props: StyleFunctionProps) => ({
+        auth: (props: StyleFunctionProps) => ({
           bg: mode(
             colors.lightBackgroundLayerPrimary,
             colors.darkBackgroundLayerPrimary
