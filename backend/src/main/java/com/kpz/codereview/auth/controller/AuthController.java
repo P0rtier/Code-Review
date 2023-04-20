@@ -50,9 +50,9 @@ public class AuthController {
             ),
             @ApiResponse(responseCode = "200", description = "OK")
     })
-    @PostMapping("/authenticate")
+    @PostMapping("/login")
     public AuthHeaders authenticate(@RequestBody AuthRequest request) throws NoSuchAlgorithmException, InvalidKeySpecException, AuthenticationException {
-        return service.authenticate(request);
+        return service.login(request);
     }
 
     @ApiResponses(value = {
@@ -65,6 +65,6 @@ public class AuthController {
     })
     @PostMapping("/refresh-access")
     public AuthHeaders refreshAccess(@RequestBody AuthHeaders request) throws AuthenticationException {
-        return service.refreshAccess(request.getRefreshToken());
+        return service.refreshAccess(request.getRefreshToken(), request.getAccessToken());
     }
 }

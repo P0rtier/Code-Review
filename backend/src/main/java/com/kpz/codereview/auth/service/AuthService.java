@@ -28,7 +28,8 @@ public class AuthService {
     private final static String INVALID_EMAIL_EXCEPTION_MESSAGE = "Email is invalid!";
     private final static String USER_ALREADY_REGISTERED_EXCEPTION_MESSAGE = "User is already registered!";
     private final static String INVALID_CREDENTIALS_EXCEPTION_MESSAGE = "User credentials are invalid!";
-    private final static String INVALID_TOKEN_EXCEPTION_MESSAGE = "Provided token is invalid!";
+    private final static String INVALID_ACCESS_TOKEN_EXCEPTION_MESSAGE = "Provided access token is invalid!";
+    private final static String INVALID_REFRESH_TOKEN_EXCEPTION_MESSAGE = "Provided refresh token is invalid!";
     private final static String EXPIRED_TOKEN_EXCEPTION_MESSAGE = "Provided token is expired!";
     private final static String NO_ACCOUNT_EXCEPTION_MESSAGE = "Owner of this token no longer exists!";
     private final static String NO_AZURE_ACCOUNT_EXCEPTION_MESSAGE = """
@@ -88,7 +89,7 @@ public class AuthService {
                 .build();
     }
 
-    public AuthHeaders authenticate(AuthRequest request) throws NoSuchAlgorithmException, InvalidKeySpecException, AuthenticationException {
+    public AuthHeaders login(AuthRequest request) throws NoSuchAlgorithmException, InvalidKeySpecException, AuthenticationException {
 
         var user = repository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new AuthenticationException(INVALID_CREDENTIALS_EXCEPTION_MESSAGE));
@@ -113,9 +114,13 @@ public class AuthService {
                 .build();
     }
 
-    public AuthHeaders refreshAccess(String refreshToken) throws AuthenticationException {
+    public AuthHeaders refreshAccess(String refreshToken, String accessToken) throws AuthenticationException {
         if (jwtService.isTokenInvalid(refreshToken)) {
-            throw new AuthenticationException(INVALID_TOKEN_EXCEPTION_MESSAGE);
+            throw new AuthenticationException(INVALID_REFRESH_TOKEN_EXCEPTION_MESSAGE);
+        }
+
+        if (jwtService.isTokenInvalid(accessToken)) {
+            throw new AuthenticationException(INVALID_ACCESS_TOKEN_EXCEPTION_MESSAGE);
         }
 
         var user = repository.findByRefreshToken(refreshToken);
@@ -128,10 +133,10 @@ public class AuthService {
             throw new AuthenticationException(EXPIRED_TOKEN_EXCEPTION_MESSAGE);
         }
 
-        var accessToken = jwtService.generateAccessToken(user.get());
+        var newAccessToken = jwtService.generateAccessToken(user.get());
 
         return AuthHeaders.builder()
-                .accessToken(accessToken)
+                .accessToken(newAccessToken)
                 .refreshToken(refreshToken)
                 .build();
     }
