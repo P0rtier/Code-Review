@@ -32,9 +32,11 @@
 
     <changeSet id="2" author="Kacper Aleks">
         <createTable tableName="vacations">
-            <column name="email" type="varchar(255)">
+            <column name="id" type="bigint">
                 <constraints primaryKey="true"/>
             </column>
+
+            <column name="email" type="varchar(255)"/>
 
             <column name="start_date" type="date"/>
 

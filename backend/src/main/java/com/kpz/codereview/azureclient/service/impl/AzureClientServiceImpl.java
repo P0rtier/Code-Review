@@ -1,9 +1,14 @@
 package com.kpz.codereview.azureclient.service.impl;
 
+import com.kpz.codereview.azureclient.model.component.AvailabilityPeriod;
+import com.kpz.codereview.azureclient.model.component.CodeReviewerDTS;
 import com.kpz.codereview.azureclient.model.wrapper.AllUsersSearchQuery;
 import com.kpz.codereview.azureclient.model.wrapper.MemberSearchQuery;
+import com.kpz.codereview.azureclient.model.wrapper.MemberWrapper;
 import com.kpz.codereview.azureclient.model.wrapper.ProjectSearchQuery;
 import com.kpz.codereview.azureclient.model.wrapper.TeamSearchQuery;
+import com.kpz.codereview.azureclient.model.Member;
+import com.kpz.codereview.azureclient.model.Team;
 import com.kpz.codereview.azureclient.model.wrapper.WorkItemSearchQuery;
 import com.kpz.codereview.exception.model.BadRequestBodyException;
 import com.kpz.codereview.azureclient.model.WorkItem;
@@ -13,32 +18,47 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.kpz.codereview.user.vacation.service.VacationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.Base64;
-import java.util.HashSet;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class AzureClientServiceImpl implements AzureClientService {
 
+    private final RestTemplate restTemplate;
+
+    private final VacationService vacationService;
+
     @Autowired
-    private RestTemplate restTemplate;
+    public AzureClientServiceImpl(RestTemplate restTemplate, VacationService vacationService) {
+        this.restTemplate = restTemplate;
+        this.vacationService = vacationService;
+    }
+
 
     @Value("${azure.api.access.token}")
     private String PERSONAL_ACCESS_TOKEN;
     @Value("${azure.organization.name}")
     private String ORGANIZATION_NAME;
+    @Value("${azure.code-review.done.states}")
+    private List<String> doneStates;
 
     private static final String WIQL_GET_ASSIGNED_CODE_REVIEW_ITEMS = """
             Select * From WorkItems
@@ -206,6 +226,24 @@ public class AzureClientServiceImpl implements AzureClientService {
         return getWorkItemListFromQuery(WIQL_GET_ASSIGNED_CODE_REVIEW_ITEMS.formatted(userEmail), projectName);
     }
 
+    @Override
+    public Set<CodeReviewerDTS> getProjectSortedReviewers(String projectName,
+                                                          AvailabilityPeriod availabilityPeriod) throws JsonProcessingException {
+
+        List<WorkItem> codeReviewWorkItemList = filterFinishedAndUnassignedCodeReviews(getCodeReviewItemList(projectName));
+        Map<String, CodeReviewerDTS> projectReviewersMap = genCodeReviewerHashMapFromProject(projectName);
+        Set<CodeReviewerDTS> codeReviewerDTSSetToSort = mapWorkItemListToCodeReviewerDTSSet(codeReviewWorkItemList, projectReviewersMap);
+
+        codeReviewerDTSSetToSort.forEach(person ->
+            person.setAvailability(
+                    vacationService.userAvailability(person.getUniqueName(),
+                    availabilityPeriod.getStartDate(),
+                    availabilityPeriod.getEndDate())));
+
+        return sortCodeReviewers(codeReviewerDTSSetToSort);
+
+    }
+
     private List<WorkItem> createWorkItemList(WorkItemSearchQuery query, String projectName) throws JsonProcessingException {
         List<WorkItem> workItemsList = new ArrayList<>();
 
@@ -314,5 +352,60 @@ public class AzureClientServiceImpl implements AzureClientService {
                 Map.of(QUERY, query),
                 genAuthHeaderKey()
         );
+    }
+
+    private List<WorkItem> filterFinishedAndUnassignedCodeReviews(List<WorkItem> codeReviewItemList) throws JsonProcessingException {
+        return codeReviewItemList
+                .stream()
+                .filter(workItem -> workItem.getFields().getAssignedTo() != null &&
+                                    !doneStates.contains(workItem.getFields().getState()))
+                .toList();
+    }
+
+    private Set<CodeReviewerDTS> mapWorkItemListToCodeReviewerDTSSet(
+            List<WorkItem> filteredWorkItemList, Map<String, CodeReviewerDTS> projectReviewersMap) throws JsonProcessingException {
+
+        filteredWorkItemList.forEach(workItem -> {
+            String uniqueName = workItem.getFields().getAssignedTo().getUniqueName();
+            projectReviewersMap.computeIfPresent(uniqueName, (key, person) -> {
+                person.setActiveReviews(person.getActiveReviews() + 1);
+                return person;
+            });
+        });
+        return new HashSet<>(projectReviewersMap.values());
+    }
+
+    private Set<CodeReviewerDTS> sortCodeReviewers(Set<CodeReviewerDTS> codeReviewerDTSSetToSort){
+        return codeReviewerDTSSetToSort.stream()
+                .sorted(
+                        Comparator.comparing(CodeReviewerDTS::isAvailability).reversed()
+                                .thenComparing(CodeReviewerDTS::getActiveReviews)
+                )
+                .collect(Collectors.toCollection(LinkedHashSet::new));
+    }
+
+    private Map<String, CodeReviewerDTS> genCodeReviewerHashMapFromProject(String projectName) throws JsonProcessingException {
+        List<Team> projectTeams = getTeamList(projectName).getTeams();
+        Map<String, CodeReviewerDTS> reviewersMap = new HashMap<>();
+        for(var team : projectTeams){
+            Set<Member> teamMembers = getMemberList(projectName, team.getId())
+                    .getMembers()
+                    .stream()
+                    .map(MemberWrapper::getIdentity)
+                    .collect(Collectors.toSet());
+
+            teamMembers.forEach(member -> {
+                reviewersMap.put(
+                        member.getUniqueName(),
+                        CodeReviewerDTS.builder()
+                                .displayName(member.getDisplayName())
+                                .uniqueName(member.getUniqueName())
+                                .teamName(team.getName())
+                                .activeReviews(0)
+                                .availability(true)
+                                .build());
+            });
+        }
+        return reviewersMap;
     }
 }

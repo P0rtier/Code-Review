@@ -2,6 +2,8 @@ package com.kpz.codereview.azureclient.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.kpz.codereview.azureclient.model.WorkItem;
+import com.kpz.codereview.azureclient.model.component.CodeReviewerDTS;
+import com.kpz.codereview.azureclient.model.component.AvailabilityPeriod;
 import com.kpz.codereview.azureclient.model.wrapper.MemberSearchQuery;
 import com.kpz.codereview.azureclient.model.wrapper.ProjectSearchQuery;
 import com.kpz.codereview.azureclient.model.wrapper.TeamSearchQuery;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/azure")
@@ -219,5 +222,29 @@ public class AzureClientController {
     public MemberSearchQuery getProjectUserList(@RequestParam(name = "project") String projectId,
                                                 @RequestParam(name = "team") String teamId) throws JsonProcessingException {
         return service.getMemberList(projectId, teamId);
+    }
+
+    @ApiResponses(value = {
+        @ApiResponse(
+                responseCode = "410",
+                description = "Azure API returned exception",
+                content = @Content
+        ),
+        @ApiResponse(
+                responseCode = "500",
+                description = "Cannot parse response from Azure API",
+                content = @Content
+        ),
+        @ApiResponse(
+                responseCode = "401",
+                description = "User is not authorized",
+                content = @Content
+        ),
+        @ApiResponse(responseCode = "200", description = "OK")
+    })
+    @GetMapping("/review-sorted-users")
+    public Set<CodeReviewerDTS> getSortedProjectReviewers(@RequestParam(name = "project") String projectName,
+                                                          @RequestBody AvailabilityPeriod availabilityPeriod) throws JsonProcessingException {
+        return service.getProjectSortedReviewers(projectName, availabilityPeriod);
     }
 }
