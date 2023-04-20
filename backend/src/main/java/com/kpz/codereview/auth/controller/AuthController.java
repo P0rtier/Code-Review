@@ -1,6 +1,7 @@
 package com.kpz.codereview.auth.controller;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.kpz.codereview.auth.model.AuthHeaders;
 import com.kpz.codereview.auth.model.AuthRequest;
 import com.kpz.codereview.auth.service.AuthService;
@@ -29,10 +30,15 @@ public class AuthController {
                     description = "Request is invalid",
                     content = @Content
             ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Cannot parse response from Azure API",
+                    content = @Content
+            ),
             @ApiResponse(responseCode = "200", description = "OK")
     })
     @PostMapping("/register")
-    public AuthHeaders register(@RequestBody AuthRequest request) throws NoSuchAlgorithmException, InvalidKeySpecException, AuthenticationException {
+    public AuthHeaders register(@RequestBody AuthRequest request) throws NoSuchAlgorithmException, InvalidKeySpecException, AuthenticationException, JsonProcessingException {
         return service.register(request);
     }
 

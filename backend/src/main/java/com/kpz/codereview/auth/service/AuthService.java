@@ -1,7 +1,9 @@
 package com.kpz.codereview.auth.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.kpz.codereview.auth.model.AuthHeaders;
 import com.kpz.codereview.auth.model.AuthRequest;
+import com.kpz.codereview.azureclient.service.AzureClientService;
 import com.kpz.codereview.user.account.model.Account;
 import com.kpz.codereview.user.account.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,15 +22,46 @@ import java.util.Arrays;
 @Service
 @RequiredArgsConstructor
 public class AuthService {
+
+    private final static String ENCRYPTION_ALGORITHM = "PBKDF2WithHmacSHA1";
+    private final static String NO_EMAIL_EXCEPTION_MESSAGE = "Provide email in the request!";
+    private final static String INVALID_EMAIL_EXCEPTION_MESSAGE = "Email is invalid!";
+    private final static String USER_ALREADY_REGISTERED_EXCEPTION_MESSAGE = "User is already registered!";
+    private final static String INVALID_CREDENTIALS_EXCEPTION_MESSAGE = "User credentials are invalid!";
+    private final static String INVALID_TOKEN_EXCEPTION_MESSAGE = "Provided token is invalid!";
+    private final static String EXPIRED_TOKEN_EXCEPTION_MESSAGE = "Provided token is expired!";
+    private final static String NO_ACCOUNT_EXCEPTION_MESSAGE = "Owner of this token no longer exists!";
+    private final static String NO_AZURE_ACCOUNT_EXCEPTION_MESSAGE = """
+    User does not have an account in Azure Devops organization!
+    """;
+    private final static String EMAIL_REGEX = "^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
     private final AccountRepository repository;
     private final JwtService jwtService;
     private final AuthenticationManager authManager;
+    private final AzureClientService azureClientService;
 
-    public AuthHeaders register(AuthRequest request) throws NoSuchAlgorithmException, InvalidKeySpecException, AuthenticationException {
+    public AuthHeaders register(AuthRequest request) throws NoSuchAlgorithmException, InvalidKeySpecException, AuthenticationException, JsonProcessingException {
         var email = request.getEmail();
 
+        if (email == null) {
+            throw new AuthenticationException(NO_EMAIL_EXCEPTION_MESSAGE);
+        }
+
+        if (!email.matches(EMAIL_REGEX)) {
+            throw new AuthenticationException(INVALID_EMAIL_EXCEPTION_MESSAGE);
+        }
+
+        var allUsers = azureClientService.getAllUsersFromOrg();
+        var userExists = allUsers.stream()
+                .anyMatch(user -> user.equals(email));
+
+        if (!userExists) {
+            throw new AuthenticationException(NO_AZURE_ACCOUNT_EXCEPTION_MESSAGE);
+        }
+
+
         if (repository.findByEmail(email).isPresent()) {
-            throw new AuthenticationException("User is already registered");
+            throw new AuthenticationException(USER_ALREADY_REGISTERED_EXCEPTION_MESSAGE);
         }
 
         var salt = generateSalt();
@@ -58,14 +91,14 @@ public class AuthService {
     public AuthHeaders authenticate(AuthRequest request) throws NoSuchAlgorithmException, InvalidKeySpecException, AuthenticationException {
 
         var user = repository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new AuthenticationException("User credentials are invalid"));
+                .orElseThrow(() -> new AuthenticationException(INVALID_CREDENTIALS_EXCEPTION_MESSAGE));
 
         var rawPassword = request.getPassword();
         var userSalt = user.getSalt();
         var requestPasswordHash = hashPassword(userSalt, rawPassword);
 
         if (!requestPasswordHash.equals(user.getPasswordHash())) {
-            throw new AuthenticationException("User credentials are invalid");
+            throw new AuthenticationException(INVALID_CREDENTIALS_EXCEPTION_MESSAGE);
         }
 
         var refreshToken = jwtService.generateRefreshToken(user);
@@ -82,17 +115,17 @@ public class AuthService {
 
     public AuthHeaders refreshAccess(String refreshToken) throws AuthenticationException {
         if (jwtService.isTokenInvalid(refreshToken)) {
-            throw new AuthenticationException("Provided token is invalid!");
+            throw new AuthenticationException(INVALID_TOKEN_EXCEPTION_MESSAGE);
         }
 
         var user = repository.findByRefreshToken(refreshToken);
 
         if (user.isEmpty()) {
-            throw new AuthenticationException("Owner of this token no longer exists!");
+            throw new AuthenticationException(NO_ACCOUNT_EXCEPTION_MESSAGE);
         }
 
         if (jwtService.isTokenExpired(refreshToken)) {
-            throw new AuthenticationException("Provided token is expired!");
+            throw new AuthenticationException(EXPIRED_TOKEN_EXCEPTION_MESSAGE);
         }
 
         var accessToken = jwtService.generateAccessToken(user.get());
@@ -115,7 +148,7 @@ public class AuthService {
 
     private String hashPassword(byte[] salt, String rawPassword) throws NoSuchAlgorithmException, InvalidKeySpecException {
         KeySpec spec = new PBEKeySpec(rawPassword.toCharArray(), salt, 65536, 128);
-        SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+        SecretKeyFactory factory = SecretKeyFactory.getInstance(ENCRYPTION_ALGORITHM);
 
         return Arrays.toString(factory.generateSecret(spec).getEncoded());
     }

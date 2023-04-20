@@ -1,11 +1,12 @@
 package com.kpz.codereview.azureclient.service.impl;
 
-import com.kpz.codereview.exception.model.BadRequestBodyException;
+import com.kpz.codereview.azureclient.model.wrapper.AllUsersSearchQuery;
 import com.kpz.codereview.azureclient.model.wrapper.MemberSearchQuery;
 import com.kpz.codereview.azureclient.model.wrapper.ProjectSearchQuery;
 import com.kpz.codereview.azureclient.model.wrapper.TeamSearchQuery;
-import com.kpz.codereview.azureclient.model.WorkItem;
 import com.kpz.codereview.azureclient.model.wrapper.WorkItemSearchQuery;
+import com.kpz.codereview.exception.model.BadRequestBodyException;
+import com.kpz.codereview.azureclient.model.WorkItem;
 import com.kpz.codereview.azureclient.service.AzureClientService;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -21,10 +22,12 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Value;
 
-import java.util.List;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Service
 public class AzureClientServiceImpl implements AzureClientService {
@@ -51,6 +54,10 @@ public class AzureClientServiceImpl implements AzureClientService {
             And [System.CreatedBy] = '%s'
             And [System.AssignedTo] = ' '
             """;
+    private final static String AZURE_DEVOPS_USERS_BASE_URL = "https://vssps.dev.azure.com";
+    private final static String GET_ALL_USERS_CONTINUATION_TOKEN = "&continuationToken=%s";
+    private final static String GET_ALL_USERS_URI_TEMPLATE = "%s/%s/_apis/graph/users?api-version=%s%s";
+    private final static String CONTINUATION_TOKEN_HEADER = "X-MS-ContinuationToken";
     private static final String AZURE_DEVOPS_BASE_URL = "https://dev.azure.com";
     private static final String GET_WORK_ITEM_BY_ID_URI_TEMPLATE = "%s/%s/%s/_apis/wit/workitems/%s?api-version=%s";
     private static final String BASE_AZURE_REST_WIQL_URI_TEMPLATE = "%s/%s/%s/_apis/wit/wiql?api-version=%s";
@@ -58,12 +65,53 @@ public class AzureClientServiceImpl implements AzureClientService {
     private static final String GET_TEAMS_URI_TEMPLATE = "%s/%s/_apis/projects/%s/teams?api-version=%s";
     private static final String GET_MEMBERS_URI_TEMPLATE = "%s/%s/_apis/projects/%s/teams/%s/members?api-version=%s";
     private static final String API_VERSION = "7.0";
+    private static final String USERS_API_VERSION = "7.0-preview.1";
     private static final String QUERY = "query";
     private static final String NO_QUERY_PROVIDED_EXCEPTION = "Required 'query' field not provided!";
     private static final String BASIC_AUTHORIZATION_VALUE = "Basic %s";
     private static final String COLON = ":";
 
     private final ObjectMapper om = new ObjectMapper();
+
+    @Override
+    public Set<String> getAllUsersFromOrg() throws JsonProcessingException {
+        Set<String> users = new HashSet<>();
+        String token = null;
+        ResponseEntity<String> response;
+
+        do {
+            if (token == null) {
+                response = restTemplate.exchange(
+                        genGetUsersURI(),
+                        HttpMethod.GET,
+                        new HttpEntity<>(genAuthHeaderKey()),
+                        String.class
+                );
+            } else {
+                response = restTemplate.exchange(
+                        genGetUsersURI(token),
+                        HttpMethod.GET,
+                        new HttpEntity<>(genAuthHeaderKey()),
+                        String.class
+                );
+            }
+
+            token = response.getHeaders().getFirst(CONTINUATION_TOKEN_HEADER);
+
+            var userWrappers = om.readValue(
+                            response.getBody(),
+                            AllUsersSearchQuery.class
+                    )
+                    .getUsers();
+
+            userWrappers.forEach(userWrapper ->
+                    users.add(userWrapper.getMailAddress())
+            );
+        } while (token != null);
+
+        users.remove("");
+        return users;
+    }
 
     @Override
     public WorkItem getWorkItemById(int id, String projectName) throws JsonProcessingException {
@@ -191,6 +239,27 @@ public class AzureClientServiceImpl implements AzureClientService {
         headers.set(HttpHeaders.AUTHORIZATION, authHeaderString);
 
         return headers;
+    }
+
+    private String genGetUsersURI() {
+        return GET_ALL_USERS_URI_TEMPLATE.formatted(
+                AZURE_DEVOPS_USERS_BASE_URL,
+                ORGANIZATION_NAME,
+                USERS_API_VERSION,
+                ""
+        );
+    }
+
+    private String genGetUsersURI(String continuationToken) {
+        var token = GET_ALL_USERS_CONTINUATION_TOKEN
+                .formatted(continuationToken);
+
+        return GET_ALL_USERS_URI_TEMPLATE.formatted(
+                AZURE_DEVOPS_USERS_BASE_URL,
+                ORGANIZATION_NAME,
+                USERS_API_VERSION,
+                token
+        );
     }
 
     private String genGetProjectsUri() {

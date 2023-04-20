@@ -7,8 +7,11 @@ import com.kpz.codereview.azureclient.model.wrapper.TeamSearchQuery;
 import com.kpz.codereview.azureclient.model.WorkItem;
 
 import java.util.List;
+import java.util.Set;
 
 public interface AzureClientService {
+
+    Set<String> getAllUsersFromOrg() throws JsonProcessingException;
 
     WorkItem getWorkItemById(int id, String projectName) throws JsonProcessingException;
 
