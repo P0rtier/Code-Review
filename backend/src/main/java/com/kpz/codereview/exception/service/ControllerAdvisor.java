@@ -3,6 +3,7 @@ package com.kpz.codereview.exception.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.kpz.codereview.exception.model.BadAzureAPIResponse;
 import com.kpz.codereview.exception.model.BadRequestBodyException;
+import com.kpz.codereview.exception.model.EntityNotFoundException;
 import com.kpz.codereview.exception.model.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +13,6 @@ import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import javax.naming.AuthenticationException;
-import java.nio.file.AccessDeniedException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -31,6 +31,10 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
 
     private static final String BAD_AZURE_RESPONSE_EXCEPTION_TYPE = "/errors/azure/bad-request";
     private static final String BAD_AZURE_RESPONSE_EXCEPTION_TITLE = "Azure API returned error response";
+
+    private static final String ENTITY_NOT_FOUND_EXCEPTION_TYPE = "/errors/general/not-found";
+    private static final String ENTITY_NOT_FOUND_EXCEPTION_TITLE = "Entity does not exist";
+
 
 
     @ExceptionHandler(BadRequestBodyException.class)
@@ -109,6 +113,27 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
                 .timestamp(timeStamp)
                 .type(BAD_AUTHENTICATION_EXCEPTION_TYPE)
                 .title(BAD_AUTHENTICATION_TITLE)
+                .status(status.value())
+                .detail(detail)
+                .instance(instance)
+                .build();
+
+        return new ResponseEntity<>(error, status);
+    }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    private ResponseEntity<ErrorResponse> handleEntityNotFoundException(
+            EntityNotFoundException ex, ServletWebRequest request) {
+
+        var timeStamp = LocalDateTime.now().format(DATE_TIME_FORMATTER);
+        var status = HttpStatus.NOT_FOUND;
+        var detail = ex.getMessage();
+        var instance = request.getRequest().getRequestURI();
+
+        var error = ErrorResponse.builder()
+                .timestamp(timeStamp)
+                .type(ENTITY_NOT_FOUND_EXCEPTION_TYPE)
+                .title(ENTITY_NOT_FOUND_EXCEPTION_TITLE)
                 .status(status.value())
                 .detail(detail)
                 .instance(instance)

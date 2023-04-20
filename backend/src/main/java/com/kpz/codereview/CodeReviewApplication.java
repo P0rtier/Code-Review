@@ -14,7 +14,7 @@ public class CodeReviewApplication {
 				new SpringApplication(CodeReviewApplication.class);
 
 		//Current profiles = [DEV_PROFILE, TEST_PROFILE]
-		application.setAdditionalProfiles(AppProfiles.DEV_PROFILE.toString());
+		application.setAdditionalProfiles(AppProfiles.TEST_PROFILE.toString());
 		application.run(args);
 	}
 }

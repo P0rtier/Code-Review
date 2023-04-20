@@ -13,5 +13,5 @@ public class TeamSearchQuery {
     public int count;
 
     @JsonProperty("value")
-    public List<Team> projects;
+    public List<Team> teams;
 }

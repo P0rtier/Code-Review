@@ -49,10 +49,8 @@ public class JwtService {
                 .build();
 
         var parameters = JwtEncoderParameters.from(jwtClaimsSet);
-        var token = jwtEncoder.encode(parameters).getTokenValue();
-        System.out.println(token);
 
-        return token;
+        return jwtEncoder.encode(parameters).getTokenValue();
     }
 
     public boolean isTokenInvalid(String token) {
@@ -72,10 +70,17 @@ public class JwtService {
         return jwtDecoder.decode(token)
                 .getExpiresAt()
                 .isBefore(Instant.now());
-
     }
 
-    String getSubject(String token) {
+    public String getSubject(String token) {
         return jwtDecoder.decode(token).getSubject();
+    }
+
+    public String getSubjectWithoutPrefix(String token) {
+        String tokenWithoutBearer = token.substring(7);
+
+        return jwtDecoder.decode(tokenWithoutBearer)
+                .getSubject()
+                .substring(ACCESS_TOKEN_PREFIX.length());
     }
 }

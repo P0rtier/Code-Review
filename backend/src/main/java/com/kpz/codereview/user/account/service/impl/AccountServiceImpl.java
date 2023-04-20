@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class AccountServiceImpl implements AccountService {
@@ -23,5 +25,10 @@ public class AccountServiceImpl implements AccountService {
     public Account getByEmail(String email) {
         return repo.findByEmail(email)
                 .orElseThrow(NoSuchElementException::new);
+    }
+
+    @Override
+    public Optional<Account> findById(UUID id) {
+        return repo.findById(id);
     }
 }
