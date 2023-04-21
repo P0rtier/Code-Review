@@ -9,6 +9,10 @@ import { Box, useStyleConfig } from "@chakra-ui/react";
 import { StyledComponents } from "../../common/enums/StyledComponents";
 import Login from "../login/Login";
 import Register from "../register/Register";
+import { ToastContainer } from "react-toastify";
+import PrivateRoute from "../../components/private-route/PrivateRoute";
+import AnonymouseRoute from "../../components/anonymous-route/AnonymouseRoute";
+
 
 const App = () => {
   const background = useStyleConfig(StyledComponents.Background);
@@ -17,14 +21,15 @@ const App = () => {
     <Box className={styles.appContainer} __css={background}>
       <Routes>
         <Route element={<Navbar />}>
-          <Route index element={<Home />} />
-          <Route path="home" element={<Home />} />
-          <Route path="stats" element={<Stats />} />
-          <Route path="reviewer" element={<ReviewerChoice />} />
-          <Route path="login" element={<Login />} />
-          <Route path="register" element={<Register />} />
+          <Route index element={<PrivateRoute Component={Home} />} />
+          <Route path="home" element={<PrivateRoute Component={Home} />} />
+          <Route path="stats" element={<PrivateRoute Component={Stats} />} />
+          <Route path="reviewer" element={<PrivateRoute Component={ReviewerChoice} />} />
+          <Route path="login" element={<AnonymouseRoute Component={Login} />} />
+          <Route path="register" element={<AnonymouseRoute Component={Register} />} />
         </Route>
       </Routes>
+      <ToastContainer position='bottom-right' hideProgressBar />
     </Box>
   );
 };

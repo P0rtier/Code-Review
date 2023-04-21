@@ -1,18 +1,33 @@
 import * as React from "react";
-import { Outlet } from "react-router";
+import { Outlet, useNavigate } from "react-router";
 import { Link } from "react-router-dom";
 import styles from "./Navbar.module.scss";
 import { HomeIcon } from "../../assets/icons/HomeIcon";
 import { StatsIcon } from "../../assets/icons/StatsIcon";
-import { SettingsIcon } from "../../assets/icons/SettingsIcon";
 import { LogoutIcon } from "../../assets/icons/LogoutIcon";
 import ToggleThemeButton from "../toggle-theme-button/ToggleThemeButton";
-import { Box, useStyleConfig } from "@chakra-ui/react";
+import { Box, IconButton, useStyleConfig } from "@chakra-ui/react";
 import { StyledComponents } from "../../common/enums/StyledComponents";
 import { NotificationsPopover } from "../notifications-popover/NotificationsPopover";
+import { useContext } from "react";
+import { UserContext } from "../../common/providers/UserProvider";
+import { UserActions } from "../../common/enums/UserActions";
+import { EnviromentProfiles } from "../../common/enums/EnviromentProfiles";
+
 
 export const Navbar = () => {
   const navbarStyles = useStyleConfig(StyledComponents.Navbar);
+
+  const {state: user, dispatch} = useContext(UserContext);
+
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    dispatch({type: UserActions.ClearUser});
+    navigate("/login");
+  }
+
+  const isDev = process.env.REACT_APP_ENV === EnviromentProfiles.Development;
 
   return (
     <>
@@ -22,20 +37,22 @@ export const Navbar = () => {
             <div className={styles.navbarLogo}>code review</div>
           </Link>
           <div className={styles.navbarLinks}>
-            <Link to="/home">
-              <HomeIcon />
-            </Link>
-            <NotificationsPopover />
-            <Link to="/stats">
-              <StatsIcon />
-            </Link>
-            {/* <Link to="/settings"> */}
-              <SettingsIcon />
-            {/* </Link> */}
+            {(user || isDev) && <>
+              <Link to="/home">
+                <HomeIcon />
+              </Link>
+              <NotificationsPopover />
+              <Link to="/stats">
+                <StatsIcon />
+              </Link>
+            </>}
             <ToggleThemeButton />
-            <Link to="/login">
-              <LogoutIcon />
-            </Link>
+            {(user || isDev) && <IconButton 
+              icon={<LogoutIcon />} 
+              aria-label="logout-button" 
+              onClick={handleLogout}
+              variant="ghost"
+            />}
           </div>
         </Box>
       </div>

@@ -1,6 +1,6 @@
 import React from "react";
 import { useColorMode } from "@chakra-ui/react";
-import { getIconColor } from "../../common/utils/themeHelpers";
+import { getIconColor } from "../../common/utils/helpers";
 
 export const SortIcon = () => {
   const { colorMode } = useColorMode();

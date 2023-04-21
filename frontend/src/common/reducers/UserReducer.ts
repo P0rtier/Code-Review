@@ -4,7 +4,7 @@ import { IUser } from "../interfaces/IUser";
 
 export interface UserAction {
     type: UserActions;
-    payload: any;
+    payload?: any;
 }
 
 export const UserReducer: Reducer<IUser | undefined, UserAction> = (state, action) => {

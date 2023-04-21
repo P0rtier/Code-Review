@@ -33,10 +33,11 @@
 
     .navbarLinks {
       display: flex;
-      justify-content: space-around;
+      justify-content: flex-end;
       align-items: center;
-      width: 25rem;
       height: 100%;
+      column-gap: 2rem;
+      margin-right: 2rem;
 
       * > a {
         display: flex;
