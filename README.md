@@ -1,7 +1,9 @@
 # System usprawniający proces code review w zespole programistycznym
 ## This is a project for PWr KPZ  
 
-## Current env.properties file structure
+### Backend
+
+#### Current env.properties file structure
 ```
 dev.database.username=exampleUser
 dev.database.password=examplePassword
@@ -21,3 +23,18 @@ env.security.endpoint.whitelist=exampleEnpoint1, exampleEndpoint2
 env.security.cors.allowed.origins=http://exampleHost
 env.security.cors.allowed.methods=exampleMethod1, exampleMethod2
 ```
+
+### Frontned
+
+#### Current .env file structure
+```
+REACT_APP_BASE_URL=http://exampleHost
+REACT_APP_ENV={ENV_PROFILE}
+```
+
+__ENV_PROFILE__ may be one of the following:
+- DEV - development profile with disabled security
+- TEST - test profile
+- PROD - production profile
+
+Instead of __.env__ file you can use __.env.local__ which will be ignored by git.

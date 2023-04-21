@@ -16,7 +16,7 @@ const requests = {
 
 const Auth = {
     login: (email: string, password: string) => 
-        requests.post<IAuthResponse>('/auth/authenticate', { "email": email, "password": password }),
+        requests.post<IAuthResponse>('/auth/login', { "email": email, "password": password }),
     register: (email: string, password: string) => 
         requests.post<IAuthResponse>('/auth/register', { "email": email, "password": password }),
     refreshAccess: (refreshToken: string, accessToken: string) => 
