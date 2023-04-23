@@ -11,8 +11,8 @@ import Register from "../register/Register";
 import { ToastContainer } from "react-toastify";
 import PrivateRoute from "../../components/private-route/PrivateRoute";
 import AnonymouseRoute from "../../components/anonymous-route/AnonymouseRoute";
-import ServerError from "../server-error/ServerError";
-import NotFound from "../not-found/NotFound";
+import { ServerError } from "../server-error/ServerError";
+import { NotFound } from "../not-found/NotFound";
 import {
   createBrowserRouter,
   RouterProvider,
@@ -58,7 +58,6 @@ export const router = createBrowserRouter([
     ],
   },
 ]);
-
 const App = () => {
   const background = useStyleConfig(StyledComponents.Background);
 

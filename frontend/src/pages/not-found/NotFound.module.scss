@@ -1,0 +1,23 @@
+@import "../../assets/styles/fonts.module";
+
+.container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .headerContainer {
+    max-width: 500px;
+
+    .header {
+      font-family: $spaceMono;
+      font-size: 1.875rem;
+    }
+
+    .subheader {
+      font-family: $spaceMono;
+      font-size: 1.25rem;
+    }
+  }
+}
