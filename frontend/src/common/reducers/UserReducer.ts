@@ -9,13 +9,22 @@ export interface UserAction {
 
 export const UserReducer: Reducer<IUser | undefined, UserAction> = (state, action) => {
     switch (action.type) {
-        case UserActions.SetUser:
+        case UserActions.SetUser: {
             const user = JSON.stringify(action.payload);
             window.localStorage.setItem("user", user);
             return action.payload;
-        case UserActions.ClearUser:
+        }
+        case UserActions.ClearUser: {
             window.localStorage.removeItem("user");
             return null;
+        }
+        case UserActions.RefreshUser: {
+            const user = window.localStorage.getItem("user");
+            if (!user) {
+                return null;
+            }
+            return JSON.parse(user);
+        }
         default:
             return state;
     }

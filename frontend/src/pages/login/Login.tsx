@@ -104,7 +104,7 @@ const Login = () => {
                         />
                     </div>
                     <div className={styles.buttonContainer}>
-                        <Link to='/register'>No account?</Link>
+                        <Link to='/register'>No account? Register</Link>
                         <Button
                             variant='auth'
                             onClick={handleLogin}

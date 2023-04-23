@@ -1,5 +1,4 @@
 import React from "react";
-import { Route, Routes } from "react-router";
 import styles from "./App.module.scss";
 import { Home } from "../home/Home";
 import { Navbar } from "../../components/navbar/Navbar";
@@ -12,23 +11,60 @@ import Register from "../register/Register";
 import { ToastContainer } from "react-toastify";
 import PrivateRoute from "../../components/private-route/PrivateRoute";
 import AnonymouseRoute from "../../components/anonymous-route/AnonymouseRoute";
+import ServerError from "../server-error/ServerError";
+import NotFound from "../not-found/NotFound";
+import {
+  createBrowserRouter,
+  RouterProvider,
+} from "react-router-dom";
 
+export const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Navbar />,
+    children: [
+      {
+        index: true,
+        element: <PrivateRoute Component={Home} />,
+      },
+      {
+        path: "home",
+        element: <PrivateRoute Component={Home} />,
+      },
+      {
+        path: "stats",
+        element: <PrivateRoute Component={Stats} />,
+      },
+      {
+        path: "reviewer",
+        element: <PrivateRoute Component={ReviewerChoice} />,
+      },
+      {
+        path: "login",
+        element: <AnonymouseRoute Component={Login} />,
+      },
+      {
+        path: "register",
+        element: <AnonymouseRoute Component={Register} />,
+      },
+      {
+        path: "server-error",
+        element: <ServerError />,
+      },
+      {
+        path: "*",
+        element: <NotFound />,
+      },
+    ],
+  },
+]);
 
 const App = () => {
   const background = useStyleConfig(StyledComponents.Background);
 
   return (
     <Box className={styles.appContainer} __css={background}>
-      <Routes>
-        <Route element={<Navbar />}>
-          <Route index element={<PrivateRoute Component={Home} />} />
-          <Route path="home" element={<PrivateRoute Component={Home} />} />
-          <Route path="stats" element={<PrivateRoute Component={Stats} />} />
-          <Route path="reviewer" element={<PrivateRoute Component={ReviewerChoice} />} />
-          <Route path="login" element={<AnonymouseRoute Component={Login} />} />
-          <Route path="register" element={<AnonymouseRoute Component={Register} />} />
-        </Route>
-      </Routes>
+      <RouterProvider router={router} />
       <ToastContainer position='bottom-right' hideProgressBar />
     </Box>
   );

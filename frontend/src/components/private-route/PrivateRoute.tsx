@@ -1,12 +1,18 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { UserContext } from "../../common/providers/UserProvider";
 import { Navigate } from "react-router";
 import { IPrivateRouteProps } from "./IPrivateRouteProps";
 import { isDev } from "../../common/utils/constants";
+import { UserActions } from "../../common/enums/UserActions";
 
 
 const PrivateRoute = ({ Component }: IPrivateRouteProps) => {
-    const { state: user } = useContext(UserContext);
+    const { state: user, dispatch } = useContext(UserContext);
+
+    useEffect(() => {
+        dispatch({ type: UserActions.RefreshUser });
+    }, [dispatch]);
+
 
     if (!user && !isDev) {
         return <Navigate to="/login" />;

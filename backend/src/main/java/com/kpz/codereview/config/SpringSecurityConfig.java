@@ -33,17 +33,15 @@ public class SpringSecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf()
-                .disable()
+        http.cors().and()
+                .csrf().disable()
                 .authorizeHttpRequests()
                 .requestMatchers(AUTH_WHITELIST.toArray(new String[0]))
                 .permitAll()
-                .anyRequest()
-                .authenticated()
+                .anyRequest().authenticated()
                 .and()
                 .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authenticationProvider(authProvider)
                 .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling()
