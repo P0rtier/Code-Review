@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/azure")
+@RequestMapping("/api/azure")
 public class AzureClientController {
     @Autowired
     private AzureClientService service;

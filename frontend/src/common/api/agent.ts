@@ -8,7 +8,7 @@ import { CSSProperties } from "react";
 import { router } from "../../pages/app/App";
 
 
-axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
+axios.defaults.baseURL = process.env.REACT_APP_BASE_URL + '/api';
 
 axios.interceptors.request.use((config) => {
     const user = localStorage.getItem('user');
