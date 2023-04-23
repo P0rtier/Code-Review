@@ -3,6 +3,20 @@
 
 ### Backend
 
+#### Terminal Run config:
+- Clean build of backend application
+```
+./gradlew clean build
+```
+- Default run, active profile set in application.properties file - "spring.profiles.active=..." variable
+```
+./gradlew bootRun
+```
+- Run config with direct profile within instruction, here "test"
+```
+./gradlew bootRun --args='--spring.profiles.active=test'
+```
+
 #### Current env.properties file structure
 ```
 dev.database.username=exampleUser
