@@ -11,8 +11,8 @@ export const BoldRegularText = (props: IBoldRegularTextProps) => {
         props.column && styles.containerColumn
       )}
     >
-      <div className={styles.bold} style={{opacity: props.opacity}}>{props.boldText}</div>
-      <div className={styles.regular} style={{opacity: props.opacity}}>{props.regularText}</div>
+      <div className={styles.bold}>{props.boldText}</div>
+      <div className={styles.regular}>{props.regularText}</div>
     </div>
   );
 };
