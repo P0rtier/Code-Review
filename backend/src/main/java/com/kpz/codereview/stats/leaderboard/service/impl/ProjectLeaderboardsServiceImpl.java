@@ -32,7 +32,7 @@ public class ProjectLeaderboardsServiceImpl implements ProjectLeaderboardsServic
 
     @Override
     public void saveLeaderboard(ProjectLeaderboard projectLeaderboard, List<UserStanding> userStanding) {
-        userStandingsRepository.saveAll(userStanding);
         projectLeaderboardsRepository.save(projectLeaderboard);
+        userStandingsRepository.saveAll(userStanding);
     }
 }
