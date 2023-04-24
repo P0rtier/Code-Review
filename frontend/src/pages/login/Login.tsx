@@ -11,6 +11,8 @@ import agent from '../../common/api/agent';
 import { UserContext } from '../../common/providers/UserProvider';
 import { IUser } from '../../common/interfaces/IUser';
 import { UserActions } from '../../common/enums/UserActions';
+import { IAuthResponse } from '../../common/interfaces/IAuthResponse';
+import PasswordInput from '../../components/password-input/PasswordInput';
 
 const Login = () => {
     const primaryStyles = useStyleConfig(StyledComponents.PrimaryComponent);
@@ -41,7 +43,7 @@ const Login = () => {
 
         const { email, password } = loginValues;
 
-        agent.Auth.login(email, password).then((data) => {
+        agent.Auth.login(email, password).then((data: IAuthResponse) => {
             const user: IUser = {
                 email: email,
                 accessToken: data.accessToken,
@@ -97,10 +99,9 @@ const Login = () => {
                     </div>
                     <div className={styles.inputContainer}>
                         <label>Password</label>
-                        <Input
-                            variant='auth' type="password"
-                            name='password'
+                        <PasswordInput
                             onChange={handleChanges}
+                            name='password'
                         />
                     </div>
                     <div className={styles.buttonContainer}>

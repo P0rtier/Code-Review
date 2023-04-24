@@ -11,6 +11,8 @@ import agent from "../../common/api/agent";
 import { UserContext } from "../../common/providers/UserProvider";
 import { IUser } from "../../common/interfaces/IUser";
 import { UserActions } from "../../common/enums/UserActions";
+import { IAuthResponse } from '../../common/interfaces/IAuthResponse';
+import PasswordInput from '../../components/password-input/PasswordInput';
 
 
 const Register = () => {
@@ -43,7 +45,7 @@ const Register = () => {
 
         const { email, password } = registerValues;
 
-        agent.Auth.register(email, password).then((data) => {
+        agent.Auth.register(email, password).then((data: IAuthResponse) => {
             const user: IUser = {
                 email: email,
                 accessToken: data.accessToken,
@@ -110,16 +112,14 @@ const Register = () => {
                     </div>
                     <div className={styles.inputContainer}>
                         <label>Password</label>
-                        <Input
-                            variant='auth' type="password"
+                        <PasswordInput
                             onChange={handleChanges}
                             name='password'
                         />
                     </div>
                     <div className={styles.inputContainer}>
                         <label>Confirm password</label>
-                        <Input
-                            variant='auth' type="password"
+                        <PasswordInput
                             onChange={handleChanges}
                             name='confirmPassword'
                         />

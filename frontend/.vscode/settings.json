@@ -1,4 +1,5 @@
 {
   "files.autoSave": "onFocusChange",
-  "explorer.compactFolders": false
+  "explorer.compactFolders": false,
+  "editor.formatOnSave": true,
 }

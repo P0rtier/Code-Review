@@ -61,7 +61,6 @@ const theme = extendTheme({
             boxShadow: colors.boxShadow,
             fontFamily: fonts.robotoMono,
             fontWeight: "700",
-            width: "70%",
             bg: mode(
               colors.lightComponentLayerOrange,
               colors.darkComponentLayerOrange
