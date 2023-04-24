@@ -1,0 +1,40 @@
+@import "../../../../../assets/styles/colors.module";
+@import "../../../../../assets/styles/fonts.module";
+
+.container {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  width: 100%;
+
+  .leftContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+    height: 100%;
+
+    .textContainer {
+      height: 100%;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      line-height: 100%;
+    }
+
+  }
+
+
+  .icon {
+    padding: 1rem;
+  }
+
+  .columnOne {
+    grid-column: 1;
+  }
+
+  .columnTwo {
+    grid-column: 2;
+  }
+
+}

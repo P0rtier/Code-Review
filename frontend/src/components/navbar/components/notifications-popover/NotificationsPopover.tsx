@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import styles from "./NotificationsPopover.module.scss";
-import { NotificationsIcon } from "../../assets/icons/NotificationsIcon";
-import { INotification } from "../../common/interfaces/INotification";
+import { NotificationsIcon } from "../../../../assets/icons/NotificationsIcon";
+import { INotification } from "../../../../common/interfaces/INotification";
 import { NotificationComponent } from "./components/NotificationComponent";
 import {
-    Popover,
-    PopoverTrigger,
-    PopoverContent,
-    PopoverHeader,
-    PopoverBody,
-    Button,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverHeader,
+  PopoverBody,
+  Button,
 } from "@chakra-ui/react";
 
 export const NotificationsPopover = () => {
@@ -40,7 +40,7 @@ export const NotificationsPopover = () => {
     }
   ]);
 
-    
+
   const deleteNotification = (id: string) => {
     const updatedList = mockData.filter((item) => item.id !== id);
     setMockData(updatedList);
@@ -66,7 +66,7 @@ export const NotificationsPopover = () => {
             <NotificationsIcon />
           </button>
         </PopoverTrigger>
-        <PopoverContent>
+        <PopoverContent w={'30vw'}>
           <PopoverHeader><div className={styles.header}>Notifications</div></PopoverHeader>
           <PopoverBody>
             <div className={styles.container}>{getData()}</div>

@@ -9,6 +9,7 @@ import {
   PrimaryOrangeComponent,
   ReviewHeader,
   SecondaryComponent,
+  DateRangePicker
 } from "./styledComponents";
 import fonts from "../../assets/styles/fonts.module.scss";
 
@@ -22,7 +23,8 @@ const theme = extendTheme({
         )(props),
         color: mode(colors.lightTextPrimary, colors.darkTextPrimary)(props),
       },
-    }),
+      ...DateRangePicker(props),
+    })
   },
   components: {
     PrimaryComponent,
@@ -79,7 +81,6 @@ const theme = extendTheme({
           borderRadius: "10px",
           boxShadow: colors.boxShadow,
           fontFamily: fonts.robotoMono,
-          width: "20%",
           height: "3em",
           _hover: {
             bg: mode(
@@ -114,12 +115,25 @@ const theme = extendTheme({
         }),
       },
     },
-    Popover: {
-      baseStyle: {
-        content: {
-          width: '30vw'
+    Drawer: {
+      baseStyle: (props: StyleFunctionProps) => ({
+        dialog: {
+          bg: mode(
+            colors.lightBackgroundLayerPrimary,
+            colors.darkBackgroundLayerSecondary
+          )(props),
         },
-      },
+      }),
+    },
+    Popover: {
+      baseStyle: (props: StyleFunctionProps) => ({
+        content: {
+          bg: mode(
+            colors.lightBackgroundLayerSecondary,
+            colors.darkBackgroundLayerSecondary
+          )(props),
+        },
+      }),
     },
   },
 });
