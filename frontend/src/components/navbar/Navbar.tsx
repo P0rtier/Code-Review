@@ -13,7 +13,6 @@ import { useContext } from "react";
 import { UserContext } from "../../common/providers/UserProvider";
 import { UserActions } from "../../common/enums/UserActions";
 import { EnviromentProfiles } from "../../common/enums/EnviromentProfiles";
-import agent from "../../common/api/agent";
 
 
 export const Navbar = () => {
@@ -54,7 +53,6 @@ export const Navbar = () => {
               onClick={handleLogout}
               variant="ghost"
             />}
-            <button onClick={() => agent.Notifications.getAll().then(console.log)}>Test</button>
           </div>
         </Box>
       </div>
