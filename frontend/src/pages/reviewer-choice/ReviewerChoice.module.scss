@@ -3,10 +3,11 @@
 
 .container {
   display: grid;
-  grid-template-columns: 30% 70%;
+  grid-template-columns: minmax(auto, 30%) minmax(auto, 70%);
   justify-content: center;
   align-items: flex-start;
   width: 100%;
+  column-gap: 5%;
 
   .reviewContainer {
     grid-column: 1 / 2;

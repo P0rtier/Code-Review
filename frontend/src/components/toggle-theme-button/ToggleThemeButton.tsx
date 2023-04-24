@@ -6,8 +6,11 @@ import { getIconColor, isLightMode } from "../../common/utils/helpers";
 const ToggleThemeButton = () => {
   const { colorMode, toggleColorMode } = useColorMode();
 
-  const icon =
-    isLightMode(colorMode) ? <MoonIcon boxSize={6} /> : <SunIcon boxSize={7} />;
+  const icon = isLightMode(colorMode) ? (
+    <MoonIcon boxSize={6} />
+  ) : (
+    <SunIcon boxSize={7} />
+  );
 
   return (
     <IconButton

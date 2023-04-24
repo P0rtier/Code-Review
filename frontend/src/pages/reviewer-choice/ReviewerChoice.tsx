@@ -36,6 +36,7 @@ export const ReviewerChoice = () => {
             state={review.state}
             tags={review.tags}
             style={primaryOrangeComponent}
+            fullWidth={true}
           />
         </div>
         <div className={styles.filterContainer}>

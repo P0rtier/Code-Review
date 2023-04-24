@@ -6,4 +6,5 @@ export interface IWorkItemInfoProps {
   activityDate: Date;
   tags: string[];
   style: SystemStyleObject;
+  fullWidth?: boolean;
 }

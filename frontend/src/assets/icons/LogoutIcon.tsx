@@ -4,7 +4,7 @@ import { getIconColor } from "../../common/utils/helpers";
 
 export const LogoutIcon = () => {
   const { colorMode } = useColorMode();
-  
+
   return (
     <svg
       width={25}

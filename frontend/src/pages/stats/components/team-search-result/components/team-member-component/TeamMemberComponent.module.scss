@@ -1,0 +1,8 @@
+.container {
+  display: flex;
+  width: calc(100% - 2rem);
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: wrap;
+  column-gap: 5rem;
+}
