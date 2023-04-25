@@ -13,6 +13,7 @@ import { useContext } from "react";
 import { UserContext } from "../../common/providers/UserProvider";
 import { UserActions } from "../../common/enums/UserActions";
 import { EnviromentProfiles } from "../../common/enums/EnviromentProfiles";
+import { NotificationsPopover } from "./components/notifications-popover/NotificationsPopover";
 
 
 export const Navbar = () => {

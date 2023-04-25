@@ -1,0 +1,28 @@
+.container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr) auto;
+  width: 100%;
+  height: 100%;
+  margin-top: 1rem;
+
+  div {
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    line-height: 100%;
+  }
+
+  .columnOne {
+    grid-column: 1;
+  }
+
+  .columnTwo {
+    grid-column: 2;
+  }
+
+  .columnThree {
+    grid-column: 3;
+  }
+
+}

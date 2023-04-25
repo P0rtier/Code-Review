@@ -1,0 +1,43 @@
+.filterButton {
+    width: fit-content;
+    line-height: 2rem;
+    margin-left: 1rem;
+
+}
+
+.bodyContainer {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    justify-content: left;
+    gap: 1rem;
+
+    .sortButton {
+        display: flex;
+        flex-direction: row;
+        gap: 1rem;
+    }
+
+
+}
+
+.footerContainer {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: left;
+    gap: 1rem;
+
+    .clearButton {
+        width: 20%;
+        height: 3em !important;
+        border-radius: 10px;
+    }
+
+    .saveButton {
+        width: 20%;
+        height: 3em;
+        border-radius: 10px;
+    }
+
+}

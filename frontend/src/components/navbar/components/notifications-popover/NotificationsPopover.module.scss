@@ -1,5 +1,5 @@
-@import "../../assets/styles/colors.module";
-@import "../../assets/styles/fonts.module";
+@import "../../../../assets/styles/colors.module";
+@import "../../../../assets/styles/fonts.module";
 
 .container {
   display: flex;
@@ -7,9 +7,10 @@
   justify-content: flex-start;
   align-items: flex-start;
   width: 100%;
-  padding: 1rem;
+  padding: 1rem 0 1rem 0;
 
 }
+
 .header {
   font-family: $spaceMono;
   font-size: 1.25rem;

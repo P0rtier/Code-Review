@@ -14,6 +14,12 @@ export const getIconColor = (colorMode: string) => {
     : colors.darkTextPrimary;
 };
 
+export const getComponentColorOrange = (colorMode: string): string => {
+  return isLightMode(colorMode)
+    ? colors.lightComponentLayerOrange
+    : colors.darkComponentLayerOrange;
+};
+
 export const getNavbarBlueColor = (colorMode: string) => {
   return isLightMode(colorMode)
     ? colors.lightNavbarLayer
