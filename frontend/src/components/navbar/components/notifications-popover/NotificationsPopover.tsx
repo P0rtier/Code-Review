@@ -49,6 +49,7 @@ export const NotificationsPopover = () => {
   const getData = () => {
     return mockData.map((notification) => (
       <NotificationComponent
+        key={notification.id}
         type={notification.type}
         title={notification.title}
         route={notification.route}

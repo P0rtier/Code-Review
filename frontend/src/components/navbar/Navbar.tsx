@@ -8,7 +8,6 @@ import { LogoutIcon } from "../../assets/icons/LogoutIcon";
 import ToggleThemeButton from "../toggle-theme-button/ToggleThemeButton";
 import { Box, IconButton, useStyleConfig } from "@chakra-ui/react";
 import { StyledComponents } from "../../common/enums/StyledComponents";
-import { NotificationsPopover } from "../notifications-popover/NotificationsPopover";
 import { useContext } from "react";
 import { UserContext } from "../../common/providers/UserProvider";
 import { UserActions } from "../../common/enums/UserActions";
