@@ -1,6 +1,5 @@
 package com.kpz.codereview.azureclient.service.impl;
 
-import com.kpz.codereview.azureclient.model.component.AvailabilityPeriod;
 import com.kpz.codereview.azureclient.model.component.CodeReviewerDTS;
 import com.kpz.codereview.azureclient.model.wrapper.AllUsersSearchQuery;
 import com.kpz.codereview.azureclient.model.wrapper.MemberSearchQuery;
@@ -28,6 +27,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Comparator;
@@ -228,7 +228,7 @@ public class AzureClientServiceImpl implements AzureClientService {
 
     @Override
     public Set<CodeReviewerDTS> getProjectSortedReviewers(String projectName,
-                                                          AvailabilityPeriod availabilityPeriod) throws JsonProcessingException {
+                                                          String startDate, String endDate) throws JsonProcessingException {
 
         List<WorkItem> codeReviewWorkItemList = filterFinishedAndUnassignedCodeReviews(getCodeReviewItemList(projectName));
         Map<String, CodeReviewerDTS> projectReviewersMap = genCodeReviewerHashMapFromProject(projectName);
@@ -237,8 +237,9 @@ public class AzureClientServiceImpl implements AzureClientService {
         codeReviewerDTSSetToSort.forEach(person ->
             person.setAvailability(
                     vacationService.userAvailability(person.getUniqueName(),
-                    availabilityPeriod.getStartDate(),
-                    availabilityPeriod.getEndDate())));
+                            LocalDate.parse(startDate),
+                            LocalDate.parse(endDate)
+                    )));
 
         return sortCodeReviewers(codeReviewerDTSSetToSort);
 

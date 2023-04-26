@@ -3,7 +3,6 @@ package com.kpz.codereview.azureclient.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.kpz.codereview.azureclient.model.WorkItem;
 import com.kpz.codereview.azureclient.model.component.CodeReviewerDTS;
-import com.kpz.codereview.azureclient.model.component.AvailabilityPeriod;
 import com.kpz.codereview.azureclient.model.wrapper.MemberSearchQuery;
 import com.kpz.codereview.azureclient.model.wrapper.ProjectSearchQuery;
 import com.kpz.codereview.azureclient.model.wrapper.TeamSearchQuery;
@@ -244,7 +243,8 @@ public class AzureClientController {
     })
     @GetMapping("/review-sorted-users")
     public Set<CodeReviewerDTS> getSortedProjectReviewers(@RequestParam(name = "project") String projectName,
-                                                          @RequestBody AvailabilityPeriod availabilityPeriod) throws JsonProcessingException {
-        return service.getProjectSortedReviewers(projectName, availabilityPeriod);
+                                                          @RequestParam(name = "startDate") String startDate,
+                                                          @RequestParam(name = "endDate") String endDate) throws JsonProcessingException {
+        return service.getProjectSortedReviewers(projectName, startDate, endDate);
     }
 }

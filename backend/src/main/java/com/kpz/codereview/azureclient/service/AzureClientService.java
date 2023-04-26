@@ -2,7 +2,6 @@ package com.kpz.codereview.azureclient.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.kpz.codereview.azureclient.model.WorkItem;
-import com.kpz.codereview.azureclient.model.component.AvailabilityPeriod;
 import com.kpz.codereview.azureclient.model.component.CodeReviewerDTS;
 import com.kpz.codereview.azureclient.model.wrapper.MemberSearchQuery;
 import com.kpz.codereview.azureclient.model.wrapper.ProjectSearchQuery;
@@ -32,5 +31,5 @@ public interface AzureClientService {
     MemberSearchQuery getMemberList(String projectId, String teamId) throws JsonProcessingException;
 
     List<WorkItem> getAssignedCodeReviewItemsByUser(String userEmail, String projectName) throws JsonProcessingException;
-    Set<CodeReviewerDTS> getProjectSortedReviewers(String projectName, AvailabilityPeriod availabilityPeriod) throws JsonProcessingException;
+    Set<CodeReviewerDTS> getProjectSortedReviewers(String projectName, String startDate, String endDate) throws JsonProcessingException;
 }
