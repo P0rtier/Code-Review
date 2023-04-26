@@ -1,8 +1,25 @@
 .container {
-  display: flex;
+  display: grid;
   width: calc(100% - 2rem);
-  justify-content: flex-start;
-  align-items: center;
-  flex-wrap: wrap;
-  column-gap: 5rem;
+  grid-template-columns: 10% 45% 45%;
+
+  .column {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .column:nth-child(1) {
+    grid-column: 1 / 2;
+  }
+
+  .column:nth-child(2) {
+    grid-column: 2 / 3;
+  }
+
+  .column:nth-child(3) {
+    grid-column: 3 / 4;
+  }
 }

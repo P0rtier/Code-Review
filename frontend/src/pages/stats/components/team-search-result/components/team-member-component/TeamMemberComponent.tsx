@@ -6,13 +6,19 @@ import { BoldRegularText } from "../../../../../../components/bold-regular-text/
 export const TeamMemberComponent = (props: ITeamMemberComponentProps) => {
   return (
     <div className={styles.container}>
-      <input
-        type="checkbox"
-        defaultChecked={true}
-        onChange={() => props.resolveTeamMember()}
-      />
-      <BoldRegularText boldText={"Name:"} regularText={props.displayName} />
-      <BoldRegularText boldText={"Mail:"} regularText={props.uniqueName} />
+      <div className={styles.column}>
+        <input
+          type="checkbox"
+          defaultChecked={true}
+          onChange={() => props.resolveTeamMember()}
+        />
+      </div>
+      <div className={styles.column}>
+        <BoldRegularText boldText={"Name:"} regularText={props.displayName} />
+      </div>
+      <div className={styles.column}>
+        <BoldRegularText boldText={"Mail:"} regularText={props.uniqueName} />
+      </div>
     </div>
   );
 };
