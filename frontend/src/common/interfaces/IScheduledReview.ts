@@ -1,9 +1,10 @@
 export default interface IScheduledReview {
   id: string;
   title: string;
-  scheduledTo: string;
-  scheduled: Date;
-  team: string;
-  pullRequest: string;
-  description: string;
+  scheduledByName: string;
+  scheduledByEmail: string;
+  createdDate: Date;
+  project: string;
+  link: string;
+  tags: string[];
 }

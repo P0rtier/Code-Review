@@ -1,11 +1,10 @@
 import { SystemStyleObject } from "@chakra-ui/react";
 
 export interface IReviewInfoProps {
-  header: string;
-  scheduledTo: string;
-  scheduled: string;
-  team: string;
-  pullRequest: string;
-  description: string;
+  title: string;
+  scheduledBy: string;
+  createdDate: string;
+  project: string;
   style: SystemStyleObject;
+  tags: string[];
 }

@@ -14,12 +14,13 @@ export const WorkItemInfo = (props: IWorkItemInfoProps) => {
       )}
       __css={props.style}
     >
-      <div className={styles.header}>{props.header}</div>
+      <div className={styles.header}>{props.title}</div>
       <div className={styles.description}>
-        <BoldRegularText boldText={"State: "} regularText={props.state} />
+        <BoldRegularText boldText={"Title: "} regularText={props.title} />
+        <BoldRegularText boldText={"Project: "} regularText={props.project} />
         <BoldRegularText
-          boldText={"Activity date: "}
-          regularText={String(props.activityDate)}
+          boldText={"Created date: "}
+          regularText={String(props.createdDate)}
         />
         <BoldRegularText boldText={"Tags: "} regularText={String(props.tags)} />
       </div>

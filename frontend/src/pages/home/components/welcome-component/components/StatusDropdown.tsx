@@ -3,10 +3,10 @@ import styles from "./StatusDropdown.module.scss";
 import { Button, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { BoldRegularText } from "../../../../../components/bold-regular-text/BoldRegularText";
-import { UserStatuses } from "../../../../../common/enums/UserStatuses";
+import { IStatusDropdownProps } from "./IStatusDropdownProps";
 
-export const StatusDropdown = () => {
-  const [status, setStatus] = React.useState<string>(UserStatuses.Available);
+export const StatusDropdown = (props: IStatusDropdownProps) => {
+  const { projectNames, selectedProject, selectProject } = props;
 
   return (
     <Menu>
@@ -14,21 +14,18 @@ export const StatusDropdown = () => {
         as={Button}
         rightIcon={<ChevronDownIcon />}
         variant={"welcome"}
+        disabled={!!selectedProject}
       >
         <div className={styles.container}>
-          <BoldRegularText boldText={"Status: "} regularText={status} />
+          <BoldRegularText boldText={"Project: "} regularText={selectedProject || ''} />
         </div>
       </MenuButton>
       <MenuList>
-        <MenuItem onClick={() => setStatus(UserStatuses.Available)}>
-          {UserStatuses.Available}
-        </MenuItem>
-        <MenuItem onClick={() => setStatus(UserStatuses.OnBreak)}>
-          {UserStatuses.OnBreak}
-        </MenuItem>
-        <MenuItem onClick={() => setStatus(UserStatuses.OnVacation)}>
-          {UserStatuses.OnVacation}
-        </MenuItem>
+        {projectNames.map((projectName) => (
+          <MenuItem onClick={() => selectProject(projectName)} key={projectName}>
+            {projectName}
+          </MenuItem>
+        ))}
       </MenuList>
     </Menu>
   );

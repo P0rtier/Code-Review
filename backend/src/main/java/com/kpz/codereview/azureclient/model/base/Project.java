@@ -1,12 +1,12 @@
-package com.kpz.codereview.azureclient.model;
+package com.kpz.codereview.azureclient.model.base;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Member {
-    public String displayName;
+public class Project {
     public String id;
-    public String uniqueName;
+    public String name;
+    public String state;
 }

@@ -1,7 +1,8 @@
 export interface IRequestedReview {
   id: string;
-  header: string;
-  state: string;
-  activityDate: Date;
+  title: string;
+  createdDate: Date;
   tags: string[];
+  link: string;
+  project: string;
 }

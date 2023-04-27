@@ -6,6 +6,7 @@ import { IErrorData } from "../utils/IErrorData";
 import { StatusCodes } from "../enums/StatusCodes";
 import { CSSProperties } from "react";
 import { router } from "../../pages/app/App";
+import { IProject } from "../interfaces/IProject";
 
 
 axios.defaults.baseURL = process.env.REACT_APP_BASE_URL + '/api';
@@ -30,7 +31,7 @@ axios.interceptors.response.use(response => response, (error: AxiosError) => {
         return Promise.reject(error);
     }
 
-    const { data , status } = error.response;
+    const { data, status } = error.response;
 
     switch (status) {
         case StatusCodes.BadRequest:
@@ -45,7 +46,7 @@ axios.interceptors.response.use(response => response, (error: AxiosError) => {
         case StatusCodes.InternalServerError:
             router.navigate('/server-error');
             break;
-            
+
         default:
             break;
     }
@@ -75,7 +76,7 @@ const refreshToken = async (error: AxiosError) => {
             return Promise.reject(error);
         }
     }
-    
+
     localStorage.removeItem('user');
     router.navigate('/login');
     return Promise.reject(error);
@@ -91,11 +92,11 @@ const requests = {
 };
 
 const Auth = {
-    login: (email: string, password: string) => 
+    login: (email: string, password: string) =>
         requests.post<IAuthResponse>('/auth/login', { "email": email, "password": password }),
-    register: (email: string, password: string) => 
+    register: (email: string, password: string) =>
         requests.post<IAuthResponse>('/auth/register', { "email": email, "password": password }),
-    refreshAccess: (refreshToken: string, accessToken: string) => 
+    refreshAccess: (refreshToken: string, accessToken: string) =>
         requests.post<IAuthResponse>('/auth/refresh-access', { "refreshToken": refreshToken, "accessToken": accessToken }),
 };
 
@@ -103,10 +104,25 @@ const Notifications = {
     getAll: () => requests.get('/notifications'),
 };
 
+const Reviews = {
+    getUser: () => requests.get<IProject[]>('/azure/work-items/reviews/user').then(projects => {
+        for (const project of projects) {
+            for (const assignedReview of project.assignedReviews) {
+                assignedReview.createdDate = new Date(assignedReview.createdDate);
+            }
+            for (const unassignedReview of project.unassignedReviews) {
+                unassignedReview.createdDate = new Date(unassignedReview.createdDate);
+            }
+        }
+        return projects;
+    }),
+};
+
 
 const agent = {
     Auth,
     Notifications,
+    Reviews,
 };
 
 export default agent;

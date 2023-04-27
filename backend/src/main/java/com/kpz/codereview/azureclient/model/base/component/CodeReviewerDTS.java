@@ -1,4 +1,4 @@
-package com.kpz.codereview.azureclient.model.component;
+package com.kpz.codereview.azureclient.model.base.component;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

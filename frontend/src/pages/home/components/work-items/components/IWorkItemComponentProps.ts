@@ -1,6 +1,6 @@
 export interface IWorkItemComponentProps {
-  header: string;
-  state: string;
-  activityDate: Date;
+  title: string;
+  createdDate: Date;
   tags: string[];
+  project: string;
 }

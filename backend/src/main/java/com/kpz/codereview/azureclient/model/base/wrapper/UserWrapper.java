@@ -1,7 +1,6 @@
-package com.kpz.codereview.azureclient.model.wrapper;
+package com.kpz.codereview.azureclient.model.base.wrapper;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.kpz.codereview.azureclient.model.Member;
 import lombok.Data;
 
 @Data

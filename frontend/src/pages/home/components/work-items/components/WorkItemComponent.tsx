@@ -6,20 +6,20 @@ import { Link } from "react-router-dom";
 
 export const WorkItemComponent = (props: IWorkItemComponentProps) => {
   const reviewInfo = {
-    header: props.header,
-    state: props.state,
-    activityDate: props.activityDate,
+    title: props.title,
+    project: props.project,
+    createdDate: props.createdDate,
     tags: props.tags,
   };
 
   return (
     <Link to={"/reviewer"} state={{ review: reviewInfo }}>
       <div className={styles.review}>
-        <div className={styles.bold}>{props.header}</div>
-        <BoldRegularText boldText={"State: "} regularText={props.state} />
+        <BoldRegularText boldText={"Title: "} regularText={props.title} />
+        <BoldRegularText boldText={"Project: "} regularText={props.project} />
         <BoldRegularText
-          boldText={"Activity date: "}
-          regularText={props.activityDate.toLocaleDateString()}
+          boldText={"Created date: "}
+          regularText={props.createdDate.toLocaleDateString()}
         />
         <BoldRegularText boldText={"Tags: "} regularText={String(props.tags)} />
       </div>

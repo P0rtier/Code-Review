@@ -1,4 +1,4 @@
-package com.kpz.codereview.azureclient.model;
+package com.kpz.codereview.azureclient.model.base;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;

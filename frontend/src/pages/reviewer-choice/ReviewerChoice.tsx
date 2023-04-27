@@ -159,9 +159,9 @@ export const ReviewerChoice = () => {
       <div className={styles.container}>
         <div className={styles.reviewContainer}>
           <WorkItemInfo
-            header={review.header}
-            activityDate={review.activityDate}
-            state={review.state}
+            title={review.title}
+            project={review.project}
+            createdDate={review.createdDate}
             tags={review.tags}
             style={primaryOrangeComponent}
             fullWidth={true}

@@ -1,4 +1,4 @@
-package com.kpz.codereview.azureclient.model.wrapper;
+package com.kpz.codereview.azureclient.model.base.wrapper;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -8,9 +8,9 @@ import java.util.List;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class MemberSearchQuery {
+public class AllUsersSearchQuery {
     public int count;
 
     @JsonProperty("value")
-    public List<MemberWrapper> members;
+    public List<UserWrapper> users;
 }

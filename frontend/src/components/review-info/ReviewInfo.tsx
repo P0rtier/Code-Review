@@ -11,27 +11,19 @@ export const ReviewInfo = (props: IReviewInfoProps) => {
   return (
     <Box className={styles.container} __css={props.style}>
       <Box className={styles.header} __css={headerStyles}>
-        {props.header}
+        {props.title}
       </Box>
       <div className={styles.description}>
         <BoldRegularText
-          boldText={"Scheduled to: "}
-          regularText={props.scheduledTo}
+          boldText={"Scheduled by: "}
+          regularText={props.scheduledBy}
         />
         <BoldRegularText
           boldText={"Scheduled: "}
-          regularText={props.scheduled}
+          regularText={props.createdDate}
         />
-        <BoldRegularText boldText={"Team : "} regularText={props.team} />
-        <BoldRegularText
-          boldText={"Pull request: "}
-          regularText={props.pullRequest}
-        />
-        <BoldRegularText
-          boldText={"Description: "}
-          regularText={props.description}
-          column={true}
-        />
+        <BoldRegularText boldText={"Project: "} regularText={props.project} />
+        <BoldRegularText boldText={"Tags: "} regularText={String(props.tags)} />
       </div>
     </Box>
   );

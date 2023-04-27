@@ -1,17 +1,14 @@
 package com.kpz.codereview.runner;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.kpz.codereview.azureclient.model.Project;
-import com.kpz.codereview.azureclient.model.WorkItem;
+import com.kpz.codereview.azureclient.model.base.Project;
+import com.kpz.codereview.azureclient.model.base.WorkItem;
 import com.kpz.codereview.azureclient.service.AzureClientService;
 import com.kpz.codereview.notification.model.Notification;
 import com.kpz.codereview.notification.model.NotificationType;
-import com.kpz.codereview.notification.repository.NotificationRepository;
 import com.kpz.codereview.notification.service.NotificationService;
 import com.kpz.codereview.stats.leaderboard.model.ProjectLeaderboard;
 import com.kpz.codereview.stats.leaderboard.model.UserStanding;
-import com.kpz.codereview.stats.leaderboard.repository.ProjectLeaderboardsRepository;
-import com.kpz.codereview.stats.leaderboard.repository.UserStandingsRepository;
 import com.kpz.codereview.stats.leaderboard.service.ProjectLeaderboardsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
