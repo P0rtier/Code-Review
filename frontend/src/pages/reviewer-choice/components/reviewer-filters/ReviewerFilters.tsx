@@ -83,9 +83,6 @@ export const ReviewerFilters = (props: IReviewerFiltersProps) => {
     const clearFilters = () => {
         setFilters(props.defaultFilters);
         setDateRange([{ ...dateRange[0], startDate: props.defaultFilters.startDate, endDate: props.defaultFilters.endDate }]);
-
-        props.setFilters(filters)
-        //when onClose() placed here then filters value is not updated for some reason
     }
 
     const applyFilters = () => {

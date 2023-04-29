@@ -12,7 +12,6 @@ import { useLocation } from "react-router";
 import { PageWrapper } from "../../components/page-wrapper/PageWrapper";
 import styles from "./ReviewerChoice.module.scss";
 import { joinClasses } from "../../common/utils/joinClasses";
-import { SortIcon } from "../../assets/icons/SortIcon";
 import { SearchIcon } from "@chakra-ui/icons";
 import { WorkItemInfo } from "../../components/work-item-info/WorkItemInfo";
 import { ReviewerFilters } from "./components/reviewer-filters/ReviewerFilters";
@@ -39,7 +38,7 @@ export const ReviewerChoice = () => {
   const endDate = addDays(new Date(), MAX_DAYS_FROM_TODAY);
   const defaultFilters =
     {
-      isAscending: false,
+      isAscending: true,
       isUnavailableShown: true,
       maxReviews: undefined,
       selectedTeam: undefined,
@@ -51,7 +50,7 @@ export const ReviewerChoice = () => {
 
   let [reviewers, setReviewers] = useState<IReviewer[] | undefined>();
 
-  let filteredReviewers: IReviewer[] | undefined;
+  let [filteredReviewers, setFilteredReviewers] = useState<IReviewer[] | undefined>();
 
   const [searchedReviewers, setSearchedReviewers] = useState<IReviewer[] | undefined>();
 
@@ -72,7 +71,6 @@ export const ReviewerChoice = () => {
     let newFilteredReviewers = reviewers;
     let unavailableReviewers: IReviewer[] = [];
 
-    console.log(filteredReviewers)
     if (newFilteredReviewers) {
 
       if (filters.maxReviews) {
@@ -98,21 +96,19 @@ export const ReviewerChoice = () => {
         .filter((reviewer) => reviewer.availability === true);
 
       if (filters.isAscending) {
-
-        newFilteredReviewers = newFilteredReviewers
-          .sort((a, b) => b.activeReviews - a.activeReviews);
-
-      } else {
-
         newFilteredReviewers = newFilteredReviewers
           .sort((a, b) => a.activeReviews - b.activeReviews);
+
+      } else {
+        newFilteredReviewers = newFilteredReviewers
+          .sort((a, b) => b.activeReviews - a.activeReviews);
 
       }
 
       newFilteredReviewers.concat(unavailableReviewers);
     }
-    filteredReviewers = newFilteredReviewers;
-    filterSearchReviewers();
+
+    setFilteredReviewers(newFilteredReviewers);
   }
 
   const filterSearchReviewers = () => {
@@ -158,7 +154,7 @@ export const ReviewerChoice = () => {
 
   useEffect(() => {
     filterSearchReviewers();
-  }, [searchQuery])
+  }, [searchQuery, filteredReviewers])
 
 
   useEffect(() => {
