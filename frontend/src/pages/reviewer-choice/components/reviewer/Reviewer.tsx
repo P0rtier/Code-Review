@@ -3,13 +3,20 @@ import styles from "./Reviewer.module.scss";
 import { IReviewerProps } from "./IReviewerProps";
 import { BoldRegularText } from "../../../../components/bold-regular-text/BoldRegularText";
 import { Button, Tooltip } from "@chakra-ui/react";
+import agent from "../../../../common/api/agent";
+import { toast } from "react-toastify";
 
 export const Reviewer = (props: IReviewerProps) => {
 
   const getOpacityAvailable = () => {
-    return props.isAvailable ? 1 : 0.5;
+    return props.availability ? 1 : 0.5;
   }
-  const reviewerLabel = `Mail: ${props.uniqueName} \n Team: ${props.team} \n Status: ${props.isAvailable ? "Available" : "Unavailable"}`
+
+  const assign = () => {
+    agent.Reviewers.assign(props.reviewId, props.uniqueName, props.project).then(() => toast.success(`Review assigned to ${props.displayName} (${props.uniqueName})`));
+  }
+
+  const reviewerLabel = `Mail: ${props.uniqueName} \n Team: ${props.teamName} \n Status: ${props.availability ? "Available" : "Unavailable"}`
   return (
     <Tooltip hasArrow whiteSpace="pre-line" label={reviewerLabel}>
       <div className={styles.container} >
@@ -19,12 +26,12 @@ export const Reviewer = (props: IReviewerProps) => {
         <div className={styles.columnTwo}>
           <BoldRegularText
             boldText={"Scheduled reviews:"}
-            regularText={String(props.scheduledReviews)}
+            regularText={String(props.activeReviews)}
             opacity={getOpacityAvailable()}
           />
         </div>
         <div className={styles.columnThree}>
-          <Button className={styles.assignButton}>
+          <Button className={styles.assignButton} onClick={assign}>
             Assign
           </Button>
         </div>

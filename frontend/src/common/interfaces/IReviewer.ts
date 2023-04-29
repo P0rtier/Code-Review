@@ -1,7 +1,7 @@
 export interface IReviewer {
-    displayName: string;
-    uniqueName: string;
-    scheduledReviews: number;
-    team: string;
-    isAvailable: boolean;
-  }
+  displayName: string;
+  uniqueName: string;
+  activeReviews: number;
+  teamName: string;
+  availability: boolean;
+}

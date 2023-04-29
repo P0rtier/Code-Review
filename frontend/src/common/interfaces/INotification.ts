@@ -1,6 +1,6 @@
 export interface INotification {
-    id: string;
-    type: string;
-    title: string;
-    route: string;
-  }
+  id: string;
+  type: string;
+  title: string;
+  link: string;
+}

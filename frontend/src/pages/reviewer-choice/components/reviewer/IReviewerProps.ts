@@ -1,7 +1,9 @@
 export interface IReviewerProps {
     displayName: string;
     uniqueName: string;
-    scheduledReviews: number;
-    team: string;
-    isAvailable: boolean;
+    activeReviews: number;
+    teamName: string;
+    availability: boolean;
+    project: string;
+    reviewId: string;
 }

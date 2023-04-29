@@ -12,10 +12,7 @@ export const WorkItems = ({ usassignedReviews }: IWorkItemsProps) => {
   const getData = () => {
     return usassignedReviews.map((review, key) => (
       <WorkItemComponent
-        title={review.title}
-        createdDate={review.createdDate}
-        tags={review.tags}
-        project={review.project}
+        review={review}
         key={key}
       />
     ));

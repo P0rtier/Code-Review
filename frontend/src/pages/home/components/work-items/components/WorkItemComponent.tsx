@@ -5,23 +5,18 @@ import { BoldRegularText } from "../../../../../components/bold-regular-text/Bol
 import { Link } from "react-router-dom";
 
 export const WorkItemComponent = (props: IWorkItemComponentProps) => {
-  const reviewInfo = {
-    title: props.title,
-    project: props.project,
-    createdDate: props.createdDate,
-    tags: props.tags,
-  };
+  const review = props.review;
 
   return (
-    <Link to={"/reviewer"} state={{ review: reviewInfo }}>
+    <Link to={"/reviewer"} state={{ review: review }}>
       <div className={styles.review}>
-        <BoldRegularText boldText={"Title: "} regularText={props.title} />
-        <BoldRegularText boldText={"Project: "} regularText={props.project} />
+        <BoldRegularText boldText={"Title: "} regularText={review.title} />
+        <BoldRegularText boldText={"Project: "} regularText={review.project} />
         <BoldRegularText
           boldText={"Created date: "}
-          regularText={props.createdDate.toLocaleDateString()}
+          regularText={review.createdDate.toLocaleDateString()}
         />
-        <BoldRegularText boldText={"Tags: "} regularText={String(props.tags)} />
+        <BoldRegularText boldText={"Tags: "} regularText={String(review.tags)} />
       </div>
     </Link>
   );

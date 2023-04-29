@@ -1,4 +1,4 @@
-import axios, { AxiosError, AxiosResponse } from "axios";
+import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { IAuthResponse } from "../interfaces/IAuthResponse";
 import { IUser } from "../interfaces/IUser";
 import { toast } from "react-toastify";
@@ -7,6 +7,8 @@ import { StatusCodes } from "../enums/StatusCodes";
 import { CSSProperties } from "react";
 import { router } from "../../pages/app/App";
 import { IProject } from "../interfaces/IProject";
+import { IReviewer } from "../interfaces/IReviewer";
+import { formatDateShort } from "../utils/helpers";
 
 
 axios.defaults.baseURL = process.env.REACT_APP_BASE_URL + '/api';
@@ -85,9 +87,9 @@ const refreshToken = async (error: AxiosError) => {
 const responseBody = <T>(response: AxiosResponse<T>) => response.data;
 
 const requests = {
-    get: <T>(url: string) => axios.get<T>(url).then(responseBody),
+    get: <T>(url: string, config?: AxiosRequestConfig<any>) => axios.get<T>(url, config).then(responseBody),
     post: <T>(url: string, body: {}) => axios.post<T>(url, body).then(responseBody),
-    put: <T>(url: string, body: {}) => axios.put<T>(url, body).then(responseBody),
+    put: <T>(url: string, body?: {}, params?: {}) => axios.put<T>(url, body, params).then(responseBody),
     del: <T>(url: string) => axios.delete<T>(url).then(responseBody),
 };
 
@@ -105,7 +107,7 @@ const Notifications = {
 };
 
 const Reviews = {
-    getUser: () => requests.get<IProject[]>('/azure/work-items/reviews/user').then(projects => {
+    getMine: () => requests.get<IProject[]>('/azure/work-items/reviews/user').then(projects => {
         for (const project of projects) {
             for (const assignedReview of project.assignedReviews) {
                 assignedReview.createdDate = new Date(assignedReview.createdDate);
@@ -118,11 +120,24 @@ const Reviews = {
     }),
 };
 
+const Reviewers = {
+    getAll: (project: string, startDate: Date, endDate: Date) =>
+        requests.get<IReviewer[]>("/azure/review-sorted-users", {
+            params: {
+                project: project,
+                startDate: formatDateShort(startDate),
+                endDate: formatDateShort(endDate),
+            },
+        }),
+    assign: (reviewId: string, email: string, project: string) =>
+        requests.put(`/azure/reviewer/${reviewId}?email=${email}&project=${project}`),
+}
 
 const agent = {
     Auth,
     Notifications,
     Reviews,
+    Reviewers,
 };
 
 export default agent;

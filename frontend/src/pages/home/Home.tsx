@@ -11,9 +11,8 @@ export const Home = () => {
   const [selectedProject, setSelectedProject] = React.useState<IProject>();
 
   useEffect(() => {
-    agent.Reviews.getUser().then((response: IProject[]) => {
+    agent.Reviews.getMine().then((response: IProject[]) => {
       setProjects(response);
-      console.log(response);
     });
   }, []);
 

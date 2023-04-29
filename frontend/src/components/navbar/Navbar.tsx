@@ -18,12 +18,12 @@ import { NotificationsPopover } from "./components/notifications-popover/Notific
 export const Navbar = () => {
   const navbarStyles = useStyleConfig(StyledComponents.Navbar);
 
-  const {state: user, dispatch} = useContext(UserContext);
+  const { state: user, dispatch } = useContext(UserContext);
 
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    dispatch({type: UserActions.ClearUser});
+    dispatch({ type: UserActions.ClearUser });
     navigate("/login");
   }
 
@@ -47,9 +47,9 @@ export const Navbar = () => {
               </Link>
             </>}
             <ToggleThemeButton />
-            {(user || isDev) && <IconButton 
-              icon={<LogoutIcon />} 
-              aria-label="logout-button" 
+            {(user || isDev) && <IconButton
+              icon={<LogoutIcon />}
+              aria-label="logout-button"
               onClick={handleLogout}
               variant="ghost"
             />}

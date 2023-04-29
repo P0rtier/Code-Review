@@ -1,10 +1,9 @@
-import { SystemStyleObject } from "@chakra-ui/react";
-
 export interface IWorkItemInfoProps {
+  id: string;
   title: string;
   project: string;
+  link: string;
   createdDate: Date;
   tags: string[];
-  style: SystemStyleObject;
   fullWidth?: boolean;
 }

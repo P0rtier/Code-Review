@@ -43,6 +43,12 @@
 
     .searchBarContainer {
       padding: 0;
+
+      .searchInputLeft {
+        display: flex;
+        align-items: center;
+        height: 100%;
+      }
     }
   }
 

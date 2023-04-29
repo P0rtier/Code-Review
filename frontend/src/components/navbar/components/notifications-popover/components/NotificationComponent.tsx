@@ -29,7 +29,7 @@ export const NotificationComponent = (props: INotificationComponentProps) => {
     return (
 
         <Box className={styles.container} _hover={secondaryStyles}>
-            <Link to={props.route}>
+            <Link to={props.link}>
                 <div className={styles.leftContainer}>
                     <div className={styles.icon}>{getIcon()}</div>
 

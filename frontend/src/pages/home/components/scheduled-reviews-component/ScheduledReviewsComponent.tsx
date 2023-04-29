@@ -13,12 +13,8 @@ export const ScheduledReviewsComponent = ({ assignedReviews }: IScheduledReviews
   const getData = () => {
     return assignedReviews.map((review) => (
       <ReviewInfo
-        title={review.title}
-        scheduledBy={review.scheduledByName}
-        createdDate={review.createdDate.toLocaleDateString()}
-        project={review.project}
+        {...review}
         style={secondaryStyles}
-        tags={review.tags}
         key={review.id}
       />
     ));

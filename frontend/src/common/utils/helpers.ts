@@ -27,9 +27,16 @@ export const getNavbarBlueColor = (colorMode: string) => {
 };
 
 export const isEmailValid = (email: string) => {
-  if (/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(email))
-  {  
-     return true;
+  if (/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+    return true;
   }
   return false;
- }
+}
+
+export const formatDateShort = (date: Date) => {
+  const pad = (i: number) => (i < 10) ? "0" + i : "" + i;
+
+  return date.getFullYear() + "-" +
+    pad(1 + date.getMonth()) + "-" +
+    pad(date.getDate());
+}

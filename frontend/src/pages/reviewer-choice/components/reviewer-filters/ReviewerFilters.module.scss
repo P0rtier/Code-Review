@@ -29,13 +29,15 @@
     gap: 1rem;
 
     .clearButton {
-        width: 20%;
+        min-width: 20%;
+        padding: 0 1rem;
         height: 3em !important;
         border-radius: 10px;
     }
 
     .saveButton {
-        width: 20%;
+        min-width: 20%;
+        padding: 0 1rem;
         height: 3em;
         border-radius: 10px;
     }

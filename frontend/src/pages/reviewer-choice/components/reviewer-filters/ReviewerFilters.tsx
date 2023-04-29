@@ -72,8 +72,8 @@ export const ReviewerFilters = (props: IReviewerFiltersProps) => {
                 value={filters.selectedTeam}
                 onChange={handleSelectedTeamChange}>
                 {props.teams
-                    .map((team) => (
-                        <option value={team}>{team}</option>
+                    .map((team, key) => (
+                        <option key={key} value={team}>{team}</option>
                     ))
                 }
             </Select>
@@ -125,7 +125,8 @@ export const ReviewerFilters = (props: IReviewerFiltersProps) => {
                 onClose={onClose}
             >
                 <DrawerOverlay />
-                <DrawerContent maxW={"fit-content"}>
+                <DrawerContent w={'20vw'}>
+                    {/* <DrawerContent maxW={"fit-content"}> */}
                     <DrawerCloseButton />
                     <DrawerHeader>Filters</DrawerHeader>
 
@@ -164,14 +165,14 @@ export const ReviewerFilters = (props: IReviewerFiltersProps) => {
                                     onChange={handleIsUnavailableShownChange} />
                             </FormControl>
 
-                            <StyledDateRangePicker
+                            {/* <StyledDateRangePicker
                                 editableDateInputs={true}
                                 minDate={new Date()}
                                 maxDate={addDays(new Date(), maxDaysAfterToday)}
                                 onChange={handleDateRangeChange}
                                 moveRangeOnFirstSelection={false}
                                 ranges={dateRange}
-                            />
+                            /> */}
                         </div>
                     </DrawerBody>
 

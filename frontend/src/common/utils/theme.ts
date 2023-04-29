@@ -129,8 +129,8 @@ const theme = extendTheme({
       baseStyle: (props: StyleFunctionProps) => ({
         content: {
           bg: mode(
-            colors.lightBackgroundLayerSecondary,
-            colors.darkBackgroundLayerSecondary
+            colors.lightBackgroundLayerPrimary,
+            colors.darkBackgroundLayerPrimary
           )(props),
         },
       }),
