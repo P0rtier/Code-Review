@@ -40,3 +40,10 @@ export const formatDateShort = (date: Date) => {
     pad(1 + date.getMonth()) + "-" +
     pad(date.getDate());
 }
+
+export const isPasswordValid = (password: string) => {
+  if (password.match(/^.*(?=.{6,})(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@!#$%&? "]).*$/)) {
+    return true;
+  }
+  return false;
+}

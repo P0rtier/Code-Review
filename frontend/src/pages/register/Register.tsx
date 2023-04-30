@@ -6,7 +6,7 @@ import { StyledComponents } from "../../common/enums/StyledComponents";
 import styles from './Register.module.scss';
 import { toast } from "react-toastify";
 import { IRegisterValues } from "../../common/interfaces/IRegisterValues";
-import { isEmailValid } from "../../common/utils/helpers";
+import { isEmailValid, isPasswordValid } from "../../common/utils/helpers";
 import agent from "../../common/api/agent";
 import { UserContext } from "../../common/providers/UserProvider";
 import { IUser } from "../../common/interfaces/IUser";
@@ -72,6 +72,12 @@ const Register = () => {
 
         if (password === '') {
             toast.error('Password is required');
+            return false;
+        }
+
+        if (!isPasswordValid(password)) {
+            toast.error(`Password must contain at least 6 characters, one uppercase letter, 
+                        one lowercase letter, one number and one special character`);
             return false;
         }
 
