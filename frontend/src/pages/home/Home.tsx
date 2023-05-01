@@ -13,6 +13,9 @@ export const Home = () => {
   useEffect(() => {
     agent.Reviews.getMine().then((response: IProject[]) => {
       setProjects(response);
+      if (response.length > 0) {
+        setSelectedProject(response[0]);
+      }
     });
   }, []);
 

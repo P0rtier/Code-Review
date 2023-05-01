@@ -1,4 +1,5 @@
 import colors from "../../assets/styles/colors.module.scss";
+import { emailRegex, passwordRegex } from "./constants";
 
 export const isLightMode = (colorMode: string) => {
   return colorMode === "light";
@@ -27,7 +28,7 @@ export const getNavbarBlueColor = (colorMode: string) => {
 };
 
 export const isEmailValid = (email: string) => {
-  if (/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+  if (email.match(emailRegex)) {
     return true;
   }
   return false;
@@ -42,7 +43,7 @@ export const formatDateShort = (date: Date) => {
 }
 
 export const isPasswordValid = (password: string) => {
-  if (password.match(/^.*(?=.{6,})(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@!#$%&? "]).*$/)) {
+  if (password.match(passwordRegex)) {
     return true;
   }
   return false;
