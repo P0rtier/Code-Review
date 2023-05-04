@@ -353,6 +353,8 @@ public class AzureClientServiceImpl implements AzureClientService {
                 WIQL_GET_ASSIGNED_CODE_REVIEW_ITEMS.formatted(userEmail, projectName),
                 projectName
         );
+
+        workItems = filterFinishedCodeReviews(workItems);
         List<AssignedReview> mappedWorkItems = new ArrayList<>();
 
         workItems.forEach(workItem -> {
@@ -559,8 +561,15 @@ public class AzureClientServiceImpl implements AzureClientService {
     private List<WorkItem> filterFinishedAndUnassignedCodeReviews(List<WorkItem> codeReviewItemList) throws JsonProcessingException {
         return codeReviewItemList
                 .stream()
-                .filter(workItem -> workItem.getFields().getAssignedTo() != null &&
-                        !doneStates.contains(workItem.getFields().getState()))
+                .filter(workItem -> workItem.getFields().getAssignedTo() != null)
+                .filter(workItem -> !doneStates.contains(workItem.getFields().getState()))
+                .toList();
+    }
+
+    private List<WorkItem> filterFinishedCodeReviews(List<WorkItem> codeReviewItemList) throws JsonProcessingException {
+        return codeReviewItemList
+                .stream()
+                .filter(workItem -> !doneStates.contains(workItem.getFields().getState()))
                 .toList();
     }
 
