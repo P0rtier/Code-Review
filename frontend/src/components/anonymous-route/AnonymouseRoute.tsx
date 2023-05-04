@@ -2,7 +2,7 @@ import { useContext, useEffect } from "react";
 import { IAnonymouseRouteProps } from "./IAnonymouseRouteProps";
 import { UserContext } from "../../common/providers/UserProvider";
 import { Navigate } from "react-router";
-import { isDev } from "../../common/utils/constants";
+import { isTestEnv } from "../../common/utils/constants";
 import { UserActions } from "../../common/enums/UserActions";
 
 
@@ -13,7 +13,7 @@ const AnonymouseRoute = ({ Component }: IAnonymouseRouteProps) => {
         dispatch({ type: UserActions.RefreshUser });
     }, [dispatch]);
 
-    if (user && !isDev) {
+    if (user && !isTestEnv) {
         return <Navigate to="/" />;
     }
 

@@ -1,0 +1,32 @@
+version: '3'
+name: code-review
+services:
+  database:
+    image: postgres:15.2
+    container_name: postgres_database
+    env_file:
+      - ./config/database.env
+    ports:
+      - ${DATABASE_PORT}:5432
+  backend:
+    build: 
+      context: ../backend
+      dockerfile: Dockerfile
+    container_name: spring_backend
+    env_file:
+      - ./config/backend.env
+    ports:
+      - ${BACKEND_PORT}:8080
+    depends_on:
+      - database
+  frontend:
+    build: 
+      context: ../frontend
+      dockerfile: Dockerfile
+    container_name: react_frontend
+    env_file:
+      - ./config/frontend.env
+    ports:
+      - ${FRONTEND_PORT}:3000
+    depends_on:
+      - backend

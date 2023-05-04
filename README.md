@@ -47,8 +47,36 @@ REACT_APP_ENV={ENV_PROFILE}
 ```
 
 __ENV_PROFILE__ may be one of the following:
-- DEV - development profile with disabled security
-- TEST - test profile
+- DEV - development profile 
+- TEST - test profile with disabled security
 - PROD - production profile
 
 Instead of __.env__ file you can use __.env.local__ which will be ignored by git.
+
+### Docker
+
+#### Create docker container
+Requirements:
+- Docker installed
+- Docker daemon running
+- Docker compose installed
+- Jar file with backend application
+- .env file in deploy directory
+
+Current __.env__ file structure
+```shell
+BACKEND_PORT={BACKEND_PORT}
+FRONTEND_PORT={FRONTEND_PORT}
+DATABASE_PORT={DATABASE_PORT}
+DATABASE_NAME={DATABASE_NAME}
+DATABASE_USER={DATABASE_USER}
+DATABASE_PASSWORD={DATABASE_PASSWORD}
+ORGANIZATION_NAME={ORGANIZATION_NAME}
+ACCESS_TOKEN={ACCESS_TOKEN}
+```
+
+To create and run container run command:
+```shell
+docker-compose up -d
+```
+- d flag is optional and runs container in background

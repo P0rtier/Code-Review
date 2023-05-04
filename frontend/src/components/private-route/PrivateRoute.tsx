@@ -2,7 +2,7 @@ import { useContext, useEffect } from "react";
 import { UserContext } from "../../common/providers/UserProvider";
 import { Navigate } from "react-router";
 import { IPrivateRouteProps } from "./IPrivateRouteProps";
-import { isDev } from "../../common/utils/constants";
+import { isTestEnv } from "../../common/utils/constants";
 import { UserActions } from "../../common/enums/UserActions";
 
 
@@ -14,7 +14,7 @@ const PrivateRoute = ({ Component }: IPrivateRouteProps) => {
     }, [dispatch]);
 
 
-    if (!user && !isDev) {
+    if (!user && !isTestEnv) {
         return <Navigate to="/login" />;
     }
 

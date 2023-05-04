@@ -1,7 +1,7 @@
 import { EnviromentProfiles } from "../enums/EnviromentProfiles";
 
 
-export const isDev = process.env.REACT_APP_ENV === EnviromentProfiles.Development;
+export const isTestEnv = process.env.REACT_APP_ENV === EnviromentProfiles.Test;
 
 
 export const emailRegex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
