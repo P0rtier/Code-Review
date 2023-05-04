@@ -26,6 +26,9 @@ public class AuthService {
     private final static String ENCRYPTION_ALGORITHM = "PBKDF2WithHmacSHA1";
     private final static String NO_EMAIL_EXCEPTION_MESSAGE = "Provide email in the request!";
     private final static String INVALID_EMAIL_EXCEPTION_MESSAGE = "Email is invalid!";
+    private final static String INVALID_PASSWORD_EXCEPTION_MESSAGE = """
+    Password is not at least 8 characters long, has no big letter, no small letter or number or special character!
+    """;
     private final static String USER_ALREADY_REGISTERED_EXCEPTION_MESSAGE = "User is already registered!";
     private final static String INVALID_CREDENTIALS_EXCEPTION_MESSAGE = "User credentials are invalid!";
     private final static String INVALID_ACCESS_TOKEN_EXCEPTION_MESSAGE = "Provided access token is invalid!";
@@ -35,7 +38,8 @@ public class AuthService {
     private final static String NO_AZURE_ACCOUNT_EXCEPTION_MESSAGE = """
     User does not have an account in Azure Devops organization!
     """;
-    private final static String EMAIL_REGEX = "^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
+    private final static String EMAIL_REGEX = "^\\w+([.-]?\\w+)*@\\w+([.-]?\\w+)*(\\.\\w{2,3})+$";
+    private final static String PASSWORD_REGEX = "^.*(?=.{8,})(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@!#$%&? \"]).*$";
     private final AccountRepository repository;
     private final JwtService jwtService;
     private final AuthenticationManager authManager;
@@ -43,6 +47,7 @@ public class AuthService {
 
     public AuthHeaders register(AuthRequest request) throws NoSuchAlgorithmException, InvalidKeySpecException, AuthenticationException, JsonProcessingException {
         var email = request.getEmail();
+        var password = request.getPassword();
 
         if (email == null) {
             throw new AuthenticationException(NO_EMAIL_EXCEPTION_MESSAGE);
@@ -50,6 +55,10 @@ public class AuthService {
 
         if (!email.matches(EMAIL_REGEX)) {
             throw new AuthenticationException(INVALID_EMAIL_EXCEPTION_MESSAGE);
+        }
+
+        if (!password.matches(PASSWORD_REGEX)) {
+            throw new AuthenticationException(INVALID_PASSWORD_EXCEPTION_MESSAGE);
         }
 
         var allUsers = azureClientService.getAllUsersFromOrg();
