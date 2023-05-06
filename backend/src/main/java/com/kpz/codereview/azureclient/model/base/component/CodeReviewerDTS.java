@@ -5,6 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Data
 @AllArgsConstructor
@@ -13,7 +16,7 @@ import lombok.NoArgsConstructor;
 public class CodeReviewerDTS {
     String displayName;
     String uniqueName;
-    String teamName;
+    List<String> teamNames;
     int activeReviews;
     boolean availability;
 }

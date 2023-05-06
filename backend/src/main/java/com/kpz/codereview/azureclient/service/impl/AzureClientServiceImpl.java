@@ -606,15 +606,20 @@ public class AzureClientServiceImpl implements AzureClientService {
                     .collect(Collectors.toSet());
 
             teamMembers.forEach(member -> {
-                reviewersMap.put(
-                        member.getUniqueName(),
+
+                reviewersMap.computeIfPresent(member.getUniqueName(), (key, person) -> {
+                   person.getTeamNames().add(team.getName());
+                   return person;
+                });
+
+                reviewersMap.computeIfAbsent(member.getUniqueName(), key ->
                         CodeReviewerDTS.builder()
-                                .displayName(member.getDisplayName())
-                                .uniqueName(member.getUniqueName())
-                                .teamName(team.getName())
-                                .activeReviews(0)
-                                .availability(true)
-                                .build());
+                        .displayName(member.getDisplayName())
+                        .uniqueName(member.getUniqueName())
+                        .teamNames(new ArrayList<>(List.of(team.getName())))
+                        .activeReviews(0)
+                        .availability(true)
+                        .build());
             });
         }
         return reviewersMap;

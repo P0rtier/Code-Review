@@ -47,7 +47,7 @@ public class AuthService {
 
     public AuthHeaders register(AuthRequest request) throws NoSuchAlgorithmException, InvalidKeySpecException, AuthenticationException, JsonProcessingException {
         var email = request.getEmail();
-        var password = request.getPassword();
+        var rawPassword = request.getPassword();
 
         if (email == null) {
             throw new AuthenticationException(NO_EMAIL_EXCEPTION_MESSAGE);
@@ -57,7 +57,7 @@ public class AuthService {
             throw new AuthenticationException(INVALID_EMAIL_EXCEPTION_MESSAGE);
         }
 
-        if (!password.matches(PASSWORD_REGEX)) {
+        if(!rawPassword.matches(PASSWORD_REGEX)) {
             throw new AuthenticationException(INVALID_PASSWORD_EXCEPTION_MESSAGE);
         }
 
@@ -75,7 +75,6 @@ public class AuthService {
         }
 
         var salt = generateSalt();
-        var rawPassword = request.getPassword();
         var hashedPassword = hashPassword(salt, rawPassword);
 
         var newAccount = Account.builder()
