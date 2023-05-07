@@ -1,12 +1,14 @@
 @import "../../../../../assets/styles/fonts.module";
 
 .title {
-  font-family: $spaceMono;
+  font-family: $fontMain;
+  font-weight: 700;
   font-size: 1.3rem;
   margin: 1rem 0;
 }
 
 .text {
-  font-family: $spaceMono;
+  font-family: $fontMain;
+  font-weight: 700;
   font-size: 1.2rem;
 }

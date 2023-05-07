@@ -7,9 +7,8 @@ import { joinClasses } from "../../common/utils/joinClasses";
 import { StyledComponents } from "../../common/enums/StyledComponents";
 
 export const WorkItemInfo = (props: IWorkItemInfoProps) => {
-
-  const primaryOrangeComponent = useStyleConfig(
-    StyledComponents.PrimaryOrangeComponent
+  const attentionComponent = useStyleConfig(
+    StyledComponents.AttentionComponent
   );
 
   return (
@@ -19,7 +18,7 @@ export const WorkItemInfo = (props: IWorkItemInfoProps) => {
           styles.container,
           props.fullWidth && styles.fullWidth
         )}
-        __css={primaryOrangeComponent}
+        __css={attentionComponent}
       >
         <div className={styles.header}>{props.title}</div>
         <div className={styles.description}>
@@ -29,7 +28,10 @@ export const WorkItemInfo = (props: IWorkItemInfoProps) => {
             boldText={"Created date: "}
             regularText={props.createdDate.toLocaleDateString()}
           />
-          <BoldRegularText boldText={"Tags: "} regularText={String(props.tags)} />
+          <BoldRegularText
+            boldText={"Tags: "}
+            regularText={String(props.tags)}
+          />
         </div>
       </Box>
     </a>

@@ -7,9 +7,7 @@ import { Box, useStyleConfig } from "@chakra-ui/react";
 import { StyledComponents } from "../../../../common/enums/StyledComponents";
 
 export const TeamGraphs = (props: ITeamGraphsProps) => {
-  const secondaryComponent = useStyleConfig(
-    StyledComponents.SecondaryComponent
-  );
+  const primaryComponent = useStyleConfig(StyledComponents.PrimaryComponent);
 
   const parseDoneData = () => {
     return props.teamMembers.map((teamMember) => ({
@@ -36,19 +34,19 @@ export const TeamGraphs = (props: ITeamGraphsProps) => {
     <div className={styles.container}>
       <Box
         className={joinClasses(styles.graph, styles.firstColumn)}
-        __css={secondaryComponent}
+        __css={primaryComponent}
       >
         <GraphComponent parseData={parseDoneData} title={"Finished reviews"} />
       </Box>
       <Box
         className={joinClasses(styles.graph, styles.secondColumn)}
-        __css={secondaryComponent}
+        __css={primaryComponent}
       >
         <GraphComponent parseData={parseActiveData} title={"Active reviews"} />
       </Box>
       <Box
         className={joinClasses(styles.graph, styles.thirdColumn)}
-        __css={secondaryComponent}
+        __css={primaryComponent}
       >
         <GraphComponent
           parseData={parseAvgTimeData}

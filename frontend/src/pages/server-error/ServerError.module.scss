@@ -11,12 +11,14 @@
     max-width: 500px;
 
     .header {
-      font-family: $spaceMono;
+      font-family: $fontMain;
+      font-weight: 700;
       font-size: 1.875rem;
     }
 
     .subheader {
-      font-family: $spaceMono;
+      font-family: $fontMain;
+      font-weight: 700;
       font-size: 1.25rem;
     }
   }

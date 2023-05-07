@@ -5,48 +5,48 @@ import { mode } from "@chakra-ui/theme-tools";
 export const PrimaryComponent = defineStyleConfig({
   baseStyle: (props: StyleFunctionProps) => ({
     backgroundColor: mode(
-      colors.lightComponentLayerBeige,
-      colors.darkComponentLayerBeige
+      colors.lightComponentLayerPrimary,
+      colors.darkComponentLayerPrimary
     )(props),
-    boxShadow: colors.boxShadow,
-    borderRadius: "10px",
+    boxShadow: mode(colors.lightBoxShadow, colors.darkBoxShadow)(props),
+    borderRadius: "6px",
   }),
 });
 
 export const SecondaryComponent = defineStyleConfig({
   baseStyle: (props: StyleFunctionProps) => ({
     backgroundColor: mode(
-      colors.lightComponentLayerDarkerBeige,
-      colors.darkComponentLayerDarkerBeige
+      colors.lightComponentLayerSecondary,
+      colors.darkComponentLayerSecondary
     )(props),
-    boxShadow: colors.boxShadow,
+    boxShadow: mode(colors.lightBoxShadow, colors.darkBoxShadow)(props),
     borderRadius: "10px",
   }),
 });
 
-export const PrimaryOrangeComponent = defineStyleConfig({
+export const AttentionComponent = defineStyleConfig({
   baseStyle: (props: StyleFunctionProps) => ({
     backgroundColor: mode(
-      colors.lightComponentLayerOrange,
-      colors.darkComponentLayerOrange
+      colors.lightComponentLayerAttention,
+      colors.darkComponentLayerAttention
     )(props),
-    boxShadow: colors.boxShadow,
-    borderRadius: "10px",
+    boxShadow: mode(colors.lightBoxShadow, colors.darkBoxShadow)(props),
+    borderRadius: "6px",
   }),
 });
 
 export const Background = defineStyleConfig({
   baseStyle: (props: StyleFunctionProps) => ({
     background: mode(colors.lightBackground, colors.darkBackground)(props),
-    backgroundSize: "contain",
+    backgroundAttachment: "fixed",
   }),
 });
 
 export const Navbar = defineStyleConfig({
   baseStyle: (props: StyleFunctionProps) => ({
     background: mode(colors.lightNavbarLayer, colors.darkNavbarLayer)(props),
-    boxShadow: "0 4px 4px rgba(0, 0, 0, 0.3)",
-    borderRadius: "10px",
+    boxShadow: mode(colors.lightBoxShadow, colors.darkBoxShadow)(props),
+    borderRadius: "6px",
   }),
 });
 
@@ -56,47 +56,30 @@ export const ReviewHeader = defineStyleConfig({
   }),
 });
 
-export const FilterBar = defineStyleConfig({
-  baseStyle: (props: StyleFunctionProps) => ({
-    bg: mode(colors.lightFilterBarLayer, colors.darkFilterBarLayer)(props),
-    boxShadow: colors.boxShadow,
-    borderRadius: "10px",
-  }),
-});
-
 export const DateRangePicker = (props: StyleFunctionProps) => {
   return {
-      ".rdrDayNumber span": {
-        color: mode(
-          colors.lightTextPrimary,
-          colors.darkTextPrimary
-        )(props),
-      },
-      ".rdrDayPassive .rdrDayNumber span": {
-        color: mode(
-          colors.lightTextPrimary,
-          colors.darkTextPrimary
-        )(props),
-        opacity: '0.5'
-      },
-      ".rdrWeekDay": {
-        color: mode(
-          colors.lightTextSecondary,
-          colors.darkTextSecondary
-        )(props),
-        opacity: '0.7'
-      },
-      ".rdrDayToday .rdrDayNumber span:after": {
-        bg: mode(
-          colors.lightComponentLayerOrange,
-          colors.darkComponentLayerOrange
-        )(props),
-      },
-      ".rdrDayDisabled": {
-        bg: mode(
-          colors.lightComponentLayerOrange + "30",
-          colors.darkComponentLayerOrange + "18"
-        )(props),
-      },
-    }
-}
+    ".rdrDayNumber span": {
+      color: mode(colors.lightTextPrimary, colors.darkTextPrimary)(props),
+    },
+    ".rdrDayPassive .rdrDayNumber span": {
+      color: mode(colors.lightTextPrimary, colors.darkTextPrimary)(props),
+      opacity: "0.5",
+    },
+    ".rdrWeekDay": {
+      color: mode(colors.lightTextSecondary, colors.darkTextSecondary)(props),
+      opacity: "0.7",
+    },
+    ".rdrDayToday .rdrDayNumber span:after": {
+      bg: mode(
+        colors.lightComponentLayerAttention,
+        colors.darkComponentLayerAttention
+      )(props),
+    },
+    ".rdrDayDisabled": {
+      bg: mode(
+        colors.lightComponentLayerAttention + "30",
+        colors.darkComponentLayerAttention + "18"
+      )(props),
+    },
+  };
+};

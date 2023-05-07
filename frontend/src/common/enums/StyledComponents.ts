@@ -1,9 +1,8 @@
 export enum StyledComponents {
   PrimaryComponent = "PrimaryComponent",
   SecondaryComponent = "SecondaryComponent",
-  PrimaryOrangeComponent = "PrimaryOrangeComponent",
+  AttentionComponent = "AttentionComponent",
   Background = "Background",
   Navbar = "Navbar",
   ReviewHeader = "ReviewHeader",
-  FilterBar = "FilterBar",
 }

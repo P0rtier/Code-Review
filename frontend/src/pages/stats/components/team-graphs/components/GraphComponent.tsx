@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./GraphComponent.module.scss";
-import { Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
+import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
 import { IGraphComponentProps } from "./IGraphComponentProps";
 import { useColorMode } from "@chakra-ui/react";
 import {
@@ -52,7 +52,19 @@ export const GraphComponent = (props: IGraphComponentProps) => {
                 </text>
               );
             }}
-          />
+          >
+            {data.map((entry, index) => (
+              <Cell
+                key={`cell-${index}`}
+                fill={
+                  "#" +
+                  ((Math.random() * 0xffffff) << 0)
+                    .toString(16)
+                    .padStart(6, "0")
+                }
+              />
+            ))}
+          </Pie>
           <Tooltip />
         </PieChart>
       </ResponsiveContainer>

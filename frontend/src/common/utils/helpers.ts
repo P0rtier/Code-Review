@@ -17,8 +17,8 @@ export const getIconColor = (colorMode: string) => {
 
 export const getComponentColorOrange = (colorMode: string): string => {
   return isLightMode(colorMode)
-    ? colors.lightComponentLayerOrange
-    : colors.darkComponentLayerOrange;
+    ? colors.lightComponentLayerAttention
+    : colors.darkComponentLayerAttention;
 };
 
 export const getNavbarBlueColor = (colorMode: string) => {
@@ -32,19 +32,23 @@ export const isEmailValid = (email: string) => {
     return true;
   }
   return false;
-}
+};
 
 export const formatDateShort = (date: Date) => {
-  const pad = (i: number) => (i < 10) ? "0" + i : "" + i;
+  const pad = (i: number) => (i < 10 ? "0" + i : "" + i);
 
-  return date.getFullYear() + "-" +
-    pad(1 + date.getMonth()) + "-" +
-    pad(date.getDate());
-}
+  return (
+    date.getFullYear() +
+    "-" +
+    pad(1 + date.getMonth()) +
+    "-" +
+    pad(date.getDate())
+  );
+};
 
 export const isPasswordValid = (password: string) => {
   if (password.match(passwordRegex)) {
     return true;
   }
   return false;
-}
+};

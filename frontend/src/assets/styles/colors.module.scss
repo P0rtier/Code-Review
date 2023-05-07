@@ -1,66 +1,46 @@
-// --- GENERAL ---
-
-$box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
-
 // --- LIGHT MODE ---
+$light-box-shadow: 0 5px 6px rgba(0, 0, 0, 0.3);
 
-$light-background-layer-primary: #f5f5fb;
-$light-background-layer-secondary: #4affed;
+$light-navbar-layer: #007cdb;
 
-$light-navbar-layer: #57b6ff;
-
-$light-component-layer-beige: #fdfdfe;
-$light-component-layer-darker-beige: #4affed;
-$light-component-layer-orange: #ffc796;
-
-$light-filter-bar-layer: #00f2da;
+$light-component-layer-primary: #e6e6e6;
+$light-component-layer-secondary: #dcf0ff;
+$light-component-layer-attention: #57b6ff;
 
 $light-text-primary: #000;
 $light-text-secondary: #2b5b80;
 
-$light-background: $light-background-layer-primary url("../../assets/images/lightBackground.svg")
-    no-repeat center;
+$light-background: #f5f5f7;
 
 // --- DARK MODE ---
+$dark-box-shadow: 2px 6px 6px rgba(0, 0, 0, 0.5);
 
-$dark-background-layer-primary: #121212;
-$dark-background-layer-secondary: #2A2A2A;
+$dark-navbar-layer: #2b5b80;
 
-$dark-navbar-layer: #2B5B80;
-
-$dark-component-layer-beige: #2A2A2A;
-$dark-component-layer-darker-beige: #1F2124;
-$dark-component-layer-orange: #006645;
-
-$dark-filter-bar-layer: #1F2124;
+$dark-component-layer-primary: #3e3e3e;
+$dark-component-layer-secondary: #1f2124;
+$dark-component-layer-attention: #3672a0;
 
 $dark-text-primary: #fff;
 $dark-text-secondary: #fff;
 
-$dark-background: $dark-background-layer-primary url("../../assets/images/darkBackground.svg")
-    no-repeat center;
+$dark-background: #121212;
 
 :export {
-  boxShadow: $box-shadow;
-
-  lightBackgroundLayerPrimary: $light-background-layer-primary;
-  lightBackgroundLayerSecondary: $light-background-layer-secondary;
+  lightBoxShadow: $light-box-shadow;
   lightNavbarLayer: $light-navbar-layer;
-  lightComponentLayerBeige: $light-component-layer-beige;
-  lightComponentLayerDarkerBeige: $light-component-layer-darker-beige;
-  lightComponentLayerOrange: $light-component-layer-orange;
-  lightFilterBarLayer: $light-filter-bar-layer;
+  lightComponentLayerPrimary: $light-component-layer-primary;
+  lightComponentLayerSecondary: $light-component-layer-secondary;
+  lightComponentLayerAttention: $light-component-layer-attention;
   lightTextPrimary: $light-text-primary;
   lightTextSecondary: $light-text-secondary;
   lightBackground: $light-background;
 
-  darkBackgroundLayerPrimary: $dark-background-layer-primary;
-  darkBackgroundLayerSecondary: $dark-background-layer-secondary;
+  darkBoxShadow: $dark-box-shadow;
   darkNavbarLayer: $dark-navbar-layer;
-  darkComponentLayerBeige: $dark-component-layer-beige;
-  darkComponentLayerDarkerBeige: $dark-component-layer-darker-beige;
-  darkComponentLayerOrange: $dark-component-layer-orange;
-  darkFilterBarLayer: $dark-filter-bar-layer;
+  darkComponentLayerPrimary: $dark-component-layer-primary;
+  darkComponentLayerSecondary: $dark-component-layer-secondary;
+  darkComponentLayerAttention: $dark-component-layer-attention;
   darkTextPrimary: $dark-text-primary;
   darkTextSecondary: $dark-text-secondary;
   darkBackground: $dark-background;

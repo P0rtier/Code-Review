@@ -10,7 +10,8 @@
   width: clamp(18.75rem, 100%, 21rem);
 
   .header {
-    font-family: $spaceMono;
+    font-family: $fontMain;
+    font-weight: 700;
     font-size: 1.25rem;
     margin-bottom: 1rem;
   }
@@ -23,4 +24,8 @@
     gap: 1rem;
     margin-bottom: 1rem;
   }
+}
+
+.container:hover {
+  transform: translateY(0.25rem);
 }

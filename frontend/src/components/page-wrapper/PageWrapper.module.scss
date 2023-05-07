@@ -2,7 +2,6 @@
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   column-gap: 0.625rem;
-  height: clamp(800px, 100dvh, 1500px);
   width: 100%;
   align-items: flex-start;
 

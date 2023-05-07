@@ -1,7 +1,6 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
 import {
   Box,
-  Button,
   Input,
   InputGroup,
   InputLeftElement,
@@ -23,12 +22,7 @@ import agent from "../../common/api/agent";
 import { addDays } from "date-fns";
 
 export const ReviewerChoice = () => {
-  const primaryOrangeComponent = useStyleConfig(
-    StyledComponents.PrimaryOrangeComponent
-  );
-
   //#region variables
-  const filterBarStyles = useStyleConfig(StyledComponents.FilterBar);
   const primaryComponent = useStyleConfig(StyledComponents.PrimaryComponent);
 
   const location = useLocation();
@@ -36,131 +30,145 @@ export const ReviewerChoice = () => {
   const startDate = new Date();
   const MAX_DAYS_FROM_TODAY = 5;
   const endDate = addDays(new Date(), MAX_DAYS_FROM_TODAY);
-  const defaultFilters =
-    {
-      isAscending: true,
-      isUnavailableShown: true,
-      maxReviews: undefined,
-      selectedTeam: undefined,
-      startDate: new Date(),
-      endDate: new Date(),
-    } as IReviewerFilters;
+  const defaultFilters = {
+    isAscending: true,
+    isUnavailableShown: true,
+    maxReviews: undefined,
+    selectedTeam: undefined,
+    startDate: new Date(),
+    endDate: new Date(),
+  } as IReviewerFilters;
 
   const [filters, setFilters] = useState<IReviewerFilters>(defaultFilters);
 
   let [reviewers, setReviewers] = useState<IReviewer[] | undefined>();
 
-  let [filteredReviewers, setFilteredReviewers] = useState<IReviewer[] | undefined>();
+  let [filteredReviewers, setFilteredReviewers] = useState<
+    IReviewer[] | undefined
+  >();
 
-  const [searchedReviewers, setSearchedReviewers] = useState<IReviewer[] | undefined>();
+  const [searchedReviewers, setSearchedReviewers] = useState<
+    IReviewer[] | undefined
+  >();
 
   const [searchQuery, setSearchQuery] = useState<string>();
   //#endregion
 
   //#region methods
   const setNewFilters = (newFilters: IReviewerFilters): void => {
-
-    if (newFilters.startDate !== filters.startDate && newFilters.endDate !== filters.endDate) {
+    if (
+      newFilters.startDate !== filters.startDate &&
+      newFilters.endDate !== filters.endDate
+    ) {
       //get data from backend
     }
 
     setFilters(newFilters);
-  }
+  };
 
   const filterReviewers = () => {
     let newFilteredReviewers = reviewers;
     let unavailableReviewers: IReviewer[] = [];
 
     if (newFilteredReviewers) {
-
       if (filters.maxReviews) {
-        newFilteredReviewers = newFilteredReviewers
-          .filter((reviewer) =>
-            reviewer.activeReviews <= (filters.maxReviews ?? Number.MAX_SAFE_INTEGER));
-
+        newFilteredReviewers = newFilteredReviewers.filter(
+          (reviewer) =>
+            reviewer.activeReviews <=
+            (filters.maxReviews ?? Number.MAX_SAFE_INTEGER)
+        );
       }
 
       if (filters.selectedTeam && filters.selectedTeam !== "") {
-        newFilteredReviewers = newFilteredReviewers
-          .filter((reviewer) => reviewer.teamName === (filters.selectedTeam ?? reviewer.teamName));
-
+        newFilteredReviewers = newFilteredReviewers.filter(
+          (reviewer) =>
+            reviewer.teamName === (filters.selectedTeam ?? reviewer.teamName)
+        );
       }
 
       if (filters.isUnavailableShown === true) {
-        unavailableReviewers = newFilteredReviewers
-          .filter((reviewer) => reviewer.availability === false);
-
+        unavailableReviewers = newFilteredReviewers.filter(
+          (reviewer) => reviewer.availability === false
+        );
       }
 
-      newFilteredReviewers = newFilteredReviewers
-        .filter((reviewer) => reviewer.availability === true);
+      newFilteredReviewers = newFilteredReviewers.filter(
+        (reviewer) => reviewer.availability === true
+      );
 
       if (filters.isAscending) {
-        newFilteredReviewers = newFilteredReviewers
-          .sort((a, b) => a.activeReviews - b.activeReviews);
-
+        newFilteredReviewers = newFilteredReviewers.sort(
+          (a, b) => a.activeReviews - b.activeReviews
+        );
       } else {
-        newFilteredReviewers = newFilteredReviewers
-          .sort((a, b) => b.activeReviews - a.activeReviews);
-
+        newFilteredReviewers = newFilteredReviewers.sort(
+          (a, b) => b.activeReviews - a.activeReviews
+        );
       }
 
       newFilteredReviewers.concat(unavailableReviewers);
     }
 
     setFilteredReviewers(newFilteredReviewers);
-  }
+  };
 
   const filterSearchReviewers = () => {
     let newSearchedReviewers = filteredReviewers;
 
     if (newSearchedReviewers) {
       if (searchQuery && searchQuery !== "") {
-        newSearchedReviewers = newSearchedReviewers
-          .filter((reviewer) => reviewer.displayName.toLowerCase().includes(searchQuery.toLowerCase() ?? ""));
-
+        newSearchedReviewers = newSearchedReviewers.filter((reviewer) =>
+          reviewer.displayName
+            .toLowerCase()
+            .includes(searchQuery.toLowerCase() ?? "")
+        );
       }
     }
 
     setSearchedReviewers(newSearchedReviewers);
-  }
+  };
 
   const getUniqueTeams = () => {
     if (reviewers) {
-      return Array.from(new Set(reviewers.map((reviewer) => reviewer.teamName)));
+      return Array.from(
+        new Set(reviewers.map((reviewer) => reviewer.teamName))
+      );
     } else {
       return [];
     }
-  }
+  };
 
   const getReviewers = () => {
     if (searchedReviewers) {
-      return (
-        searchedReviewers.map((reviewer) =>
-          <Reviewer {...reviewer}
-            reviewId={review.id}
-            project={review.project}
-            key={reviewer.uniqueName}
-          />)
-      );
+      return searchedReviewers.map((reviewer) => (
+        <Reviewer
+          {...reviewer}
+          reviewId={review.id}
+          project={review.project}
+          key={reviewer.uniqueName}
+        />
+      ));
     }
-  }
+  };
 
-  const handleSearchChanged = (e: ChangeEvent<HTMLInputElement>) => { setSearchQuery(e.target.value); }
+  const handleSearchChanged = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+  };
 
   useEffect(() => {
     filterReviewers();
-  }, [filters, reviewers])
+  }, [filters, reviewers]);
 
   useEffect(() => {
     filterSearchReviewers();
-  }, [searchQuery, filteredReviewers])
-
+  }, [searchQuery, filteredReviewers]);
 
   useEffect(() => {
-    agent.Reviewers.getAll(review.project, startDate, endDate).then((response: IReviewer[]) => {
-      setReviewers(response);
-    });
+    agent.Reviewers.getAll(review.project, startDate, endDate).then(
+      (response: IReviewer[]) => {
+        setReviewers(response);
+      }
+    );
   }, []);
   //#endregion
 
@@ -168,10 +176,7 @@ export const ReviewerChoice = () => {
     <PageWrapper smallGap={true}>
       <div className={styles.container}>
         <div className={styles.reviewContainer}>
-          <WorkItemInfo
-            {...review}
-            fullWidth={true}
-          />
+          <WorkItemInfo {...review} fullWidth={true} />
         </div>
         <div className={styles.filterContainer}>
           <div className={joinClasses(styles.bar, styles.searchBarContainer)}>
@@ -181,17 +186,20 @@ export const ReviewerChoice = () => {
                 children={<SearchIcon color="gray.300" />}
                 className={styles.searchInputLeft}
               />
-              <Input variant={"search"}
+              <Input
+                variant={"search"}
                 placeholder={"Search..."}
-                value={searchQuery ?? ''}
+                value={searchQuery ?? ""}
                 defaultValue={undefined}
-                onChange={handleSearchChanged} />
-
+                onChange={handleSearchChanged}
+              />
             </InputGroup>
-            <ReviewerFilters filters={filters}
+            <ReviewerFilters
+              filters={filters}
               setFilters={setNewFilters}
               defaultFilters={defaultFilters}
-              teams={getUniqueTeams()} />
+              teams={getUniqueTeams()}
+            />
           </div>
           <Box className={styles.searchResult} __css={primaryComponent}>
             {getReviewers()}

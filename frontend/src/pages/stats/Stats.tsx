@@ -49,8 +49,8 @@ export const Stats = () => {
   const [reducedTeamMembers, setReducedTeamMembers] =
     React.useState<ITeamMember[]>(teamMembersMock);
 
-  const primaryOrangeComponent = useStyleConfig(
-    StyledComponents.PrimaryOrangeComponent
+  const attentionComponent = useStyleConfig(
+    StyledComponents.AttentionComponent
   );
 
   const filterTeamMembersByTeam = (teamName: string) => {
@@ -74,7 +74,7 @@ export const Stats = () => {
   return (
     <PageWrapper smallGap={true}>
       <div className={styles.container}>
-        <Box className={styles.teamSelector} __css={primaryOrangeComponent}>
+        <Box className={styles.teamSelector} __css={attentionComponent}>
           <div className={styles.title}>Team stats</div>
           <TeamDropdown
             teams={teamMock}

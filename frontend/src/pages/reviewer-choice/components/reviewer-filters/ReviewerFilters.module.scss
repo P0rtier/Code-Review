@@ -1,45 +1,41 @@
 .filterButton {
-    width: fit-content;
-    line-height: 2rem;
-    margin-left: 1rem;
-
+  width: fit-content;
+  line-height: 2rem;
+  margin-left: 1rem;
 }
 
 .bodyContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: left;
+  gap: 1rem;
+
+  .sortButton {
     display: flex;
-    flex-direction: column;
-    width: 100%;
-    justify-content: left;
+    flex-direction: row;
     gap: 1rem;
-
-    .sortButton {
-        display: flex;
-        flex-direction: row;
-        gap: 1rem;
-    }
-
-
+  }
 }
 
 .footerContainer {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    justify-content: left;
-    gap: 1rem;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: left;
+  gap: 1rem;
 
-    .clearButton {
-        min-width: 20%;
-        padding: 0 1rem;
-        height: 3em !important;
-        border-radius: 10px;
-    }
+  .clearButton {
+    min-width: 20%;
+    padding: 0 1rem;
+    height: 3em !important;
+    border-radius: 6px;
+  }
 
-    .saveButton {
-        min-width: 20%;
-        padding: 0 1rem;
-        height: 3em;
-        border-radius: 10px;
-    }
-
+  .saveButton {
+    min-width: 20%;
+    padding: 0 1rem;
+    height: 3em;
+    border-radius: 6px;
+  }
 }

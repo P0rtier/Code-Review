@@ -3,13 +3,12 @@ import colors from "../../assets/styles/colors.module.scss";
 import { mode } from "@chakra-ui/theme-tools";
 import {
   Background,
-  FilterBar,
   Navbar,
   PrimaryComponent,
-  PrimaryOrangeComponent,
+  AttentionComponent,
   ReviewHeader,
   SecondaryComponent,
-  DateRangePicker
+  DateRangePicker,
 } from "./styledComponents";
 import fonts from "../../assets/styles/fonts.module.scss";
 
@@ -17,55 +16,50 @@ const theme = extendTheme({
   styles: {
     global: (props: StyleFunctionProps) => ({
       body: {
-        bg: mode(
-          colors.lightBackgroundLayerPrimary,
-          colors.darkBackgroundLayerPrimary
-        )(props),
         color: mode(colors.lightTextPrimary, colors.darkTextPrimary)(props),
       },
       ...DateRangePicker(props),
-    })
+    }),
   },
   components: {
     PrimaryComponent,
     SecondaryComponent,
-    PrimaryOrangeComponent,
+    AttentionComponent,
     Background,
     Navbar,
     ReviewHeader,
-    FilterBar,
     Input: {
       variants: {
         search: (props: StyleFunctionProps) => ({
           field: {
             bg: mode(
-              colors.lightComponentLayerBeige,
-              colors.darkComponentLayerBeige
+              colors.lightComponentLayerPrimary,
+              colors.darkComponentLayerPrimary
             )(props),
-            borderRadius: "10px",
-            boxShadow: colors.boxShadow,
-            focusBorderColor: colors.lightFilterBarLayer,
-            fontFamily: fonts.robotoMono,
+            borderRadius: "6px",
+            boxShadow: mode(colors.lightBoxShadow, colors.darkBoxShadow)(props),
+            focusBorderColor: colors.lightComponentLayerPrimary,
+            fontFamily: fonts.fontSecondary,
             fontWeight: "700",
             width: "95%",
             height: "3em",
             _hover: {
               bg: mode(
-                colors.lightFilterBarLayer,
-                colors.darkFilterBarLayer
+                colors.lightComponentLayerSecondary,
+                colors.darkComponentLayerSecondary
               )(props),
             },
           },
         }),
         auth: (props: StyleFunctionProps) => ({
           field: {
-            borderRadius: "10px",
-            boxShadow: colors.boxShadow,
-            fontFamily: fonts.robotoMono,
+            borderRadius: "6px",
+            boxShadow: mode(colors.lightBoxShadow, colors.darkBoxShadow)(props),
+            fontFamily: fonts.fontSecondary,
             fontWeight: "700",
             bg: mode(
-              colors.lightComponentLayerOrange,
-              colors.darkComponentLayerOrange
+              colors.lightComponentLayerAttention,
+              colors.darkComponentLayerAttention
             )(props),
           },
         }),
@@ -75,43 +69,60 @@ const theme = extendTheme({
       variants: {
         search: (props: StyleFunctionProps) => ({
           bg: mode(
-            colors.lightFilterBarLayer,
-            colors.darkFilterBarLayer
+            colors.lightComponentLayerPrimary,
+            colors.lightComponentLayerPrimary
           )(props),
-          borderRadius: "10px",
-          boxShadow: colors.boxShadow,
-          fontFamily: fonts.robotoMono,
+          borderRadius: "6px",
+          boxShadow: mode(colors.lightBoxShadow, colors.darkBoxShadow)(props),
+          fontFamily: fonts.fontSecondary,
           height: "3em",
           _hover: {
             bg: mode(
-              colors.lightBackgroundLayerPrimary,
-              colors.darkBackgroundLayerPrimary
+              colors.lightComponentLayerSecondary,
+              colors.darkComponentLayerSecondary
             )(props),
           },
           _active: {
-            bg: colors.lightComponentLayerDarkerBeige,
-            borderColor: colors.darkComponentLayerDarkerBeige,
+            opacity: "0.7",
           },
         }),
         welcome: (props: StyleFunctionProps) => ({
           bg: mode(
-            colors.lightBackgroundLayerSecondary,
-            colors.darkBackgroundLayerSecondary
+            colors.lightComponentLayerSecondary,
+            colors.darkComponentLayerSecondary
           )(props),
           borderRadius: "md",
           width: "100%",
           height: "2.5rem",
-          boxShadow: colors.boxShadow,
+          boxShadow: mode(colors.lightBoxShadow, colors.darkBoxShadow)(props),
+          _hover: {
+            bg: mode(
+              colors.lightComponentLayerAttention,
+              colors.darkComponentLayerAttention
+            )(props),
+          },
+          _active: {
+            opacity: "0.7",
+          },
         }),
         auth: (props: StyleFunctionProps) => ({
           bg: mode(
-            colors.lightBackgroundLayerPrimary,
-            colors.darkBackgroundLayerPrimary
+            colors.lightComponentLayerPrimary,
+            colors.darkComponentLayerPrimary
           )(props),
           borderRadius: "md",
           width: "30%",
           height: "2.5rem",
-          boxShadow: colors.boxShadow,
+          boxShadow: mode(colors.lightBoxShadow, colors.darkBoxShadow)(props),
+          _hover: {
+            bg: mode(
+              colors.lightComponentLayerAttention,
+              colors.darkComponentLayerAttention
+            )(props),
+          },
+          _active: {
+            opacity: "0.7",
+          },
         }),
       },
     },
@@ -119,8 +130,8 @@ const theme = extendTheme({
       baseStyle: (props: StyleFunctionProps) => ({
         dialog: {
           bg: mode(
-            colors.lightBackgroundLayerPrimary,
-            colors.darkBackgroundLayerSecondary
+            colors.lightComponentLayerPrimary,
+            colors.darkComponentLayerPrimary
           )(props),
         },
       }),
@@ -129,9 +140,10 @@ const theme = extendTheme({
       baseStyle: (props: StyleFunctionProps) => ({
         content: {
           bg: mode(
-            colors.lightBackgroundLayerPrimary,
-            colors.darkBackgroundLayerPrimary
+            colors.lightComponentLayerPrimary,
+            colors.darkComponentLayerPrimary
           )(props),
+          boxShadow: mode(colors.lightBoxShadow, colors.darkBoxShadow)(props),
         },
       }),
     },

@@ -2,7 +2,7 @@
 @import "../../assets/styles/fonts.module";
 
 .navbarContainer {
-  position: fixed;
+  position: absolute;
   top: 0;
   z-index: 10;
   width: 100%;
@@ -22,7 +22,7 @@
 
     .navbarLogo {
       margin-left: 4rem;
-      font-family: $spaceMono;
+      font-family: $fontLogo;
       font-size: 1.5rem;
     }
 
