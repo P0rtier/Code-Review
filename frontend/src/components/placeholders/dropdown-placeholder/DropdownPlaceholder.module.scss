@@ -1,5 +1,5 @@
-@import "../../../../assets/styles/colors.module";
-@import "../../../../assets/styles/fonts.module";
+@import "../../../assets/styles/colors.module";
+@import "../../../assets/styles/fonts.module";
 
 .container {
   display: flex;
@@ -7,24 +7,22 @@
   justify-content: flex-start;
   align-items: flex-start;
   width: 100%;
-  padding: 1rem 2rem;
-
-  .header {
-    font-family: $spaceMono;
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
-  }
-}
-
-.placeholder {
+  height: 2.5rem;
   position: relative;
-  height: 8rem;
   overflow: hidden;
   padding: unset;
-}
+  border-radius: 6px !important;
 
-.placeholderHeader {
-  margin: 1rem 2rem;
+  .header {
+    height: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    font-family: $fontMain;
+    font-weight: 700;
+    font-size: 1rem;
+    margin-left: 2rem;
+  }
 }
 
 .activity {

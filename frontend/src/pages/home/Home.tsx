@@ -5,7 +5,7 @@ import { PageWrapper } from "../../components/page-wrapper/PageWrapper";
 import { ReviewsToAssign } from "./components/reviews-to-assign/ReviewsToAssign";
 import { IProject } from "../../common/interfaces/IProject";
 import agent from "../../common/api/agent";
-import { Placeholder } from "./components/placeholder/Placeholder";
+import { Placeholder } from "../../components/placeholders/placeholder/Placeholder";
 
 export const Home = () => {
   const [projects, setProjects] = React.useState<IProject[]>([]);
@@ -34,6 +34,7 @@ export const Home = () => {
         projectNames={projects.map((project) => project.name)}
         selectedProject={selectedProject?.name}
         selectProject={handleSelectProject}
+        loadingState={loading}
       />
       {loading ? (
         <>

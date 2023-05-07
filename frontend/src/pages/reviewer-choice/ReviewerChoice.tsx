@@ -20,9 +20,9 @@ import { Reviewer } from "./components/reviewer/Reviewer";
 import { IUnassignedReview } from "../../common/interfaces/IUnassignedReview";
 import agent from "../../common/api/agent";
 import { addDays } from "date-fns";
+import { Placeholder } from "../../components/placeholders/placeholder/Placeholder";
 
 export const ReviewerChoice = () => {
-  //#region variables
   const primaryComponent = useStyleConfig(StyledComponents.PrimaryComponent);
 
   const location = useLocation();
@@ -40,21 +40,16 @@ export const ReviewerChoice = () => {
   } as IReviewerFilters;
 
   const [filters, setFilters] = useState<IReviewerFilters>(defaultFilters);
-
   let [reviewers, setReviewers] = useState<IReviewer[] | undefined>();
-
   let [filteredReviewers, setFilteredReviewers] = useState<
     IReviewer[] | undefined
   >();
-
   const [searchedReviewers, setSearchedReviewers] = useState<
     IReviewer[] | undefined
   >();
-
   const [searchQuery, setSearchQuery] = useState<string>();
-  //#endregion
+  const [loading, setLoading] = useState<boolean>(true);
 
-  //#region methods
   const setNewFilters = (newFilters: IReviewerFilters): void => {
     if (
       newFilters.startDate !== filters.startDate &&
@@ -86,13 +81,11 @@ export const ReviewerChoice = () => {
         );
       }
 
-
       if (filters.isUnavailableShown) {
         unavailableReviewers = newFilteredReviewers.filter(
           (reviewer) => !reviewer.availability
         );
       }
-
 
       newFilteredReviewers = newFilteredReviewers.filter(
         (reviewer) => reviewer.availability
@@ -169,6 +162,7 @@ export const ReviewerChoice = () => {
     agent.Reviewers.getAll(review.project, startDate, endDate).then(
       (response: IReviewer[]) => {
         setReviewers(response);
+        setLoading(false);
       }
     );
   }, []);
@@ -178,7 +172,6 @@ export const ReviewerChoice = () => {
     <PageWrapper smallGap={true}>
       <div className={styles.container}>
         <div className={styles.reviewContainer}>
-
           <ReviewToAssignInfo {...review} fullWidth={true} />
         </div>
         <div className={styles.filterContainer}>
@@ -204,9 +197,13 @@ export const ReviewerChoice = () => {
               teams={getUniqueTeams()}
             />
           </div>
-          <Box className={styles.searchResult} __css={primaryComponent}>
-            {getReviewers()}
-          </Box>
+          {loading ? (
+            <Placeholder header={"Loading reviewers..."} />
+          ) : (
+            <Box className={styles.searchResult} __css={primaryComponent}>
+              {getReviewers()}
+            </Box>
+          )}
         </div>
       </div>
     </PageWrapper>

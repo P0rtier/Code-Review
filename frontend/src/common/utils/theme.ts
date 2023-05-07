@@ -45,8 +45,8 @@ const theme = extendTheme({
             height: "3em",
             _hover: {
               bg: mode(
-                colors.lightComponentLayerSecondary,
-                colors.darkComponentLayerSecondary
+                colors.lightComponentLayerAttention,
+                colors.darkComponentLayerAttention
               )(props),
             },
           },
@@ -77,10 +77,7 @@ const theme = extendTheme({
           fontFamily: fonts.fontSecondary,
           height: "3em",
           _hover: {
-            bg: mode(
-              colors.lightComponentLayerSecondary,
-              colors.darkComponentLayerSecondary
-            )(props),
+            bg: mode(colors.lightNavbarLayer, colors.darkNavbarLayer)(props),
           },
           _active: {
             opacity: "0.7",
@@ -96,13 +93,7 @@ const theme = extendTheme({
           height: "2.5rem",
           boxShadow: mode(colors.lightBoxShadow, colors.darkBoxShadow)(props),
           _hover: {
-            bg: mode(
-              colors.lightComponentLayerAttention,
-              colors.darkComponentLayerAttention
-            )(props),
-          },
-          _active: {
-            opacity: "0.7",
+            bg: mode(colors.lightNavbarLayer, colors.darkNavbarLayer)(props),
           },
         }),
         auth: (props: StyleFunctionProps) => ({
@@ -115,10 +106,7 @@ const theme = extendTheme({
           height: "2.5rem",
           boxShadow: mode(colors.lightBoxShadow, colors.darkBoxShadow)(props),
           _hover: {
-            bg: mode(
-              colors.lightComponentLayerAttention,
-              colors.darkComponentLayerAttention
-            )(props),
+            bg: mode(colors.lightNavbarLayer, colors.darkNavbarLayer)(props),
           },
           _active: {
             opacity: "0.7",

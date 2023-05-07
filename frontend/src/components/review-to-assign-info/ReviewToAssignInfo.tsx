@@ -7,8 +7,8 @@ import { joinClasses } from "../../common/utils/joinClasses";
 import { StyledComponents } from "../../common/enums/StyledComponents";
 
 export const ReviewToAssignInfo = (props: IReviewToAssignInfoProps) => {
-  const primaryOrangeComponent = useStyleConfig(
-    StyledComponents.PrimaryOrangeComponent
+  const attentionComponent = useStyleConfig(
+    StyledComponents.AttentionComponent
   );
 
   return (
@@ -18,7 +18,7 @@ export const ReviewToAssignInfo = (props: IReviewToAssignInfoProps) => {
           styles.container,
           props.fullWidth && styles.fullWidth
         )}
-        __css={primaryOrangeComponent}
+        __css={attentionComponent}
       >
         <div className={styles.header}>{props.title}</div>
         <div className={styles.description}>
