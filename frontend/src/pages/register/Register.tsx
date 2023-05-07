@@ -127,6 +127,7 @@ const Register = () => {
                         <label>Confirm password</label>
                         <PasswordInput
                             onChange={handleChanges}
+                            onEnterKeyPress={handleRegister}
                             name='confirmPassword'
                         />
                     </div>

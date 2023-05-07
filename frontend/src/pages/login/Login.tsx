@@ -101,6 +101,7 @@ const Login = () => {
                         <label>Password</label>
                         <PasswordInput
                             onChange={handleChanges}
+                            onEnterKeyPress={handleLogin}
                             name='password'
                         />
                     </div>

@@ -10,11 +10,21 @@ const PasswordInput = (props: IPasswordInputProps) => {
         value,
         variant = 'auth',
         onChange,
+        onEnterKeyPress,
     } = props;
 
     const [show, setShow] = React.useState(false);
     const icon = show ? <ViewIcon /> : <ViewOffIcon />;
     const handleClick = () => setShow(!show);
+
+
+    const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === "Enter") {
+            if (onEnterKeyPress) {
+                onEnterKeyPress();
+            };
+        };
+    };
 
     return (
         <InputGroup>
@@ -24,6 +34,7 @@ const PasswordInput = (props: IPasswordInputProps) => {
                 value={value}
                 name={name}
                 onChange={onChange}
+                onKeyDown={handleKeyPress}
             />
             <InputRightElement
                 children={icon}
