@@ -10,134 +10,163 @@ import { IProject } from "../interfaces/IProject";
 import { IReviewer } from "../interfaces/IReviewer";
 import { formatDateShort } from "../utils/helpers";
 
-
-axios.defaults.baseURL = process.env.REACT_APP_BASE_URL + '/api';
+axios.defaults.baseURL = process.env.REACT_APP_BASE_URL + "/api";
 
 axios.interceptors.request.use((config) => {
-    const user = localStorage.getItem('user');
+  const user = localStorage.getItem("user");
 
-    if (user) {
-        const parsedUser: IUser = JSON.parse(user);
-        config.headers.Authorization = `Bearer ${parsedUser.accessToken}`;
-    }
+  if (user) {
+    const parsedUser: IUser = JSON.parse(user);
+    config.headers.Authorization = `Bearer ${parsedUser.accessToken}`;
+  }
 
-    return config;
+  return config;
 });
 
-axios.interceptors.response.use(response => response, (error: AxiosError) => {
-    if (error.message === 'Network Error' && !error.response) {
-        toast.error('Network error - make sure API is running!');
+axios.interceptors.response.use(
+  (response) => response,
+  (error: AxiosError) => {
+    if (error.message === "Network Error" && !error.response) {
+      toast.error("Network error - make sure API is running!");
     }
 
     if (!error.response) {
-        return Promise.reject(error);
+      return Promise.reject(error);
     }
 
     const { data, status } = error.response;
 
     switch (status) {
-        case StatusCodes.BadRequest:
-            const parsedData = data as IErrorData;
-            const toastStyle: CSSProperties = { whiteSpace: 'pre-line' };
-            toast.error(`${parsedData.title}\n${parsedData.detail}`, { style: toastStyle });
-            break;
+      case StatusCodes.BadRequest:
+        const parsedData = data as IErrorData;
+        const toastStyle: CSSProperties = { whiteSpace: "pre-line" };
+        toast.error(`${parsedData.title}\n${parsedData.detail}`, {
+          style: toastStyle,
+        });
+        break;
 
-        case StatusCodes.Unauthorized:
-            return refreshToken(error);
+      case StatusCodes.Unauthorized:
+        return refreshToken(error);
 
-        case StatusCodes.InternalServerError:
-            router.navigate('/server-error');
-            break;
+      case StatusCodes.InternalServerError:
+        router.navigate("/server-error");
+        break;
 
-        default:
-            break;
+      default:
+        break;
     }
 
     return Promise.reject(error);
-});
+  }
+);
 
 const refreshToken = async (error: AxiosError) => {
-    const user = localStorage.getItem('user');
+  const user = localStorage.getItem("user");
 
-    if (!user) {
-        router.navigate('/login');
-        return Promise.reject(error);
-    }
-
-    if (error.config) {
-        const parsedUser: IUser = JSON.parse(user);
-        try {
-            const response = await agent.Auth.refreshAccess(parsedUser.refreshToken, parsedUser.accessToken);
-            const { accessToken, refreshToken } = response;
-            localStorage.setItem('user', JSON.stringify({ ...parsedUser, accessToken, refreshToken }));
-            error.config.headers.Authorization = `Bearer ${accessToken}`;
-            return axios.request(error.config);
-        } catch (error) {
-            localStorage.removeItem('user');
-            router.navigate('/login');
-            return Promise.reject(error);
-        }
-    }
-
-    localStorage.removeItem('user');
-    router.navigate('/login');
+  if (!user) {
+    router.navigate("/login");
     return Promise.reject(error);
-}
+  }
+
+  if (error.config) {
+    const parsedUser: IUser = JSON.parse(user);
+    try {
+      const response = await agent.Auth.refreshAccess(
+        parsedUser.refreshToken,
+        parsedUser.accessToken
+      );
+      const { accessToken, refreshToken } = response;
+      localStorage.setItem(
+        "user",
+        JSON.stringify({ ...parsedUser, accessToken, refreshToken })
+      );
+      error.config.headers.Authorization = `Bearer ${accessToken}`;
+      return axios.request(error.config);
+    } catch (error) {
+      localStorage.removeItem("user");
+      router.navigate("/login");
+      return Promise.reject(error);
+    }
+  }
+
+  localStorage.removeItem("user");
+  router.navigate("/login");
+  return Promise.reject(error);
+};
 
 const responseBody = <T>(response: AxiosResponse<T>) => response.data;
 
 const requests = {
-    get: <T>(url: string, config?: AxiosRequestConfig<any>) => axios.get<T>(url, config).then(responseBody),
-    post: <T>(url: string, body: {}) => axios.post<T>(url, body).then(responseBody),
-    put: <T>(url: string, body?: {}, params?: {}) => axios.put<T>(url, body, params).then(responseBody),
-    del: <T>(url: string) => axios.delete<T>(url).then(responseBody),
+  get: <T>(url: string, config?: AxiosRequestConfig<any>) =>
+    axios.get<T>(url, config).then(responseBody),
+  post: <T>(url: string, body: {}) =>
+    axios.post<T>(url, body).then(responseBody),
+  put: <T>(url: string, body?: {}, params?: {}) =>
+    axios.put<T>(url, body, params).then(responseBody),
+  del: <T>(url: string) => axios.delete<T>(url).then(responseBody),
 };
 
 const Auth = {
-    login: (email: string, password: string) =>
-        requests.post<IAuthResponse>('/auth/login', { "email": email, "password": password }),
-    register: (email: string, password: string) =>
-        requests.post<IAuthResponse>('/auth/register', { "email": email, "password": password }),
-    refreshAccess: (refreshToken: string, accessToken: string) =>
-        requests.post<IAuthResponse>('/auth/refresh-access', { "refreshToken": refreshToken, "accessToken": accessToken }),
-};
-
-const Notifications = {
-    getAll: () => requests.get('/notifications'),
-};
-
-const Reviews = {
-    getMine: () => requests.get<IProject[]>('/azure/work-items/reviews/user').then(projects => {
-        for (const project of projects) {
-            for (const assignedReview of project.assignedReviews) {
-                assignedReview.createdDate = new Date(assignedReview.createdDate);
-            }
-            for (const unassignedReview of project.unassignedReviews) {
-                unassignedReview.createdDate = new Date(unassignedReview.createdDate);
-            }
-        }
-        return projects;
+  login: (email: string, password: string) =>
+    requests.post<IAuthResponse>("/auth/login", {
+      email: email,
+      password: password,
+    }),
+  register: (email: string, password: string) =>
+    requests.post<IAuthResponse>("/auth/register", {
+      email: email,
+      password: password,
+    }),
+  refreshAccess: (refreshToken: string, accessToken: string) =>
+    requests.post<IAuthResponse>("/auth/refresh-access", {
+      refreshToken: refreshToken,
+      accessToken: accessToken,
     }),
 };
 
+const Notifications = {
+  getAll: () => requests.get("/notifications"),
+};
+
+const Reviews = {
+  getMine: () =>
+    requests
+      .get<IProject[]>("/azure/work-items/reviews/user")
+      .then((projects) => {
+        for (const project of projects) {
+          for (const assignedReview of project.assignedReviews) {
+            assignedReview.createdDate = new Date(assignedReview.createdDate);
+          }
+          for (const unassignedReview of project.unassignedReviews) {
+            unassignedReview.createdDate = new Date(
+              unassignedReview.createdDate
+            );
+          }
+        }
+        return projects;
+      }),
+};
+
 const Reviewers = {
-    getAll: (project: string, startDate: Date, endDate: Date) =>
-        requests.get<IReviewer[]>("/azure/review-sorted-users", {
-            params: {
-                project: project,
-                startDate: formatDateShort(startDate),
-                endDate: formatDateShort(endDate),
-            },
-        }),
-    assign: (reviewId: string, email: string, project: string) =>
-        requests.put(`/azure/reviewer/${reviewId}?email=${email}&project=${project}`),
-}
+  getAll: (project: string, startDate: Date, endDate: Date) =>
+    requests.get<IReviewer[]>("/azure/review-sorted-users", {
+      params: {
+        project: project,
+        startDate: formatDateShort(startDate),
+        endDate: formatDateShort(endDate),
+      },
+    }),
+  assign: (reviewId: string, email: string, project: string) =>
+    requests.put(
+      `/azure/reviewer/${reviewId}?email=${email}&project=${project}`
+    ),
+};
 
 const agent = {
-    Auth,
-    Notifications,
-    Reviews,
-    Reviewers,
+  Auth,
+  Notifications,
+  Reviews,
+  Reviewers,
 };
 
 export default agent;

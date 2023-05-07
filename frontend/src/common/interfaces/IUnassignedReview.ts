@@ -1,4 +1,4 @@
-export interface IRequestedReview {
+export interface IUnassignedReview {
   id: string;
   title: string;
   createdDate: Date;

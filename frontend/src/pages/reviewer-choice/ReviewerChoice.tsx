@@ -12,12 +12,12 @@ import { PageWrapper } from "../../components/page-wrapper/PageWrapper";
 import styles from "./ReviewerChoice.module.scss";
 import { joinClasses } from "../../common/utils/joinClasses";
 import { SearchIcon } from "@chakra-ui/icons";
-import { WorkItemInfo } from "../../components/work-item-info/WorkItemInfo";
+import { ReviewToAssignInfo } from "../../components/review-to-assign-info/ReviewToAssignInfo";
 import { ReviewerFilters } from "./components/reviewer-filters/ReviewerFilters";
 import { IReviewerFilters } from "../../common/interfaces/IReviewerFilters";
 import { IReviewer } from "../../common/interfaces/IReviewer";
 import { Reviewer } from "./components/reviewer/Reviewer";
-import { IRequestedReview } from "../../common/interfaces/IRequestedReview";
+import { IUnassignedReview } from "../../common/interfaces/IUnassignedReview";
 import agent from "../../common/api/agent";
 import { addDays } from "date-fns";
 
@@ -26,7 +26,7 @@ export const ReviewerChoice = () => {
   const primaryComponent = useStyleConfig(StyledComponents.PrimaryComponent);
 
   const location = useLocation();
-  const review: IRequestedReview = location.state.review;
+  const review: IUnassignedReview = location.state.review;
   const startDate = new Date();
   const MAX_DAYS_FROM_TODAY = 5;
   const endDate = addDays(new Date(), MAX_DAYS_FROM_TODAY);
@@ -86,14 +86,16 @@ export const ReviewerChoice = () => {
         );
       }
 
-      if (filters.isUnavailableShown === true) {
+
+      if (filters.isUnavailableShown) {
         unavailableReviewers = newFilteredReviewers.filter(
-          (reviewer) => reviewer.availability === false
+          (reviewer) => !reviewer.availability
         );
       }
 
+
       newFilteredReviewers = newFilteredReviewers.filter(
-        (reviewer) => reviewer.availability === true
+        (reviewer) => reviewer.availability
       );
 
       if (filters.isAscending) {
@@ -176,7 +178,8 @@ export const ReviewerChoice = () => {
     <PageWrapper smallGap={true}>
       <div className={styles.container}>
         <div className={styles.reviewContainer}>
-          <WorkItemInfo {...review} fullWidth={true} />
+
+          <ReviewToAssignInfo {...review} fullWidth={true} />
         </div>
         <div className={styles.filterContainer}>
           <div className={joinClasses(styles.bar, styles.searchBarContainer)}>

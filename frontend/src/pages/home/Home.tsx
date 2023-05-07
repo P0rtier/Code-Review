@@ -44,7 +44,7 @@ export const Home = () => {
         selectedProject && (
           <>
             <ReviewsToAssign
-              usassignedReviews={selectedProject.unassignedReviews}
+              unassignedReviews={selectedProject.unassignedReviews}
             />
             <AssignedReviewsComponent
               assignedReviews={selectedProject.assignedReviews}

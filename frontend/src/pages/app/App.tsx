@@ -10,13 +10,10 @@ import Login from "../login/Login";
 import Register from "../register/Register";
 import { ToastContainer } from "react-toastify";
 import PrivateRoute from "../../components/private-route/PrivateRoute";
-import AnonymouseRoute from "../../components/anonymous-route/AnonymouseRoute";
+import AnonymousRoute from "../../components/anonymous-route/AnonymousRoute";
 import { ServerError } from "../server-error/ServerError";
 import { NotFound } from "../not-found/NotFound";
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 export const router = createBrowserRouter([
   {
@@ -41,11 +38,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "login",
-        element: <AnonymouseRoute Component={Login} />,
+        element: <AnonymousRoute Component={Login} />,
       },
       {
         path: "register",
-        element: <AnonymouseRoute Component={Register} />,
+        element: <AnonymousRoute Component={Register} />,
       },
       {
         path: "server-error",
@@ -64,7 +61,7 @@ const App = () => {
   return (
     <Box className={styles.appContainer} __css={background}>
       <RouterProvider router={router} />
-      <ToastContainer position='bottom-right' hideProgressBar />
+      <ToastContainer position="bottom-right" hideProgressBar />
     </Box>
   );
 };

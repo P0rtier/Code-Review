@@ -25,15 +25,7 @@ export const GraphComponent = (props: IGraphComponentProps) => {
             outerRadius={110}
             fill={getNavbarBlueColor(colorMode)}
             isAnimationActive={false}
-            label={({
-              cx,
-              cy,
-              midAngle,
-              innerRadius,
-              outerRadius,
-              value,
-              index,
-            }) => {
+            label={({ cx, cy, midAngle, innerRadius, outerRadius, value }) => {
               const RADIAN = Math.PI / 180;
               const radius = 25 + innerRadius + (outerRadius - innerRadius);
               const x = cx + radius * Math.cos(-midAngle * RADIAN);

@@ -1,5 +1,5 @@
 import { FunctionComponent } from "react";
 
-export interface IPrivateRouteProps {
+export interface IAnonymousRouteProps {
   Component: FunctionComponent;
 }

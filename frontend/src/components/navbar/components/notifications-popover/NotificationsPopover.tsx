@@ -22,7 +22,8 @@ export const NotificationsPopover = () => {
     {
       id: "2",
       type: "stats",
-      title: "You are #1 on the leaderboard. Click here to see weekly statistics.",
+      title:
+        "You are #1 on the leaderboard. Click here to see weekly statistics.",
       link: "/stats",
     },
     {
@@ -36,9 +37,8 @@ export const NotificationsPopover = () => {
       type: "diff",
       title: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
       link: "/home",
-    }
+    },
   ]);
-
 
   const deleteNotification = (id: string) => {
     const updatedList = mockData.filter((item) => item.id !== id);
@@ -63,8 +63,10 @@ export const NotificationsPopover = () => {
             <NotificationsIcon />
           </button>
         </PopoverTrigger>
-        <PopoverContent w={'30vw'}>
-          <PopoverHeader><div className={styles.header}>Notifications</div></PopoverHeader>
+        <PopoverContent w={"30vw"}>
+          <PopoverHeader>
+            <div className={styles.header}>Notifications</div>
+          </PopoverHeader>
           <PopoverBody>
             <div className={styles.container}>{getData()}</div>
           </PopoverBody>

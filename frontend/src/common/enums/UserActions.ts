@@ -1,5 +1,5 @@
 export enum UserActions {
-    SetUser,
-    ClearUser,
-    RefreshUser
+  SetUser,
+  ClearUser,
+  RefreshUser,
 }

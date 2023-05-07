@@ -1,4 +1,4 @@
-export interface IWorkItemInfoProps {
+export interface IReviewToAssignInfoProps {
   id: string;
   title: string;
   project: string;

@@ -6,12 +6,12 @@ import { ReviewToAssignComponent } from "./components/ReviewToAssignComponent";
 import { IReviewsToAssignProps } from "./IReviewsToAssignProps";
 
 export const ReviewsToAssign = ({
-  usassignedReviews,
+  unassignedReviews,
 }: IReviewsToAssignProps) => {
   const primaryStyles = useStyleConfig(StyledComponents.PrimaryComponent);
 
   const getData = () => {
-    return usassignedReviews.map((review, key) => (
+    return unassignedReviews.map((review, key) => (
       <ReviewToAssignComponent review={review} key={key} />
     ));
   };

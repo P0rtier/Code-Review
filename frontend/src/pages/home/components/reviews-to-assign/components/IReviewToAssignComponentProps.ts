@@ -1,5 +1,5 @@
-import { IRequestedReview } from "../../../../../common/interfaces/IRequestedReview";
+import { IUnassignedReview } from "../../../../../common/interfaces/IUnassignedReview";
 
 export interface IReviewToAssignComponentProps {
-  review: IRequestedReview;
+  review: IUnassignedReview;
 }

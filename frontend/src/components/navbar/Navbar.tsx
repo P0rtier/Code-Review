@@ -11,9 +11,8 @@ import { StyledComponents } from "../../common/enums/StyledComponents";
 import { useContext } from "react";
 import { UserContext } from "../../common/providers/UserProvider";
 import { UserActions } from "../../common/enums/UserActions";
-import { EnviromentProfiles } from "../../common/enums/EnviromentProfiles";
+import { EnvironmentProfiles } from "../../common/enums/EnvironmentProfiles";
 import { NotificationsPopover } from "./components/notifications-popover/NotificationsPopover";
-
 
 export const Navbar = () => {
   const navbarStyles = useStyleConfig(StyledComponents.Navbar);
@@ -25,9 +24,9 @@ export const Navbar = () => {
   const handleLogout = () => {
     dispatch({ type: UserActions.ClearUser });
     navigate("/login");
-  }
+  };
 
-  const isDev = process.env.REACT_APP_ENV === EnviromentProfiles.Development;
+  const isDev = process.env.REACT_APP_ENV === EnvironmentProfiles.Development;
 
   return (
     <>
@@ -37,22 +36,26 @@ export const Navbar = () => {
             <div className={styles.navbarLogo}>code review</div>
           </Link>
           <div className={styles.navbarLinks}>
-            {(user || isDev) && <>
-              <Link to="/home">
-                <HomeIcon />
-              </Link>
-              <NotificationsPopover />
-              <Link to="/stats">
-                <StatsIcon />
-              </Link>
-            </>}
+            {(user || isDev) && (
+              <>
+                <Link to="/home">
+                  <HomeIcon />
+                </Link>
+                <NotificationsPopover />
+                <Link to="/stats">
+                  <StatsIcon />
+                </Link>
+              </>
+            )}
             <ToggleThemeButton />
-            {(user || isDev) && <IconButton
-              icon={<LogoutIcon />}
-              aria-label="logout-button"
-              onClick={handleLogout}
-              variant="ghost"
-            />}
+            {(user || isDev) && (
+              <IconButton
+                icon={<LogoutIcon />}
+                aria-label="logout-button"
+                onClick={handleLogout}
+                variant="ghost"
+              />
+            )}
           </div>
         </Box>
       </div>

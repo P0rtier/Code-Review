@@ -1,6 +1,6 @@
 import { SystemStyleObject } from "@chakra-ui/react";
 
-export interface IReviewInfoProps {
+export interface IAssignedReviewInfoProps {
   title: string;
   scheduledByName: string;
   createdDate: Date;

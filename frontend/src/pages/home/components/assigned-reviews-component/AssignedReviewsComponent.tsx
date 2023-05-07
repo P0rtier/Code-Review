@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./AssignedReviewsComponent.module.scss";
 import { Box, useStyleConfig } from "@chakra-ui/react";
 import { StyledComponents } from "../../../../common/enums/StyledComponents";
-import { ReviewInfo } from "../../../../components/review-info/ReviewInfo";
+import { AssignedReviewInfo } from "../../../../components/assigned-review-info/AssignedReviewInfo";
 import { IAssignedReviewsComponentProps } from "./IAssignedReviewsComponent";
 
 export const AssignedReviewsComponent = ({
@@ -13,7 +13,7 @@ export const AssignedReviewsComponent = ({
 
   const getData = () => {
     return assignedReviews.map((review) => (
-      <ReviewInfo {...review} style={secondaryStyles} key={review.id} />
+      <AssignedReviewInfo {...review} style={secondaryStyles} key={review.id} />
     ));
   };
 

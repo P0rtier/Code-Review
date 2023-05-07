@@ -1,5 +1,5 @@
-export interface IWelcomComponentProps {
-    projectNames: string[];
-    selectedProject?: string;
-    selectProject: (projectName: string) => void;
-};
+export interface IWelcomeComponentProps {
+  projectNames: string[];
+  selectedProject?: string;
+  selectProject: (projectName: string) => void;
+}
