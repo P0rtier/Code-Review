@@ -1,4 +1,4 @@
-export interface IReviewerProps {
+export interface IReviewerItemProps {
     displayName: string;
     uniqueName: string;
     activeReviews: number;

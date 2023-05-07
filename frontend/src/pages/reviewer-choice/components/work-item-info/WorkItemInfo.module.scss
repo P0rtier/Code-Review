@@ -1,5 +1,4 @@
-@import "../../assets/styles/colors.module";
-@import "../../assets/styles/fonts.module";
+@import "../../../../assets/styles/fonts.module";
 
 .container {
   display: flex;
@@ -23,4 +22,8 @@
     gap: 1rem;
     margin-bottom: 1rem;
   }
+}
+
+.fullWidth {
+  width: 100%;
 }

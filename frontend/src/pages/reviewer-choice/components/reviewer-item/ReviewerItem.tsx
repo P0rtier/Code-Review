@@ -1,12 +1,12 @@
 import React from "react";
-import styles from "./Reviewer.module.scss";
-import { IReviewerProps } from "./IReviewerProps";
+import styles from "./ReviewerItem.module.scss";
+import { IReviewerItemProps } from "./IReviewerItemProps";
 import { BoldRegularText } from "../../../../components/bold-regular-text/BoldRegularText";
 import { Button, Tooltip } from "@chakra-ui/react";
 import agent from "../../../../common/api/agent";
 import { toast } from "react-toastify";
 
-export const Reviewer = (props: IReviewerProps) => {
+export const ReviewerItem = (props: IReviewerItemProps) => {
 
   const getOpacityAvailable = () => {
     return props.availability ? 1 : 0.5;

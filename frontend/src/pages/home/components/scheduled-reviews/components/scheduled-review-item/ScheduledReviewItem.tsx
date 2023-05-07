@@ -1,11 +1,11 @@
 import React from "react";
-import styles from "./ReviewInfo.module.scss";
-import { BoldRegularText } from "../bold-regular-text/BoldRegularText";
+import styles from "./ScheduledReviewItem.module.scss";
+import { BoldRegularText } from "../../../../../../components/bold-regular-text/BoldRegularText";
 import { Box, useStyleConfig } from "@chakra-ui/react";
-import { IReviewInfoProps } from "./IReviewInfoProps";
-import { StyledComponents } from "../../common/enums/StyledComponents";
+import { IScheduledReviewItemProps } from "./IScheduledReviewItemProps";
+import { StyledComponents } from "../../../../../../common/enums/StyledComponents";
 
-export const ReviewInfo = (props: IReviewInfoProps) => {
+export const ScheduledReviewItem = (props: IScheduledReviewItemProps) => {
   const headerStyles = useStyleConfig(StyledComponents.ReviewHeader);
 
   return (
