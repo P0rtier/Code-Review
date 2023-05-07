@@ -1,10 +1,12 @@
 import React from "react";
-import { IWorkItemComponentProps } from "./IWorkItemComponentProps";
-import styles from "./WorkItemComponent.module.scss";
+import { IReviewToAssignComponentProps } from "./IReviewToAssignComponentProps";
+import styles from "./ReviewToAssignComponent.module.scss";
 import { BoldRegularText } from "../../../../../components/bold-regular-text/BoldRegularText";
 import { Link } from "react-router-dom";
 
-export const WorkItemComponent = (props: IWorkItemComponentProps) => {
+export const ReviewToAssignComponent = (
+  props: IReviewToAssignComponentProps
+) => {
   const review = props.review;
 
   return (
@@ -16,7 +18,10 @@ export const WorkItemComponent = (props: IWorkItemComponentProps) => {
           boldText={"Created date: "}
           regularText={review.createdDate.toLocaleDateString()}
         />
-        <BoldRegularText boldText={"Tags: "} regularText={String(review.tags)} />
+        <BoldRegularText
+          boldText={"Tags: "}
+          regularText={String(review.tags)}
+        />
       </div>
     </Link>
   );

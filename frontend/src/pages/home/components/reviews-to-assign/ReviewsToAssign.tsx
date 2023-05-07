@@ -1,20 +1,18 @@
 import * as React from "react";
-import styles from "./WorkItems.module.scss";
+import styles from "./ReviewsToAssign.module.scss";
 import { Box, useStyleConfig } from "@chakra-ui/react";
 import { StyledComponents } from "../../../../common/enums/StyledComponents";
-import { WorkItemComponent } from "./components/WorkItemComponent";
-import { IWorkItemsProps } from "./IWorkItemsProps";
+import { ReviewToAssignComponent } from "./components/ReviewToAssignComponent";
+import { IReviewsToAssignProps } from "./IReviewsToAssignProps";
 
-
-export const WorkItems = ({ usassignedReviews }: IWorkItemsProps) => {
+export const ReviewsToAssign = ({
+  usassignedReviews,
+}: IReviewsToAssignProps) => {
   const primaryStyles = useStyleConfig(StyledComponents.PrimaryComponent);
 
   const getData = () => {
     return usassignedReviews.map((review, key) => (
-      <WorkItemComponent
-        review={review}
-        key={key}
-      />
+      <ReviewToAssignComponent review={review} key={key} />
     ));
   };
 

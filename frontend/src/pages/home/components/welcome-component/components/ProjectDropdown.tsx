@@ -1,11 +1,11 @@
 import React from "react";
-import styles from "./StatusDropdown.module.scss";
+import styles from "./ProjectDropdown.module.scss";
 import { Button, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { BoldRegularText } from "../../../../../components/bold-regular-text/BoldRegularText";
-import { IStatusDropdownProps } from "./IStatusDropdownProps";
+import { IProjectDropdownProps } from "./IProjectDropdownProps";
 
-export const StatusDropdown = (props: IStatusDropdownProps) => {
+export const ProjectDropdown = (props: IProjectDropdownProps) => {
   const { projectNames, selectedProject, selectProject } = props;
 
   return (
@@ -17,12 +17,18 @@ export const StatusDropdown = (props: IStatusDropdownProps) => {
         disabled={!!selectedProject}
       >
         <div className={styles.container}>
-          <BoldRegularText boldText={"Project: "} regularText={selectedProject || ''} />
+          <BoldRegularText
+            boldText={"Project: "}
+            regularText={selectedProject || ""}
+          />
         </div>
       </MenuButton>
       <MenuList>
         {projectNames.map((projectName) => (
-          <MenuItem onClick={() => selectProject(projectName)} key={projectName}>
+          <MenuItem
+            onClick={() => selectProject(projectName)}
+            key={projectName}
+          >
             {projectName}
           </MenuItem>
         ))}

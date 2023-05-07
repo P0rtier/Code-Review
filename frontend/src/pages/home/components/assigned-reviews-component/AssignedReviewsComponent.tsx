@@ -1,22 +1,19 @@
 import React from "react";
-import styles from "./ScheduledReviewsComponent.module.scss";
+import styles from "./AssignedReviewsComponent.module.scss";
 import { Box, useStyleConfig } from "@chakra-ui/react";
 import { StyledComponents } from "../../../../common/enums/StyledComponents";
 import { ReviewInfo } from "../../../../components/review-info/ReviewInfo";
-import { IScheduledReviewsComponentProps } from "./IScheduledReviewsComponent";
+import { IAssignedReviewsComponentProps } from "./IAssignedReviewsComponent";
 
-
-export const ScheduledReviewsComponent = ({ assignedReviews }: IScheduledReviewsComponentProps) => {
+export const AssignedReviewsComponent = ({
+  assignedReviews,
+}: IAssignedReviewsComponentProps) => {
   const primaryStyles = useStyleConfig(StyledComponents.PrimaryComponent);
   const secondaryStyles = useStyleConfig(StyledComponents.SecondaryComponent);
 
   const getData = () => {
     return assignedReviews.map((review) => (
-      <ReviewInfo
-        {...review}
-        style={secondaryStyles}
-        key={review.id}
-      />
+      <ReviewInfo {...review} style={secondaryStyles} key={review.id} />
     ));
   };
 

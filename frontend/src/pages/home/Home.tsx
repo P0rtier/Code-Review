@@ -1,14 +1,16 @@
 import React, { useEffect } from "react";
 import { WelcomeComponent } from "./components/welcome-component/WelcomeComponent";
-import { ScheduledReviewsComponent } from "./components/scheduled-reviews-component/ScheduledReviewsComponent";
+import { AssignedReviewsComponent } from "./components/assigned-reviews-component/AssignedReviewsComponent";
 import { PageWrapper } from "../../components/page-wrapper/PageWrapper";
-import { WorkItems } from "./components/work-items/WorkItems";
+import { ReviewsToAssign } from "./components/reviews-to-assign/ReviewsToAssign";
 import { IProject } from "../../common/interfaces/IProject";
 import agent from "../../common/api/agent";
+import { Placeholder } from "./components/placeholder/Placeholder";
 
 export const Home = () => {
   const [projects, setProjects] = React.useState<IProject[]>([]);
   const [selectedProject, setSelectedProject] = React.useState<IProject>();
+  const [loading, setLoading] = React.useState<boolean>(true);
 
   useEffect(() => {
     agent.Reviews.getMine().then((response: IProject[]) => {
@@ -16,12 +18,15 @@ export const Home = () => {
       if (response.length > 0) {
         setSelectedProject(response[0]);
       }
+      setLoading(false);
     });
   }, []);
 
   const handleSelectProject = (projectName: string) => {
-    setSelectedProject(projects.find((project) => project.name === projectName));
-  }
+    setSelectedProject(
+      projects.find((project) => project.name === projectName)
+    );
+  };
 
   return (
     <PageWrapper>
@@ -30,8 +35,23 @@ export const Home = () => {
         selectedProject={selectedProject?.name}
         selectProject={handleSelectProject}
       />
-      {selectedProject && <WorkItems usassignedReviews={selectedProject.unassignedReviews} />}
-      {selectedProject && <ScheduledReviewsComponent assignedReviews={selectedProject.assignedReviews} />}
+      {loading ? (
+        <>
+          <Placeholder header={"Reviews to assign"} />
+          <Placeholder header={"Assigned reviews"} />
+        </>
+      ) : (
+        selectedProject && (
+          <>
+            <ReviewsToAssign
+              usassignedReviews={selectedProject.unassignedReviews}
+            />
+            <AssignedReviewsComponent
+              assignedReviews={selectedProject.assignedReviews}
+            />
+          </>
+        )
+      )}
     </PageWrapper>
   );
 };

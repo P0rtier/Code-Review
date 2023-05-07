@@ -1,4 +1,4 @@
-export default interface IScheduledReview {
+export default interface IAssignedReview {
   id: string;
   title: string;
   scheduledByName: string;

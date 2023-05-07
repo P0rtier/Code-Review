@@ -1,8 +1,8 @@
 import { IRequestedReview } from "./IRequestedReview";
-import IScheduledReview from "./IScheduledReview";
+import IAssignedReview from "./IAssignedReview";
 
 export interface IProject {
-    name: string;
-    assignedReviews: IScheduledReview[];
-    unassignedReviews: IRequestedReview[];
+  name: string;
+  assignedReviews: IAssignedReview[];
+  unassignedReviews: IRequestedReview[];
 }

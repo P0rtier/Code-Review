@@ -1,5 +1,5 @@
 import { IRequestedReview } from "../../../../common/interfaces/IRequestedReview";
 
-export interface IWorkItemsProps {
-    usassignedReviews: IRequestedReview[];
+export interface IReviewsToAssignProps {
+  usassignedReviews: IRequestedReview[];
 }
