@@ -1,10 +1,10 @@
 import React from "react";
 import styles from "./WorkItemInfo.module.scss";
-import { BoldRegularText } from "../../../../components/bold-regular-text/BoldRegularText";
+import { BoldRegularText } from "../bold-regular-text/BoldRegularText";
 import { Box, useStyleConfig } from "@chakra-ui/react";
 import { IWorkItemInfoProps } from "./IWorkItemInfoProps";
-import { joinClasses } from "../../../../common/utils/joinClasses";
-import { StyledComponents } from "../../../../common/enums/StyledComponents";
+import { joinClasses } from "../../common/utils/joinClasses";
+import { StyledComponents } from "../../common/enums/StyledComponents";
 
 export const WorkItemInfo = (props: IWorkItemInfoProps) => {
 

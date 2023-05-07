@@ -1,25 +1,26 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import {
   Box,
+  Button,
   Input,
   InputGroup,
   InputLeftElement,
   useStyleConfig,
 } from "@chakra-ui/react";
 import { StyledComponents } from "../../common/enums/StyledComponents";
-import styles from "./ReviewerChoice.module.scss";
 import { useLocation } from "react-router";
-import agent from "../../common/api/agent";
-import { addDays } from "date-fns";
 import { PageWrapper } from "../../components/page-wrapper/PageWrapper";
+import styles from "./ReviewerChoice.module.scss";
 import { joinClasses } from "../../common/utils/joinClasses";
 import { SearchIcon } from "@chakra-ui/icons";
-import { WorkItemInfo } from "./components/work-item-info/WorkItemInfo";
+import { WorkItemInfo } from "../../components/work-item-info/WorkItemInfo";
 import { ReviewerFilters } from "./components/reviewer-filters/ReviewerFilters";
 import { IReviewerFilters } from "../../common/interfaces/IReviewerFilters";
-import { ReviewerItem } from "./components/reviewer-item/ReviewerItem";
 import { IReviewer } from "../../common/interfaces/IReviewer";
-import { IUnassignedReview } from "../../common/interfaces/IUnassignedReview";
+import { Reviewer } from "./components/reviewer/Reviewer";
+import { IRequestedReview } from "../../common/interfaces/IRequestedReview";
+import agent from "../../common/api/agent";
+import { addDays } from "date-fns";
 
 export const ReviewerChoice = () => {
   const primaryOrangeComponent = useStyleConfig(
@@ -31,7 +32,7 @@ export const ReviewerChoice = () => {
   const primaryComponent = useStyleConfig(StyledComponents.PrimaryComponent);
 
   const location = useLocation();
-  const review: IUnassignedReview = location.state.review;
+  const review: IRequestedReview = location.state.review;
   const startDate = new Date();
   const MAX_DAYS_FROM_TODAY = 5;
   const endDate = addDays(new Date(), MAX_DAYS_FROM_TODAY);
@@ -46,9 +47,10 @@ export const ReviewerChoice = () => {
     } as IReviewerFilters;
 
   const [filters, setFilters] = useState<IReviewerFilters>(defaultFilters);
-  const [reviewers, setReviewers] = useState<IReviewer[] | undefined>();
 
-  const [filteredReviewers, setFilteredReviewers] = useState<IReviewer[] | undefined>();
+  let [reviewers, setReviewers] = useState<IReviewer[] | undefined>();
+
+  let [filteredReviewers, setFilteredReviewers] = useState<IReviewer[] | undefined>();
 
   const [searchedReviewers, setSearchedReviewers] = useState<IReviewer[] | undefined>();
 
@@ -103,7 +105,7 @@ export const ReviewerChoice = () => {
 
       }
 
-      newFilteredReviewers = [...newFilteredReviewers, ...unavailableReviewers];
+      newFilteredReviewers.concat(unavailableReviewers);
     }
 
     setFilteredReviewers(newFilteredReviewers);
@@ -122,9 +124,7 @@ export const ReviewerChoice = () => {
 
     setSearchedReviewers(newSearchedReviewers);
   }
-  //#endregion
 
-  //#region handles
   const getUniqueTeams = () => {
     if (reviewers) {
       return Array.from(new Set(reviewers.map((reviewer) => reviewer.teamName)));
@@ -137,7 +137,7 @@ export const ReviewerChoice = () => {
     if (searchedReviewers) {
       return (
         searchedReviewers.map((reviewer) =>
-          <ReviewerItem {...reviewer}
+          <Reviewer {...reviewer}
             reviewId={review.id}
             project={review.project}
             key={reviewer.uniqueName}
