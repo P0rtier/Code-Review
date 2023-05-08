@@ -1,13 +1,13 @@
 package com.kpz.codereview.azureclient.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.kpz.codereview.azureclient.model.base.WorkItem;
-import com.kpz.codereview.azureclient.model.base.component.CodeReviewerDTS;
-import com.kpz.codereview.azureclient.model.base.component.CodeReviewerStatDTS;
-import com.kpz.codereview.azureclient.model.base.wrapper.MemberSearchQuery;
-import com.kpz.codereview.azureclient.model.base.wrapper.ProjectSearchQuery;
-import com.kpz.codereview.azureclient.model.base.wrapper.TeamSearchQuery;
-import com.kpz.codereview.azureclient.model.domain.ProjectSummary;
+import com.kpz.codereview.azureclient.model.domain.base.Member;
+import com.kpz.codereview.azureclient.model.domain.base.Project;
+import com.kpz.codereview.azureclient.model.domain.base.Team;
+import com.kpz.codereview.azureclient.model.azure.wrapper.WorkItem;
+import com.kpz.codereview.azureclient.model.domain.dts.CodeReviewerStatDTS;
+import com.kpz.codereview.azureclient.model.domain.dts.CodeReviewerDTS;
+import com.kpz.codereview.azureclient.model.domain.dts.ProjectSummaryDTS;
 import com.kpz.codereview.azureclient.model.domain.UnassignedReview;
 
 import java.text.ParseException;
@@ -26,13 +26,13 @@ public interface AzureClientService {
 
     String extractQueryFromBody(String requestBody);
 
-    ProjectSearchQuery getProjectList() throws JsonProcessingException;
+    List<Project> getProjectList() throws JsonProcessingException;
 
-    TeamSearchQuery getTeamList(String projectId) throws JsonProcessingException;
+    List<Team> getTeamList(String projectId) throws JsonProcessingException;
 
-    MemberSearchQuery getMemberList(String projectId, String teamId) throws JsonProcessingException;
+    List<Member> getMemberList(String projectId, String teamId) throws JsonProcessingException;
 
-    List<ProjectSummary> getUserProjectSummaries(String userUUID) throws JsonProcessingException;
+    List<ProjectSummaryDTS> getUserProjectSummaries(String userUUID) throws JsonProcessingException;
 
     void assignCodeReviewToUser(Integer workItemId, String userUUID, String projectName) throws JsonProcessingException;
 

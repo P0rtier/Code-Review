@@ -1,11 +1,11 @@
-package com.kpz.codereview.azureclient.model.base.component;
+package com.kpz.codereview.azureclient.model.azure.component;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class SystemCreatedBy {
+public class SystemAssignedTo {
     public String displayName;
     public String uniqueName;
 }

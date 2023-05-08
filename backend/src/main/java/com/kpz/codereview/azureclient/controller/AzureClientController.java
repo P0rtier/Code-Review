@@ -2,13 +2,13 @@ package com.kpz.codereview.azureclient.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.kpz.codereview.auth.service.JwtService;
-import com.kpz.codereview.azureclient.model.base.WorkItem;
-import com.kpz.codereview.azureclient.model.base.component.CodeReviewerDTS;
-import com.kpz.codereview.azureclient.model.base.component.CodeReviewerStatDTS;
-import com.kpz.codereview.azureclient.model.base.wrapper.MemberSearchQuery;
-import com.kpz.codereview.azureclient.model.base.wrapper.ProjectSearchQuery;
-import com.kpz.codereview.azureclient.model.base.wrapper.TeamSearchQuery;
-import com.kpz.codereview.azureclient.model.domain.ProjectSummary;
+import com.kpz.codereview.azureclient.model.domain.base.Member;
+import com.kpz.codereview.azureclient.model.domain.base.Project;
+import com.kpz.codereview.azureclient.model.domain.base.Team;
+import com.kpz.codereview.azureclient.model.azure.wrapper.WorkItem;
+import com.kpz.codereview.azureclient.model.domain.dts.CodeReviewerDTS;
+import com.kpz.codereview.azureclient.model.domain.dts.CodeReviewerStatDTS;
+import com.kpz.codereview.azureclient.model.domain.dts.ProjectSummaryDTS;
 import com.kpz.codereview.azureclient.model.domain.UnassignedReview;
 import com.kpz.codereview.azureclient.service.AzureClientService;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -64,7 +64,7 @@ public class AzureClientController {
         return azureService.getUnassignedReviewById(id, projectName);
     }
 
-            @ApiResponses(value = {
+    @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "410",
                     description = "Azure API returned exception",
@@ -106,7 +106,7 @@ public class AzureClientController {
             @ApiResponse(responseCode = "200", description = "OK")
     })
     @GetMapping("/work-items/reviews/user")
-    public List<ProjectSummary> getUserReviews(@RequestHeader(name = "Authorization") String token) throws JsonProcessingException {
+    public List<ProjectSummaryDTS> getUserReviews(@RequestHeader(name = "Authorization") String token) throws JsonProcessingException {
         var userUUID = jwtService.getSubjectWithoutPrefix(token);
 
         return azureService.getUserProjectSummaries(userUUID);
@@ -161,7 +161,7 @@ public class AzureClientController {
             @ApiResponse(responseCode = "200", description = "OK")
     })
     @GetMapping("/projects")
-    public ProjectSearchQuery getAllProjects() throws JsonProcessingException {
+    public List<Project> getAllProjects() throws JsonProcessingException {
         return azureService.getProjectList();
     }
 
@@ -184,7 +184,7 @@ public class AzureClientController {
             @ApiResponse(responseCode = "200", description = "OK")
     })
     @GetMapping("/teams")
-    public TeamSearchQuery getProjectTeamList(@RequestParam(name = "project") String projectId) throws JsonProcessingException {
+    public List<Team> getProjectTeamList(@RequestParam(name = "project") String projectId) throws JsonProcessingException {
         return azureService.getTeamList(projectId);
     }
 
@@ -207,8 +207,8 @@ public class AzureClientController {
             @ApiResponse(responseCode = "200", description = "OK")
     })
     @GetMapping("/members")
-    public MemberSearchQuery getTeamUserList(@RequestParam(name = "project") String projectId,
-                                             @RequestParam(name = "team") String teamId) throws JsonProcessingException {
+    public List<Member> getTeamUserList(@RequestParam(name = "project") String projectId,
+                                        @RequestParam(name = "team") String teamId) throws JsonProcessingException {
         return azureService.getMemberList(projectId, teamId);
     }
 

@@ -1,10 +1,10 @@
-package com.kpz.codereview.azureclient.model.base.wrapper;
+package com.kpz.codereview.azureclient.model.azure.component;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class UserWrapper {
-    public String mailAddress;
+public class WorkItemShort {
+    public int id;
 }

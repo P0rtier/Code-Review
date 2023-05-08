@@ -1,23 +1,23 @@
 package com.kpz.codereview.azureclient.service.impl;
 
-import com.kpz.codereview.azureclient.model.base.Project;
-import com.kpz.codereview.azureclient.model.base.component.CodeReviewerDTS;
-import com.kpz.codereview.azureclient.model.base.component.ReviewStats;
-import com.kpz.codereview.azureclient.model.base.component.CodeReviewerStatDTS;
-import com.kpz.codereview.azureclient.model.base.wrapper.AllUsersSearchQuery;
-import com.kpz.codereview.azureclient.model.base.wrapper.MemberSearchQuery;
-import com.kpz.codereview.azureclient.model.base.wrapper.MemberWrapper;
-import com.kpz.codereview.azureclient.model.base.wrapper.ProjectSearchQuery;
-import com.kpz.codereview.azureclient.model.base.wrapper.TeamSearchQuery;
-import com.kpz.codereview.azureclient.model.base.Member;
-import com.kpz.codereview.azureclient.model.base.Team;
-import com.kpz.codereview.azureclient.model.base.wrapper.WorkItemSearchQuery;
-import com.kpz.codereview.azureclient.model.domain.AssignedReview;
-import com.kpz.codereview.azureclient.model.domain.ProjectSummary;
-import com.kpz.codereview.azureclient.model.domain.UnassignedReview;
+import com.kpz.codereview.azureclient.model.domain.base.Project;
+import com.kpz.codereview.azureclient.model.domain.dts.CodeReviewerDTS;
+import com.kpz.codereview.azureclient.model.domain.base.ReviewStats;
+import com.kpz.codereview.azureclient.model.domain.dts.CodeReviewerStatDTS;
+import com.kpz.codereview.azureclient.model.azure.wrapper.AllUsersSearchQuery;
+import com.kpz.codereview.azureclient.model.azure.wrapper.MemberSearchQuery;
+import com.kpz.codereview.azureclient.model.azure.wrapper.MemberWrapper;
+import com.kpz.codereview.azureclient.model.azure.wrapper.ProjectSearchQuery;
+import com.kpz.codereview.azureclient.model.azure.wrapper.TeamSearchQuery;
+import com.kpz.codereview.azureclient.model.domain.base.Member;
+import com.kpz.codereview.azureclient.model.domain.base.Team;
+import com.kpz.codereview.azureclient.model.azure.wrapper.WorkItemSearchQuery;
+import com.kpz.codereview.azureclient.model.domain.dts.AssignedReviewDTS;
+import com.kpz.codereview.azureclient.model.domain.dts.ProjectSummaryDTS;
+import com.kpz.codereview.azureclient.model.domain.dts.UnassignedReviewDTS;
 import com.kpz.codereview.exception.model.BadAzureAPIResponse;
 import com.kpz.codereview.exception.model.BadRequestBodyException;
-import com.kpz.codereview.azureclient.model.base.WorkItem;
+import com.kpz.codereview.azureclient.model.azure.wrapper.WorkItem;
 import com.kpz.codereview.azureclient.service.AzureClientService;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -87,7 +87,9 @@ public class AzureClientServiceImpl implements AzureClientService {
             And [System.TeamProject] = '%s'
             """;
     private static final String WIQL_GET_ALL_REVIEW_WORK_ITEMS = """
-            Select * From WorkItems Where [System.WorkItemType] = 'Code Review'
+            Select * From WorkItems
+            Where [System.WorkItemType] = 'Code Review'
+            And [System.TeamProject] = '%s'
             """;
     private static final String WIQL_GET_UNASSIGNED_CODE_REVIEW_ITEMS = """
             Select * From WorkItems
@@ -178,7 +180,9 @@ public class AzureClientServiceImpl implements AzureClientService {
 
     @Override
     public List<WorkItem> getCodeReviewItemList(String projectName) throws JsonProcessingException {
-        return getWorkItemListFromQuery(WIQL_GET_ALL_REVIEW_WORK_ITEMS, projectName);
+        var query = WIQL_GET_ALL_REVIEW_WORK_ITEMS.formatted(projectName);
+
+        return getWorkItemListFromQuery(query, projectName);
     }
 
     @Override
@@ -204,69 +208,79 @@ public class AzureClientServiceImpl implements AzureClientService {
     }
 
     @Override
-    public ProjectSearchQuery getProjectList() throws JsonProcessingException {
+    public List<Project> getProjectList() throws JsonProcessingException {
         ResponseEntity<String> response = restTemplate.exchange(
                 genGetProjectsUri(),
                 HttpMethod.GET,
                 new HttpEntity<>(genAuthHeaderKey()),
                 String.class
         );
-        return om.readValue(
+
+        ProjectSearchQuery query = om.readValue(
                 response.getBody(),
                 ProjectSearchQuery.class
         );
+
+        return query.getProjects();
     }
 
     @Override
-    public TeamSearchQuery getTeamList(String projectId) throws JsonProcessingException {
+    public List<Team> getTeamList(String projectId) throws JsonProcessingException {
         ResponseEntity<String> response = restTemplate.exchange(
                 genGetTeamsUri(projectId),
                 HttpMethod.GET,
                 new HttpEntity<>(genAuthHeaderKey()),
                 String.class
         );
-        return om.readValue(
+
+        TeamSearchQuery query = om.readValue(
                 response.getBody(),
                 TeamSearchQuery.class
         );
+
+        return query.getTeams();
     }
 
     @Override
-    public MemberSearchQuery getMemberList(String projectId, String teamId) throws JsonProcessingException {
+    public List<Member> getMemberList(String projectId, String teamId) throws JsonProcessingException {
         ResponseEntity<String> response = restTemplate.exchange(
                 genGetMembersUri(projectId, teamId),
                 HttpMethod.GET,
                 new HttpEntity<>(genAuthHeaderKey()),
                 String.class
         );
-        return om.readValue(
+        MemberSearchQuery query = om.readValue(
                 response.getBody(),
                 MemberSearchQuery.class
         );
+
+        return query.getMembers()
+                .stream()
+                .map(MemberWrapper::getIdentity)
+                .toList();
     }
 
     @Override
     public List<String> getUserProjects(String userEmail) throws JsonProcessingException {
         List<String> userProjects = new ArrayList<>();
 
-        List<Project> projects = getProjectList().getProjects();
+        List<Project> projects = getProjectList();
 
         for (Project project : projects) {
             var projectId = project.getId();
 
-            List<String> teams = getTeamList(projectId).getTeams()
+            List<String> teams = getTeamList(projectId)
                     .stream()
                     .map(Team::getId)
                     .toList();
 
             for (String teamId : teams) {
-                List<String> members = getMemberList(projectId, teamId).getMembers()
+                List<String> memberEmails = getMemberList(projectId, teamId)
                         .stream()
-                        .map(MemberWrapper::getIdentity)
                         .map(Member::getUniqueName)
                         .toList();
 
-                if (members.contains(userEmail)) {
+                if (memberEmails.contains(userEmail)) {
                     userProjects.add(project.getName());
                 }
             }
@@ -276,7 +290,7 @@ public class AzureClientServiceImpl implements AzureClientService {
     }
 
     @Override
-    public List<ProjectSummary> getUserProjectSummaries(String userUUID) throws JsonProcessingException {
+    public List<ProjectSummaryDTS> getUserProjectSummaries(String userUUID) throws JsonProcessingException {
         var user = accountService.findById(UUID.fromString(userUUID));
 
         if (user.isEmpty()) {
@@ -284,7 +298,7 @@ public class AzureClientServiceImpl implements AzureClientService {
         }
 
         var userEmail = user.get().getEmail();
-        List<ProjectSummary> projectSummaries = new ArrayList<>();
+        List<ProjectSummaryDTS> projectSummaries = new ArrayList<>();
 
         var userProjects = getUserProjects(userEmail);
 
@@ -292,7 +306,7 @@ public class AzureClientServiceImpl implements AzureClientService {
             var unassignedReviews = getUnassignedCodeReviewItemsByUser(userEmail, projectName);
             var assignedReviews = getAssignedCodeReviewItemsByUser(userEmail, projectName);
 
-            var currSummary = ProjectSummary.builder()
+            var currSummary = ProjectSummaryDTS.builder()
                     .name(projectName)
                     .assignedReviews(assignedReviews)
                     .unassignedReviews(unassignedReviews)
@@ -357,14 +371,14 @@ public class AzureClientServiceImpl implements AzureClientService {
 
     }
 
-    private List<AssignedReview> getAssignedCodeReviewItemsByUser(String userEmail, String projectName) throws JsonProcessingException {
+    private List<AssignedReviewDTS> getAssignedCodeReviewItemsByUser(String userEmail, String projectName) throws JsonProcessingException {
         var workItems = getWorkItemListFromQuery(
                 WIQL_GET_ASSIGNED_CODE_REVIEW_ITEMS.formatted(userEmail, projectName),
                 projectName
         );
 
         workItems = filterFinishedCodeReviews(workItems);
-        List<AssignedReview> mappedWorkItems = new ArrayList<>();
+        List<AssignedReviewDTS> mappedWorkItems = new ArrayList<>();
 
         workItems.forEach(workItem -> {
             var id = workItem.getId();
@@ -385,7 +399,7 @@ public class AzureClientServiceImpl implements AzureClientService {
                 );
             }
 
-            var mappedReview = AssignedReview.builder()
+            var mappedReview = AssignedReviewDTS.builder()
                     .id(id)
                     .title(title)
                     .link(link)
@@ -402,12 +416,12 @@ public class AzureClientServiceImpl implements AzureClientService {
         return mappedWorkItems;
     }
 
-    private List<UnassignedReview> getUnassignedCodeReviewItemsByUser(String userEmail, String projectName) throws JsonProcessingException {
+    private List<UnassignedReviewDTS> getUnassignedCodeReviewItemsByUser(String userEmail, String projectName) throws JsonProcessingException {
         var workItems = getWorkItemListFromQuery(
                 WIQL_GET_UNASSIGNED_CODE_REVIEW_ITEMS.formatted(userEmail, projectName),
                 projectName
         );
-        List<UnassignedReview> mappedWorkItems = new ArrayList<>();
+        List<UnassignedReviewDTS> mappedWorkItems = new ArrayList<>();
 
         workItems.forEach(workItem -> {
             var mappedReview = mapWorkItemToUnassignedReview(workItem, projectName);
@@ -434,7 +448,7 @@ public class AzureClientServiceImpl implements AzureClientService {
             );
         }
 
-        return UnassignedReview.builder()
+        return UnassignedReviewDTS.builder()
                 .id(id)
                 .title(title)
                 .link(link)
@@ -685,8 +699,9 @@ public class AzureClientServiceImpl implements AzureClientService {
     }
 
     private Map<String, CodeReviewerDTS> genCodeReviewerHashMapFromProject(String projectName) throws JsonProcessingException {
-        List<Team> projectTeams = getTeamList(projectName).getTeams();
+        List<Team> projectTeams = getTeamList(projectName);
         Map<String, CodeReviewerDTS> reviewersMap = new HashMap<>();
+
         for (var team : projectTeams) {
             genTeamMembers(projectName, team).forEach(member -> {
 
@@ -709,7 +724,7 @@ public class AzureClientServiceImpl implements AzureClientService {
     }
 
     private Map<String, CodeReviewerStatDTS> genUserReviewStatisticsHashMapFromProject(String projectName) throws JsonProcessingException {
-        List<Team> projectTeams = getTeamList(projectName).getTeams();
+        List<Team> projectTeams = getTeamList(projectName);
         Map<String, CodeReviewerStatDTS> reviewersMap = new HashMap<>();
         for (var team : projectTeams) {
             genTeamMembers(projectName, team).forEach(member -> {
@@ -731,10 +746,6 @@ public class AzureClientServiceImpl implements AzureClientService {
     }
 
     private Set<Member> genTeamMembers(String projectName, Team team) throws JsonProcessingException {
-        return getMemberList(projectName, team.getId())
-                .getMembers()
-                .stream()
-                .map(MemberWrapper::getIdentity)
-                .collect(Collectors.toSet());
+        return new HashSet<>(getMemberList(projectName, team.getId()));
     }
 }

@@ -81,10 +81,41 @@
     </changeSet>
 
     <changeSet id="5" author="Kacper Aleks">
+        <createTable tableName="users">
+            <column name="user_email" type="varchar(255)">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+
+            <column name="display_name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="6" author="Kacper Aleks">
+        <createTable tableName="team_mappings">
+            <column name="id" autoIncrement="true" type="int">
+                <constraints primaryKey="true"/>
+            </column>
+
+            <column name="user_email" type="varchar(255)">
+                <constraints nullable="false" foreignKeyName="fk_user_email"
+                             references="users(user_email)"/>
+            </column>
+
+            <column name="team_name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+
+    <changeSet id="7" author="Kacper Aleks">
         <createTable tableName="user_standings">
             <column name="id" autoIncrement="true" type="int">
                 <constraints primaryKey="true"/>
             </column>
+
             <column name="user_email" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
@@ -103,4 +134,5 @@
             </column>
         </createTable>
     </changeSet>
+
 </databaseChangeLog>

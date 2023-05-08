@@ -15,6 +15,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import javax.naming.AuthenticationException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 @ControllerAdvice
 public class ControllerAdvisor extends ResponseEntityExceptionHandler {
@@ -34,6 +35,9 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
 
     private static final String ENTITY_NOT_FOUND_EXCEPTION_TYPE = "/errors/general/not-found";
     private static final String ENTITY_NOT_FOUND_EXCEPTION_TITLE = "Entity does not exist";
+
+    private static final String BAD_DATE_EXCEPTION_TYPE = "/errors/general/bad-date";
+    private static final String BAD_DATE_EXCEPTION_TITLE = "Date cannot be parsed";
 
 
 
@@ -134,6 +138,27 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
                 .timestamp(timeStamp)
                 .type(ENTITY_NOT_FOUND_EXCEPTION_TYPE)
                 .title(ENTITY_NOT_FOUND_EXCEPTION_TITLE)
+                .status(status.value())
+                .detail(detail)
+                .instance(instance)
+                .build();
+
+        return new ResponseEntity<>(error, status);
+    }
+
+    @ExceptionHandler(DateTimeParseException.class)
+    private ResponseEntity<ErrorResponse> handleDateTimeParseException(
+            DateTimeParseException ex, ServletWebRequest request) {
+
+        var timeStamp = LocalDateTime.now().format(DATE_TIME_FORMATTER);
+        var status = HttpStatus.BAD_REQUEST;
+        var detail = ex.getMessage();
+        var instance = request.getRequest().getRequestURI();
+
+        var error = ErrorResponse.builder()
+                .timestamp(timeStamp)
+                .type(BAD_DATE_EXCEPTION_TYPE)
+                .title(BAD_DATE_EXCEPTION_TITLE)
                 .status(status.value())
                 .detail(detail)
                 .instance(instance)

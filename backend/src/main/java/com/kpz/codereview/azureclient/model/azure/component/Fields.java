@@ -1,4 +1,4 @@
-package com.kpz.codereview.azureclient.model.base.component;
+package com.kpz.codereview.azureclient.model.azure.component;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;

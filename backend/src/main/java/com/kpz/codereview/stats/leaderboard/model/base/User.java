@@ -1,10 +1,8 @@
-package com.kpz.codereview.stats.leaderboard.model;
-
+package com.kpz.codereview.stats.leaderboard.model.base;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,19 +10,20 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
 @Entity
-@Table(name = "user_standings")
-public class UserStanding {
+@Table(name = "users")
+public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    private String projectId;
     private String userEmail;
-    private int score;
-    private int place;
+    private String displayName;
+
+    @OneToMany(mappedBy = "userEmail")
+    private List<TeamMapping> teams;
 }

@@ -1,5 +1,6 @@
-package com.kpz.codereview.azureclient.model.base.component;
+package com.kpz.codereview.azureclient.model.domain.dts;
 
+import com.kpz.codereview.azureclient.model.domain.base.ReviewStats;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

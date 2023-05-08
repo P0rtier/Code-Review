@@ -1,4 +1,4 @@
-package com.kpz.codereview.azureclient.model.domain;
+package com.kpz.codereview.azureclient.model.domain.dts;
 
 import lombok.Builder;
 import lombok.Data;
@@ -8,11 +8,13 @@ import java.util.List;
 
 @Data
 @Builder
-public class UnassignedReview {
+public class AssignedReviewDTS {
     Integer id;
     String title;
     Date createdDate;
-    List<String> tags;
     String link;
     String project;
+    String scheduledByName;
+    String scheduledByEmail;
+    List<String> tags;
 }

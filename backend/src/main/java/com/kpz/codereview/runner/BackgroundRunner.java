@@ -1,14 +1,17 @@
 package com.kpz.codereview.runner;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.kpz.codereview.azureclient.model.base.Project;
-import com.kpz.codereview.azureclient.model.base.WorkItem;
+import com.kpz.codereview.azureclient.model.domain.base.Member;
+import com.kpz.codereview.azureclient.model.domain.base.Project;
+import com.kpz.codereview.azureclient.model.azure.wrapper.WorkItem;
 import com.kpz.codereview.azureclient.service.AzureClientService;
 import com.kpz.codereview.notification.model.Notification;
 import com.kpz.codereview.notification.model.NotificationType;
 import com.kpz.codereview.notification.service.NotificationService;
-import com.kpz.codereview.stats.leaderboard.model.ProjectLeaderboard;
-import com.kpz.codereview.stats.leaderboard.model.UserStanding;
+import com.kpz.codereview.stats.leaderboard.model.base.ProjectLeaderboard;
+import com.kpz.codereview.stats.leaderboard.model.base.TeamMapping;
+import com.kpz.codereview.stats.leaderboard.model.base.User;
+import com.kpz.codereview.stats.leaderboard.model.base.UserStanding;
 import com.kpz.codereview.stats.leaderboard.service.ProjectLeaderboardsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,12 +20,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Component
@@ -46,18 +44,17 @@ public class BackgroundRunner {
     @Value("${azure.code-review.done.states}")
     private List<String> doneStates;
 
-    private final AzureClientService service;
+    private final AzureClientService azureService;
     private final NotificationService notificationService;
     private final ProjectLeaderboardsService leaderboardsService;
 
     //Run every work day at 1am every month 0 0 1 ? * MON-FRI / 0 * * ? * *
     @Scheduled(cron = "0 0 1 ? * MON-FRI")
     public void createCodeReviewNotifications() throws JsonProcessingException {
-        var projects = service.getProjectList()
-                .getProjects();
+        var projects = azureService.getProjectList();
 
         for (Project project : projects) {
-            var codeReviews = service.getCodeReviewItemList(project.getName());
+            var codeReviews = azureService.getCodeReviewItemList(project.getName());
 
             codeReviews.stream()
                     .filter(codeReview -> {
@@ -95,25 +92,50 @@ public class BackgroundRunner {
     }
 
 
-    //Run every monday at 1am every month
-    @Scheduled(cron = "0 0 1 ? * MON")
+    //Run every monday at 1am every month 0 0 1 ? * MON-FRI / 0 * * ? * *
+    @Scheduled(cron = "0 * * ? * *")
     public void createLeaderBoardsAndNotifications() throws JsonProcessingException {
         leaderboardsService.deleteAll();
 
-        var projects = service.getProjectList()
-                .getProjects();
+        var projects = azureService.getProjectList();
 
         for (var project : projects) {
-            var codeReviews = service.getCodeReviewItemList(project.getName());
+            var codeReviews = azureService.getCodeReviewItemList(project.getName());
 
-            Map<String, Integer> scores = createScores(codeReviews);
+            Map<Member, Integer> scores = createScores(codeReviews);
+
+            var teamMappings = addLazyMembersAndTeams(project, scores);
 
             List<UserStanding> userStandings = createUserStandings(project, scores);
 
-            createAndSaveLeaderboardWithStandings(project, userStandings);
+            createAndSaveLeaderboardWithStandings(project, userStandings, teamMappings);
 
             createLeaderboardNotifications(project, userStandings);
         }
+    }
+
+    private HashSet<TeamMapping> addLazyMembersAndTeams(Project project, Map<Member, Integer> scores) throws JsonProcessingException {
+        var projectMembers = new HashSet<Member>();
+        var teamMappings = new HashSet<TeamMapping>();
+        var teams = azureService.getTeamList(project.getName());
+
+        for (var team : teams) {
+            var teamMembers = azureService.getMemberList(project.getId(), team.getId());
+            projectMembers.addAll(teamMembers);
+
+            teamMembers.forEach(member -> {
+                var teamMapping = TeamMapping.builder()
+                        .userEmail(member.getUniqueName())
+                        .teamName(team.getName())
+                        .build();
+
+                teamMappings.add(teamMapping);
+            });
+        }
+
+        projectMembers.forEach(member -> scores.putIfAbsent(member, 0));
+
+        return teamMappings;
     }
 
     private void createLeaderboardNotifications(Project project, List<UserStanding> userStandings) {
@@ -135,24 +157,30 @@ public class BackgroundRunner {
         });
     }
 
-    private void createAndSaveLeaderboardWithStandings(Project project, List<UserStanding> userStandings) {
+    private void createAndSaveLeaderboardWithStandings(Project project, List<UserStanding> userStandings, Set<TeamMapping> teamMappings) {
         ProjectLeaderboard leaderboard = ProjectLeaderboard.builder()
                 .projectId(project.getId())
                 .projectName(project.getName())
                 .build();
 
-        leaderboardsService.saveLeaderboard(leaderboard, userStandings);
+        leaderboardsService.saveLeaderboard(leaderboard, userStandings, teamMappings);
     }
 
-    private List<UserStanding> createUserStandings(Project project, Map<String, Integer> scores) {
+    private List<UserStanding> createUserStandings(Project project, Map<Member, Integer> scores) {
         List<UserStanding> userStandings = new ArrayList<>();
 
         scores.forEach((key, value) -> {
+            User user = User.builder()
+                    .userEmail(key.getUniqueName())
+                    .displayName(key.getDisplayName())
+                    .build();
+
             UserStanding standing = UserStanding.builder()
                     .projectId(project.getId())
-                    .userEmail(key)
+                    .userEmail(key.getUniqueName())
                     .place(0)
                     .score(value)
+                    .user(user)
                     .build();
 
             userStandings.add(standing);
@@ -162,15 +190,24 @@ public class BackgroundRunner {
                 Comparator.comparing(UserStanding::getScore).reversed()
         );
 
-        userStandings.forEach(userStanding -> {
-            int place = userStandings.indexOf(userStanding) + 1;
-            userStanding.setPlace(place);
-        });
+        int currPlace = 1;
+        for (int i = 0; i < userStandings.size(); i++) {
+            userStandings.get(i).setPlace(currPlace);
+
+            if (i == userStandings.size() - 1) {
+                continue;
+            }
+
+            if (userStandings.get(i + 1).getScore() != userStandings.get(i).getScore()) {
+                currPlace++;
+            }
+        }
+
         return userStandings;
     }
 
-    private Map<String, Integer> createScores(List<WorkItem> codeReviews) {
-        Map<String, Integer> results = new HashMap<>();
+    private Map<Member, Integer> createScores(List<WorkItem> codeReviews) {
+        Map<Member, Integer> results = new HashMap<>();
 
         codeReviews.stream().filter(codeReview -> {
                     String state = codeReview.getFields().getState();
@@ -192,8 +229,17 @@ public class BackgroundRunner {
                             .getAssignedTo()
                             .getUniqueName();
 
-                    results.computeIfPresent(userEmail, (key, value) -> value + 1);
-                    results.putIfAbsent(userEmail, 1);
+                    String userName = codeReview.getFields()
+                            .getAssignedTo()
+                            .getDisplayName();
+
+                    var member = Member.builder()
+                            .uniqueName(userEmail)
+                            .displayName(userName)
+                            .build();
+
+                    results.computeIfPresent(member, (key, value) -> value + 1);
+                    results.putIfAbsent(member, 1);
                 });
         return results;
     }
