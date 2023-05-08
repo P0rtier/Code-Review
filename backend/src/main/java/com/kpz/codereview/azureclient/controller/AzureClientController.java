@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.kpz.codereview.auth.service.JwtService;
 import com.kpz.codereview.azureclient.model.base.WorkItem;
 import com.kpz.codereview.azureclient.model.base.component.CodeReviewerDTS;
+import com.kpz.codereview.azureclient.model.base.component.CodeReviewerStatDTS;
 import com.kpz.codereview.azureclient.model.base.wrapper.MemberSearchQuery;
 import com.kpz.codereview.azureclient.model.base.wrapper.ProjectSearchQuery;
 import com.kpz.codereview.azureclient.model.base.wrapper.TeamSearchQuery;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestHeader;
 
+import java.text.ParseException;
 import java.util.List;
 import java.util.Set;
 
@@ -240,5 +242,12 @@ public class AzureClientController {
                                                           @RequestParam(name = "startDate") String startDate,
                                                           @RequestParam(name = "endDate") String endDate) throws JsonProcessingException {
         return azureService.getProjectSortedReviewers(projectName, startDate, endDate);
+    }
+
+    @GetMapping("/review-statistics")
+    public Set<CodeReviewerStatDTS> getReviewersStatistics(@RequestParam(name = "project") String projectName,
+                                                           @RequestParam(name = "startDate") String startDate,
+                                                           @RequestParam(name = "endDate") String endDate) throws JsonProcessingException, ParseException {
+        return azureService.getReviewersStatistics(projectName, startDate, endDate);
     }
 }

@@ -3,11 +3,13 @@ package com.kpz.codereview.azureclient.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.kpz.codereview.azureclient.model.base.WorkItem;
 import com.kpz.codereview.azureclient.model.base.component.CodeReviewerDTS;
+import com.kpz.codereview.azureclient.model.base.component.CodeReviewerStatDTS;
 import com.kpz.codereview.azureclient.model.base.wrapper.MemberSearchQuery;
 import com.kpz.codereview.azureclient.model.base.wrapper.ProjectSearchQuery;
 import com.kpz.codereview.azureclient.model.base.wrapper.TeamSearchQuery;
 import com.kpz.codereview.azureclient.model.domain.ProjectSummary;
 
+import java.text.ParseException;
 import java.util.List;
 import java.util.Set;
 
@@ -36,4 +38,6 @@ public interface AzureClientService {
     List<String> getUserProjects(String userUUID) throws JsonProcessingException;
 
     Set<CodeReviewerDTS> getProjectSortedReviewers(String projectName, String startDate, String endDate) throws JsonProcessingException;
+
+    Set<CodeReviewerStatDTS> getReviewersStatistics(String projectName, String startDate, String endDate) throws JsonProcessingException, ParseException;
 }

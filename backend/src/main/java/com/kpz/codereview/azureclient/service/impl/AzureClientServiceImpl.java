@@ -2,6 +2,8 @@ package com.kpz.codereview.azureclient.service.impl;
 
 import com.kpz.codereview.azureclient.model.base.Project;
 import com.kpz.codereview.azureclient.model.base.component.CodeReviewerDTS;
+import com.kpz.codereview.azureclient.model.base.component.ReviewStats;
+import com.kpz.codereview.azureclient.model.base.component.CodeReviewerStatDTS;
 import com.kpz.codereview.azureclient.model.base.wrapper.AllUsersSearchQuery;
 import com.kpz.codereview.azureclient.model.base.wrapper.MemberSearchQuery;
 import com.kpz.codereview.azureclient.model.base.wrapper.MemberWrapper;
@@ -36,11 +38,16 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import java.text.ParseException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -348,6 +355,16 @@ public class AzureClientServiceImpl implements AzureClientService {
                 .block();
     }
 
+    @Override
+    public Set<CodeReviewerStatDTS> getReviewersStatistics(String projectName, String startDate, String endDate) throws JsonProcessingException, ParseException {
+        Map<Boolean, List<WorkItem>> codeReviewWorkItemMap = filterAssignedCodeReviewsFromTimePeriod(getCodeReviewItemList(projectName), startDate, endDate);
+        Map<String, CodeReviewerStatDTS> userReviewStatDTSMap = genUserReviewStatisticsHashMapFromProject(projectName);
+        Set<CodeReviewerStatDTS> codeReviewerStatDTSSet = mapWorkItemListToUserReviewStatDTSSet(codeReviewWorkItemMap, userReviewStatDTSMap);
+
+        return calculateAvgTimeOfDoneReviews(codeReviewerStatDTSSet);
+
+    }
+
     private List<AssignedReview> getAssignedCodeReviewItemsByUser(String userEmail, String projectName) throws JsonProcessingException {
         var workItems = getWorkItemListFromQuery(
                 WIQL_GET_ASSIGNED_CODE_REVIEW_ITEMS.formatted(userEmail, projectName),
@@ -566,6 +583,26 @@ public class AzureClientServiceImpl implements AzureClientService {
                 .toList();
     }
 
+    private Map<Boolean, List<WorkItem>> filterAssignedCodeReviewsFromTimePeriod(List<WorkItem> codeReviewItemList, String startDate, String endDate){
+          return codeReviewItemList.stream()
+                .filter(workItem -> workItem.getFields().getAssignedTo() != null)
+                  .filter(workItem -> {
+                      LocalDate workItemCreatedDate = workItem.getFields().getCreatedDate()
+                              .toInstant()
+                              .atZone(ZoneId.systemDefault())
+                              .toLocalDate();
+
+                      LocalDate workItemLastChangedDate = workItem.getFields().getChangedDate()
+                              .toInstant()
+                              .atZone(ZoneId.systemDefault())
+                              .toLocalDate();
+
+                      return !workItemCreatedDate.isBefore(LocalDate.parse(startDate)) &
+                              !workItemLastChangedDate.isAfter(LocalDate.parse(endDate));
+                  })
+                .collect(Collectors.partitioningBy(workItem -> !doneStates.contains(workItem.getFields().getState())));
+    }
+
     private List<WorkItem> filterFinishedCodeReviews(List<WorkItem> codeReviewItemList) throws JsonProcessingException {
         return codeReviewItemList
                 .stream()
@@ -586,6 +623,50 @@ public class AzureClientServiceImpl implements AzureClientService {
         return new HashSet<>(projectReviewersMap.values());
     }
 
+    private Set<CodeReviewerStatDTS> mapWorkItemListToUserReviewStatDTSSet(
+            Map<Boolean, List<WorkItem>> filteredWorkItemList, Map<String, CodeReviewerStatDTS> projectReviewersMap) throws JsonProcessingException {
+
+        //not done
+        filteredWorkItemList.get(true).forEach(workItem -> {
+            String uniqueName = workItem.getFields().getAssignedTo().getUniqueName();
+            projectReviewersMap.computeIfPresent(uniqueName, (key, person) -> {
+                person.getReviewStats().setActive(person.getReviewStats().getActive()+1);
+                return person;
+            });
+        });
+
+
+        //done
+        filteredWorkItemList.get(false).forEach(workItem -> {
+            String uniqueName = workItem.getFields().getAssignedTo().getUniqueName();
+            projectReviewersMap.computeIfPresent(uniqueName, (key, person) -> {
+                person.getReviewStats().setDone(person.getReviewStats().getDone()+1);
+                person.getReviewStats().setAvgReviewHours(person.getReviewStats().getAvgReviewHours() + computeDateHoursDifference(
+                        workItem.getFields().getCreatedDate(),
+                        workItem.getFields().getChangedDate()
+                ));
+                return person;
+            });
+        });
+        return new HashSet<>(projectReviewersMap.values());
+    }
+
+    private long computeDateHoursDifference(Date startDate, Date endDate){
+        LocalDateTime localDateTimeStart = startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+        LocalDateTime localDateTimeEnd = endDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+        return ChronoUnit.HOURS.between(localDateTimeStart, localDateTimeEnd);
+    }
+
+    private Set<CodeReviewerStatDTS> calculateAvgTimeOfDoneReviews(Set<CodeReviewerStatDTS> codeReviewerStatDTSSet){
+        codeReviewerStatDTSSet.forEach(codeReviewerStatDTS -> {
+            if(codeReviewerStatDTS.getReviewStats().getDone() != 0){
+                codeReviewerStatDTS.getReviewStats().setAvgReviewHours(
+                        codeReviewerStatDTS.getReviewStats().getAvgReviewHours() / codeReviewerStatDTS.getReviewStats().getDone());
+            }
+        });
+        return codeReviewerStatDTSSet;
+    }
+
     private Set<CodeReviewerDTS> sortCodeReviewers(Set<CodeReviewerDTS> codeReviewerDTSSetToSort) {
         return codeReviewerDTSSetToSort.stream()
                 .sorted(
@@ -599,29 +680,53 @@ public class AzureClientServiceImpl implements AzureClientService {
         List<Team> projectTeams = getTeamList(projectName).getTeams();
         Map<String, CodeReviewerDTS> reviewersMap = new HashMap<>();
         for (var team : projectTeams) {
-            Set<Member> teamMembers = getMemberList(projectName, team.getId())
-                    .getMembers()
-                    .stream()
-                    .map(MemberWrapper::getIdentity)
-                    .collect(Collectors.toSet());
-
-            teamMembers.forEach(member -> {
+            genTeamMembers(projectName, team).forEach(member -> {
 
                 reviewersMap.computeIfPresent(member.getUniqueName(), (key, person) -> {
-                   person.getTeamNames().add(team.getName());
-                   return person;
+                    person.getTeamNames().add(team.getName());
+                    return person;
                 });
 
                 reviewersMap.computeIfAbsent(member.getUniqueName(), key ->
                         CodeReviewerDTS.builder()
-                        .displayName(member.getDisplayName())
-                        .uniqueName(member.getUniqueName())
-                        .teamNames(new ArrayList<>(List.of(team.getName())))
-                        .activeReviews(0)
-                        .availability(true)
-                        .build());
+                                .displayName(member.getDisplayName())
+                                .uniqueName(member.getUniqueName())
+                                .teamNames(new ArrayList<>(List.of(team.getName())))
+                                .activeReviews(0)
+                                .availability(true)
+                                .build());
             });
         }
         return reviewersMap;
+    }
+
+    private Map<String, CodeReviewerStatDTS> genUserReviewStatisticsHashMapFromProject(String projectName) throws JsonProcessingException {
+        List<Team> projectTeams = getTeamList(projectName).getTeams();
+        Map<String, CodeReviewerStatDTS> reviewersMap = new HashMap<>();
+        for (var team : projectTeams) {
+            genTeamMembers(projectName, team).forEach(member -> {
+                reviewersMap.computeIfAbsent(member.getUniqueName(), key ->
+                        CodeReviewerStatDTS.builder()
+                        .displayName(member.getDisplayName())
+                        .uniqueName(member.getUniqueName())
+                        .reviewStats(
+                                ReviewStats.builder()
+                                .done(0)
+                                .active(0)
+                                .avgReviewHours(0L)
+                                .build())
+                        .build()
+                        );
+            });
+        }
+        return reviewersMap;
+    }
+
+    private Set<Member> genTeamMembers(String projectName, Team team) throws JsonProcessingException {
+        return getMemberList(projectName, team.getId())
+                .getMembers()
+                .stream()
+                .map(MemberWrapper::getIdentity)
+                .collect(Collectors.toSet());
     }
 }
