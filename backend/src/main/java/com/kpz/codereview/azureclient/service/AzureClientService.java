@@ -8,6 +8,7 @@ import com.kpz.codereview.azureclient.model.base.wrapper.MemberSearchQuery;
 import com.kpz.codereview.azureclient.model.base.wrapper.ProjectSearchQuery;
 import com.kpz.codereview.azureclient.model.base.wrapper.TeamSearchQuery;
 import com.kpz.codereview.azureclient.model.domain.ProjectSummary;
+import com.kpz.codereview.azureclient.model.domain.UnassignedReview;
 
 import java.text.ParseException;
 import java.util.List;
@@ -17,7 +18,7 @@ public interface AzureClientService {
 
     Set<String> getAllUsersFromOrg() throws JsonProcessingException;
 
-    WorkItem getWorkItemById(int id, String projectName) throws JsonProcessingException;
+    UnassignedReview getUnassignedReviewById(int id, String projectName) throws JsonProcessingException;
 
     List<WorkItem> getCodeReviewItemList(String projectName) throws JsonProcessingException;
 

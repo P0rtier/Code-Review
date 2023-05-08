@@ -171,17 +171,9 @@ public class AzureClientServiceImpl implements AzureClientService {
     }
 
     @Override
-    public WorkItem getWorkItemById(int id, String projectName) throws JsonProcessingException {
-        ResponseEntity<String> response = restTemplate.exchange(
-                genGetWorkItemByIdUri(id, projectName),
-                HttpMethod.GET,
-                new HttpEntity<>(genAuthHeaderKey()),
-                String.class
-        );
-        return om.readValue(
-                response.getBody(),
-                WorkItem.class
-        );
+    public UnassignedReview getUnassignedReviewById(int id, String projectName) throws JsonProcessingException {
+        var workItem = getWorkItemById(id, projectName);
+        return mapWorkItemToUnassignedReview(workItem, projectName);
     }
 
     @Override
@@ -342,7 +334,7 @@ public class AzureClientServiceImpl implements AzureClientService {
         }
 
         WebClient.create().method(HttpMethod.PATCH)
-                .uri(genGetWorkItemByIdUri(workItemId, projectName))
+                .uri(genUpdateReviewerUri(workItemId, projectName))
                 .header(HttpHeaders.AUTHORIZATION, genAuthHeaderValue())
                 .header(HttpHeaders.CONTENT_TYPE, PATCH_CONTENT_TYPE)
                 .bodyValue(NEW_REVIEWER_PATCH_BODY.formatted(userEmail))
@@ -418,35 +410,51 @@ public class AzureClientServiceImpl implements AzureClientService {
         List<UnassignedReview> mappedWorkItems = new ArrayList<>();
 
         workItems.forEach(workItem -> {
-            var id = workItem.getId();
-            var title = workItem.getFields().getTitle();
-            var link = AZURE_CLIENT_CODE_REVIEW_ACCESS_LINK_TEMPLATE
-                    .formatted(ORGANIZATION_NAME, projectName, id);
-            var project = workItem.getFields().getTeamProject();
-            var createdDate = workItem.getFields().getCreatedDate();
-
-            var tagString = workItem.getFields().getTags();
-            List<String> tags = new ArrayList<>();
-
-            if (tagString != null) {
-                tags.addAll(
-                        Arrays.asList(tagString.split(TAGS_SPLITTER))
-                );
-            }
-
-            var mappedReview = UnassignedReview.builder()
-                    .id(id)
-                    .title(title)
-                    .link(link)
-                    .project(project)
-                    .createdDate(createdDate)
-                    .tags(tags)
-                    .build();
-
+            var mappedReview = mapWorkItemToUnassignedReview(workItem, projectName);
             mappedWorkItems.add(mappedReview);
         });
 
         return mappedWorkItems;
+    }
+
+    private UnassignedReview mapWorkItemToUnassignedReview(WorkItem workItem, String projectName) {
+        var id = workItem.getId();
+        var title = workItem.getFields().getTitle();
+        var link = AZURE_CLIENT_CODE_REVIEW_ACCESS_LINK_TEMPLATE
+                .formatted(ORGANIZATION_NAME, projectName, id);
+        var project = workItem.getFields().getTeamProject();
+        var createdDate = workItem.getFields().getCreatedDate();
+
+        var tagString = workItem.getFields().getTags();
+        List<String> tags = new ArrayList<>();
+
+        if (tagString != null) {
+            tags.addAll(
+                    Arrays.asList(tagString.split(TAGS_SPLITTER))
+            );
+        }
+
+        return UnassignedReview.builder()
+                .id(id)
+                .title(title)
+                .link(link)
+                .project(project)
+                .createdDate(createdDate)
+                .tags(tags)
+                .build();
+    }
+
+    private WorkItem getWorkItemById(int id, String projectName) throws JsonProcessingException {
+        ResponseEntity<String> response = restTemplate.exchange(
+                genGetWorkItemByIdUri(id, projectName),
+                HttpMethod.GET,
+                new HttpEntity<>(genAuthHeaderKey()),
+                String.class
+        );
+        return om.readValue(
+                response.getBody(),
+                WorkItem.class
+        );
     }
 
     private List<WorkItem> createWorkItemList(WorkItemSearchQuery query, String projectName) throws JsonProcessingException {

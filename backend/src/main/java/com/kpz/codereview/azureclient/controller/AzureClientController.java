@@ -9,6 +9,7 @@ import com.kpz.codereview.azureclient.model.base.wrapper.MemberSearchQuery;
 import com.kpz.codereview.azureclient.model.base.wrapper.ProjectSearchQuery;
 import com.kpz.codereview.azureclient.model.base.wrapper.TeamSearchQuery;
 import com.kpz.codereview.azureclient.model.domain.ProjectSummary;
+import com.kpz.codereview.azureclient.model.domain.UnassignedReview;
 import com.kpz.codereview.azureclient.service.AzureClientService;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -58,12 +59,12 @@ public class AzureClientController {
             @ApiResponse(responseCode = "200", description = "OK")
     })
     @GetMapping("/work-items/{id}")
-    public WorkItem getWorkItemById(@PathVariable int id,
-                                    @RequestParam(name = "project") String projectName) throws JsonProcessingException {
-        return azureService.getWorkItemById(id, projectName);
+    public UnassignedReview getWorkItemById(@PathVariable int id,
+                                            @RequestParam(name = "project") String projectName) throws JsonProcessingException {
+        return azureService.getUnassignedReviewById(id, projectName);
     }
 
-    @ApiResponses(value = {
+            @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "410",
                     description = "Azure API returned exception",
