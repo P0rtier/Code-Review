@@ -8,7 +8,7 @@ import com.kpz.codereview.azureclient.model.azure.wrapper.WorkItem;
 import com.kpz.codereview.azureclient.model.domain.dts.CodeReviewerStatDTS;
 import com.kpz.codereview.azureclient.model.domain.dts.CodeReviewerDTS;
 import com.kpz.codereview.azureclient.model.domain.dts.ProjectSummaryDTS;
-import com.kpz.codereview.azureclient.model.domain.UnassignedReview;
+import com.kpz.codereview.azureclient.model.domain.dts.UnassignedReviewDTS;
 
 import java.text.ParseException;
 import java.util.List;
@@ -18,7 +18,7 @@ public interface AzureClientService {
 
     Set<String> getAllUsersFromOrg() throws JsonProcessingException;
 
-    UnassignedReview getUnassignedReviewById(int id, String projectName) throws JsonProcessingException;
+    UnassignedReviewDTS getUnassignedReviewById(int id, String projectName) throws JsonProcessingException;
 
     List<WorkItem> getCodeReviewItemList(String projectName) throws JsonProcessingException;
 

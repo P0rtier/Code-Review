@@ -173,7 +173,7 @@ public class AzureClientServiceImpl implements AzureClientService {
     }
 
     @Override
-    public UnassignedReview getUnassignedReviewById(int id, String projectName) throws JsonProcessingException {
+    public UnassignedReviewDTS getUnassignedReviewById(int id, String projectName) throws JsonProcessingException {
         var workItem = getWorkItemById(id, projectName);
         return mapWorkItemToUnassignedReview(workItem, projectName);
     }
@@ -431,7 +431,7 @@ public class AzureClientServiceImpl implements AzureClientService {
         return mappedWorkItems;
     }
 
-    private UnassignedReview mapWorkItemToUnassignedReview(WorkItem workItem, String projectName) {
+    private UnassignedReviewDTS mapWorkItemToUnassignedReview(WorkItem workItem, String projectName) {
         var id = workItem.getId();
         var title = workItem.getFields().getTitle();
         var link = AZURE_CLIENT_CODE_REVIEW_ACCESS_LINK_TEMPLATE

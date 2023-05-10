@@ -9,7 +9,7 @@ import com.kpz.codereview.azureclient.model.azure.wrapper.WorkItem;
 import com.kpz.codereview.azureclient.model.domain.dts.CodeReviewerDTS;
 import com.kpz.codereview.azureclient.model.domain.dts.CodeReviewerStatDTS;
 import com.kpz.codereview.azureclient.model.domain.dts.ProjectSummaryDTS;
-import com.kpz.codereview.azureclient.model.domain.UnassignedReview;
+import com.kpz.codereview.azureclient.model.domain.dts.UnassignedReviewDTS;
 import com.kpz.codereview.azureclient.service.AzureClientService;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -59,8 +59,8 @@ public class AzureClientController {
             @ApiResponse(responseCode = "200", description = "OK")
     })
     @GetMapping("/work-items/{id}")
-    public UnassignedReview getWorkItemById(@PathVariable int id,
-                                            @RequestParam(name = "project") String projectName) throws JsonProcessingException {
+    public UnassignedReviewDTS getWorkItemById(@PathVariable int id,
+                                               @RequestParam(name = "project") String projectName) throws JsonProcessingException {
         return azureService.getUnassignedReviewById(id, projectName);
     }
 
