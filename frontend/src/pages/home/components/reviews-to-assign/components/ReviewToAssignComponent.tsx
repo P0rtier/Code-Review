@@ -10,7 +10,7 @@ export const ReviewToAssignComponent = (
   const review = props.review;
 
   return (
-    <Link to={"/reviewer"} state={{ review: review }}>
+    <Link className={styles.reviewLink} to={"/reviewer"} state={{ review: review }}>
       <div className={styles.review}>
         <BoldRegularText boldText={"Title: "} regularText={review.title} />
         <BoldRegularText boldText={"Project: "} regularText={review.project} />

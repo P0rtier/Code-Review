@@ -10,9 +10,11 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: flex-start;
     gap: 3rem;
     margin-top: 10rem;
+    max-width: 1200px;
+    justify-self: center;
+    width: 100%
   }
 
   .smallGap {
