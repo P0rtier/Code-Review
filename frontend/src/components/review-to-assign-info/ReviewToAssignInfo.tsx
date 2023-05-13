@@ -10,6 +10,7 @@ export const ReviewToAssignInfo = (props: IReviewToAssignInfoProps) => {
   const attentionComponent = useStyleConfig(
     StyledComponents.AttentionComponent
   );
+  const tags = props.tags.length > 0 ? String(props.tags) : "-";
 
   return (
     <a href={props.link}>
@@ -28,10 +29,7 @@ export const ReviewToAssignInfo = (props: IReviewToAssignInfoProps) => {
             boldText={"Created date: "}
             regularText={props.createdDate.toLocaleDateString()}
           />
-          <BoldRegularText
-            boldText={"Tags: "}
-            regularText={String(props.tags)}
-          />
+          <BoldRegularText boldText={"Tags: "} regularText={tags} />
         </div>
       </Box>
     </a>

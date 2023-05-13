@@ -11,6 +11,7 @@ export const ReviewToAssignComponent = (
 ) => {
   const secondaryStyles = useStyleConfig(StyledComponents.SecondaryComponent);
   const review = props.review;
+  const tags = review.tags.length > 0 ? String(review.tags) : "-";
 
   return (
     <Link
@@ -25,10 +26,7 @@ export const ReviewToAssignComponent = (
           boldText={"Created date: "}
           regularText={review.createdDate.toLocaleDateString()}
         />
-        <BoldRegularText
-          boldText={"Tags: "}
-          regularText={String(review.tags)}
-        />
+        <BoldRegularText boldText={"Tags: "} regularText={tags} />
       </Box>
     </Link>
   );

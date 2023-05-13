@@ -7,6 +7,7 @@ import { StyledComponents } from "../../common/enums/StyledComponents";
 
 export const AssignedReviewInfo = (props: IAssignedReviewInfoProps) => {
   const headerStyles = useStyleConfig(StyledComponents.ReviewHeader);
+  const tags = props.tags.length > 0 ? String(props.tags) : "-";
 
   return (
     <Box className={styles.container} __css={props.style}>
@@ -24,10 +25,7 @@ export const AssignedReviewInfo = (props: IAssignedReviewInfoProps) => {
             regularText={props.createdDate.toLocaleDateString()}
           />
           <BoldRegularText boldText={"Project: "} regularText={props.project} />
-          <BoldRegularText
-            boldText={"Tags: "}
-            regularText={String(props.tags)}
-          />
+          <BoldRegularText boldText={"Tags: "} regularText={tags} />
         </div>
       </a>
     </Box>
