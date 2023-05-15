@@ -7,7 +7,7 @@ import {
   useStyleConfig,
 } from "@chakra-ui/react";
 import { StyledComponents } from "../../common/enums/StyledComponents";
-import { useLocation } from "react-router";
+import { useLocation, useParams } from "react-router";
 import { PageWrapper } from "../../components/page-wrapper/PageWrapper";
 import styles from "./ReviewerChoice.module.scss";
 import { joinClasses } from "../../common/utils/joinClasses";
@@ -26,10 +26,8 @@ export const ReviewerChoice = () => {
   const primaryComponent = useStyleConfig(StyledComponents.PrimaryComponent);
 
   const location = useLocation();
-  const review: IUnassignedReview = location.state.review;
-  const startDate = new Date();
+  const { id } = useParams<{ id: string }>();
   const MAX_DAYS_FROM_TODAY = 5;
-  const endDate = addDays(new Date(), MAX_DAYS_FROM_TODAY);
   const defaultFilters = {
     isAscending: true,
     isUnavailableShown: true,
@@ -40,8 +38,9 @@ export const ReviewerChoice = () => {
   } as IReviewerFilters;
 
   const [filters, setFilters] = useState<IReviewerFilters>(defaultFilters);
-  let [reviewers, setReviewers] = useState<IReviewer[] | undefined>();
-  let [filteredReviewers, setFilteredReviewers] = useState<
+  const [review, setReview] = useState<IUnassignedReview>();
+  const [reviewers, setReviewers] = useState<IReviewer[] | undefined>();
+  const [filteredReviewers, setFilteredReviewers] = useState<
     IReviewer[] | undefined
   >();
   const [searchedReviewers, setSearchedReviewers] = useState<
@@ -75,9 +74,10 @@ export const ReviewerChoice = () => {
       }
 
       if (filters.selectedTeam && filters.selectedTeam !== "") {
-        newFilteredReviewers = newFilteredReviewers.filter(
-          (reviewer) =>
-            reviewer.teamName === (filters.selectedTeam ?? reviewer.teamName)
+        newFilteredReviewers = newFilteredReviewers.filter((reviewer) =>
+          reviewer.teamNames.includes(
+            filters.selectedTeam ?? reviewer.teamNames[0]
+          )
         );
       }
 
@@ -126,7 +126,7 @@ export const ReviewerChoice = () => {
   const getUniqueTeams = () => {
     if (reviewers) {
       return Array.from(
-        new Set(reviewers.map((reviewer) => reviewer.teamName))
+        new Set(reviewers.map((reviewer) => reviewer.teamNames).flat(1))
       );
     } else {
       return [];
@@ -134,7 +134,7 @@ export const ReviewerChoice = () => {
   };
 
   const getReviewers = () => {
-    if (searchedReviewers) {
+    if (searchedReviewers && review) {
       return searchedReviewers.map((reviewer) => (
         <Reviewer
           {...reviewer}
@@ -150,29 +150,58 @@ export const ReviewerChoice = () => {
     setSearchQuery(e.target.value);
   };
 
-  useEffect(() => {
-    filterReviewers();
-  }, [filters, reviewers]);
+  const cachedFilterReviewers = React.useCallback(filterReviewers, [
+    filters,
+    reviewers,
+  ]);
+  const cachedFilterSearchReviewers = React.useCallback(filterSearchReviewers, [
+    searchQuery,
+    filteredReviewers,
+  ]);
 
   useEffect(() => {
-    filterSearchReviewers();
-  }, [searchQuery, filteredReviewers]);
+    cachedFilterReviewers();
+  }, [cachedFilterReviewers]);
 
   useEffect(() => {
+    cachedFilterSearchReviewers();
+  }, [cachedFilterSearchReviewers]);
+
+  useEffect(() => {
+    if (!review) return;
+
+    const startDate = new Date();
+    const endDate = addDays(startDate, MAX_DAYS_FROM_TODAY);
     agent.Reviewers.getAll(review.project, startDate, endDate).then(
       (response: IReviewer[]) => {
         setReviewers(response);
         setLoading(false);
       }
     );
-  }, []);
-  //#endregion
+  }, [review]);
+
+  useEffect(() => {
+    if (location.state) {
+      setReview(location.state.review);
+      return;
+    }
+
+    if (id) {
+      agent.WorkItems.getById(id).then((response: IUnassignedReview) => {
+        setReview(response);
+      });
+    }
+  }, [location.state, id]);
 
   return (
     <PageWrapper smallGap={true}>
       <div className={styles.container}>
         <div className={styles.reviewContainer}>
-          <ReviewToAssignInfo {...review} fullWidth={true} />
+          {review ? (
+            <ReviewToAssignInfo {...review} fullWidth={true} />
+          ) : (
+            <Placeholder header={"Loading review..."} />
+          )}
         </div>
         <div className={styles.filterContainer}>
           <div className={joinClasses(styles.bar, styles.searchBarContainer)}>

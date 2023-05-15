@@ -2,6 +2,6 @@ export interface IReviewer {
   displayName: string;
   uniqueName: string;
   activeReviews: number;
-  teamName: string;
+  teamNames: string[];
   availability: boolean;
 }

@@ -70,7 +70,7 @@ const theme = extendTheme({
         search: (props: StyleFunctionProps) => ({
           bg: mode(
             colors.lightComponentLayerPrimary,
-            colors.lightComponentLayerPrimary
+            colors.darkComponentLayerPrimary
           )(props),
           borderRadius: "6px",
           boxShadow: mode(colors.lightBoxShadow, colors.darkBoxShadow)(props),

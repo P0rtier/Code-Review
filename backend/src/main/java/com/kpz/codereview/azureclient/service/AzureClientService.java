@@ -18,7 +18,7 @@ public interface AzureClientService {
 
     Set<String> getAllUsersFromOrg() throws JsonProcessingException;
 
-    UnassignedReviewDTS getUnassignedReviewById(int id, String projectName) throws JsonProcessingException;
+    UnassignedReviewDTS getUnassignedReviewById(int id) throws JsonProcessingException;
 
     List<WorkItem> getCodeReviewItemList(String projectName) throws JsonProcessingException;
 

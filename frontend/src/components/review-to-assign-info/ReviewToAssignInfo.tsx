@@ -13,7 +13,7 @@ export const ReviewToAssignInfo = (props: IReviewToAssignInfoProps) => {
   const tags = props.tags.length > 0 ? String(props.tags) : "-";
 
   return (
-    <a href={props.link}>
+    <a href={props.link} target="_blank" rel="noreferrer">
       <Box
         className={joinClasses(
           styles.container,

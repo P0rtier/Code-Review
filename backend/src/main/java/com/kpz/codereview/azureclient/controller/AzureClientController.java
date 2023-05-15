@@ -59,9 +59,8 @@ public class AzureClientController {
             @ApiResponse(responseCode = "200", description = "OK")
     })
     @GetMapping("/work-items/{id}")
-    public UnassignedReviewDTS getWorkItemById(@PathVariable int id,
-                                               @RequestParam(name = "project") String projectName) throws JsonProcessingException {
-        return azureService.getUnassignedReviewById(id, projectName);
+    public UnassignedReviewDTS getWorkItemById(@PathVariable int id) throws JsonProcessingException {
+        return azureService.getUnassignedReviewById(id);
     }
 
     @ApiResponses(value = {

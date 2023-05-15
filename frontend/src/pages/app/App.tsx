@@ -34,7 +34,7 @@ export const router = createBrowserRouter([
         element: <PrivateRoute Component={Stats} />,
       },
       {
-        path: "reviewer",
+        path: "reviewer/:id",
         element: <PrivateRoute Component={ReviewerChoice} />,
       },
       {

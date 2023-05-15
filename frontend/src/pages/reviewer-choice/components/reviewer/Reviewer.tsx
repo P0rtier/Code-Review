@@ -23,9 +23,9 @@ export const Reviewer = (props: IReviewerProps) => {
     );
   };
 
-  const reviewerLabel = `Mail: ${props.uniqueName} \n Team: ${
-    props.teamName
-  } \n Status: ${props.availability ? "Available" : "Unavailable"}`;
+  const reviewerLabel = `Mail: ${props.uniqueName} 
+    \n Teams: ${props.teamNames.join(", ")} 
+    \n Status: ${props.availability ? "Available" : "Unavailable"}`;
   return (
     <Tooltip hasArrow whiteSpace="pre-line" label={reviewerLabel}>
       <div className={styles.container}>

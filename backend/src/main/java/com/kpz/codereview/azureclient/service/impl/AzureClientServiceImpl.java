@@ -1,60 +1,36 @@
 package com.kpz.codereview.azureclient.service.impl;
 
-import com.kpz.codereview.azureclient.model.domain.base.Project;
-import com.kpz.codereview.azureclient.model.domain.dts.CodeReviewerDTS;
-import com.kpz.codereview.azureclient.model.domain.base.ReviewStats;
-import com.kpz.codereview.azureclient.model.domain.dts.CodeReviewerStatDTS;
-import com.kpz.codereview.azureclient.model.azure.wrapper.AllUsersSearchQuery;
-import com.kpz.codereview.azureclient.model.azure.wrapper.MemberSearchQuery;
-import com.kpz.codereview.azureclient.model.azure.wrapper.MemberWrapper;
-import com.kpz.codereview.azureclient.model.azure.wrapper.ProjectSearchQuery;
-import com.kpz.codereview.azureclient.model.azure.wrapper.TeamSearchQuery;
-import com.kpz.codereview.azureclient.model.domain.base.Member;
-import com.kpz.codereview.azureclient.model.domain.base.Team;
-import com.kpz.codereview.azureclient.model.azure.wrapper.WorkItemSearchQuery;
-import com.kpz.codereview.azureclient.model.domain.dts.AssignedReviewDTS;
-import com.kpz.codereview.azureclient.model.domain.dts.ProjectSummaryDTS;
-import com.kpz.codereview.azureclient.model.domain.dts.UnassignedReviewDTS;
-import com.kpz.codereview.exception.model.BadAzureAPIResponse;
-import com.kpz.codereview.exception.model.BadRequestBodyException;
-import com.kpz.codereview.azureclient.model.azure.wrapper.WorkItem;
-import com.kpz.codereview.azureclient.service.AzureClientService;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
+import com.kpz.codereview.azureclient.model.azure.wrapper.*;
+import com.kpz.codereview.azureclient.model.domain.base.Member;
+import com.kpz.codereview.azureclient.model.domain.base.Project;
+import com.kpz.codereview.azureclient.model.domain.base.ReviewStats;
+import com.kpz.codereview.azureclient.model.domain.base.Team;
+import com.kpz.codereview.azureclient.model.domain.dts.*;
+import com.kpz.codereview.azureclient.service.AzureClientService;
+import com.kpz.codereview.exception.model.BadAzureAPIResponse;
+import com.kpz.codereview.exception.model.BadRequestBodyException;
 import com.kpz.codereview.exception.model.EntityNotFoundException;
 import com.kpz.codereview.user.account.service.AccountService;
 import com.kpz.codereview.user.vacation.service.VacationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
-import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Base64;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -105,7 +81,7 @@ public class AzureClientServiceImpl implements AzureClientService {
 
     private static final String AZURE_DEVOPS_BASE_URL = "https://dev.azure.com";
     private static final String UPDATE_REVIEWER_URI_TEMPLATE = "%s/%s/%s/_apis/wit/workitems/%s?api-version=%s";
-    private static final String GET_WORK_ITEM_BY_ID_URI_TEMPLATE = "%s/%s/%s/_apis/wit/workitems/%s?api-version=%s";
+    private static final String GET_WORK_ITEM_BY_ID_URI_TEMPLATE = "%s/%s/_apis/wit/workitems/%s?api-version=%s";
     private static final String BASE_AZURE_REST_WIQL_URI_TEMPLATE = "%s/%s/_apis/wit/wiql?api-version=%s";
     private static final String GET_PROJECTS_URI_TEMPLATE = "%s/%s/_apis/projects?api-version=%s";
     private static final String GET_TEAMS_URI_TEMPLATE = "%s/%s/_apis/projects/%s/teams?api-version=%s";
@@ -173,9 +149,9 @@ public class AzureClientServiceImpl implements AzureClientService {
     }
 
     @Override
-    public UnassignedReviewDTS getUnassignedReviewById(int id, String projectName) throws JsonProcessingException {
-        var workItem = getWorkItemById(id, projectName);
-        return mapWorkItemToUnassignedReview(workItem, projectName);
+    public UnassignedReviewDTS getUnassignedReviewById(int id) throws JsonProcessingException {
+        var workItem = getWorkItemById(id);
+        return mapWorkItemToUnassignedReview(workItem);
     }
 
     @Override
@@ -188,7 +164,7 @@ public class AzureClientServiceImpl implements AzureClientService {
     @Override
     public List<WorkItem> getWorkItemListFromQuery(String query, String projectName) throws JsonProcessingException {
         WorkItemSearchQuery workItemIds = getWorkItemIdsFromQuery(query);
-        return createWorkItemList(workItemIds, projectName);
+        return createWorkItemList(workItemIds);
     }
 
     @Override
@@ -362,7 +338,7 @@ public class AzureClientServiceImpl implements AzureClientService {
     }
 
     @Override
-    public Set<CodeReviewerStatDTS> getReviewersStatistics(String projectName, String startDate, String endDate) throws JsonProcessingException, ParseException {
+    public Set<CodeReviewerStatDTS> getReviewersStatistics(String projectName, String startDate, String endDate) throws JsonProcessingException {
         Map<Boolean, List<WorkItem>> codeReviewWorkItemMap = filterAssignedCodeReviewsFromTimePeriod(getCodeReviewItemList(projectName), startDate, endDate);
         Map<String, CodeReviewerStatDTS> userReviewStatDTSMap = genUserReviewStatisticsHashMapFromProject(projectName);
         Set<CodeReviewerStatDTS> codeReviewerStatDTSSet = mapWorkItemListToUserReviewStatDTSSet(codeReviewWorkItemMap, userReviewStatDTSMap);
@@ -424,19 +400,19 @@ public class AzureClientServiceImpl implements AzureClientService {
         List<UnassignedReviewDTS> mappedWorkItems = new ArrayList<>();
 
         workItems.forEach(workItem -> {
-            var mappedReview = mapWorkItemToUnassignedReview(workItem, projectName);
+            var mappedReview = mapWorkItemToUnassignedReview(workItem);
             mappedWorkItems.add(mappedReview);
         });
 
         return mappedWorkItems;
     }
 
-    private UnassignedReviewDTS mapWorkItemToUnassignedReview(WorkItem workItem, String projectName) {
+    private UnassignedReviewDTS mapWorkItemToUnassignedReview(WorkItem workItem) {
         var id = workItem.getId();
         var title = workItem.getFields().getTitle();
-        var link = AZURE_CLIENT_CODE_REVIEW_ACCESS_LINK_TEMPLATE
-                .formatted(ORGANIZATION_NAME, projectName, id);
         var project = workItem.getFields().getTeamProject();
+        var link = AZURE_CLIENT_CODE_REVIEW_ACCESS_LINK_TEMPLATE
+                .formatted(ORGANIZATION_NAME, project, id);
         var createdDate = workItem.getFields().getCreatedDate();
 
         var tagString = workItem.getFields().getTags();
@@ -458,9 +434,9 @@ public class AzureClientServiceImpl implements AzureClientService {
                 .build();
     }
 
-    private WorkItem getWorkItemById(int id, String projectName) throws JsonProcessingException {
+    private WorkItem getWorkItemById(int id) throws JsonProcessingException {
         ResponseEntity<String> response = restTemplate.exchange(
-                genGetWorkItemByIdUri(id, projectName),
+                genGetWorkItemByIdUri(id),
                 HttpMethod.GET,
                 new HttpEntity<>(genAuthHeaderKey()),
                 String.class
@@ -471,11 +447,11 @@ public class AzureClientServiceImpl implements AzureClientService {
         );
     }
 
-    private List<WorkItem> createWorkItemList(WorkItemSearchQuery query, String projectName) throws JsonProcessingException {
+    private List<WorkItem> createWorkItemList(WorkItemSearchQuery query) throws JsonProcessingException {
         List<WorkItem> workItemsList = new ArrayList<>();
 
         for (var item : query.getWorkItems()) {
-            WorkItem currItem = getWorkItemById(item.getId(), projectName);
+            WorkItem currItem = getWorkItemById(item.getId());
             workItemsList.add(currItem);
         }
 
@@ -572,11 +548,10 @@ public class AzureClientServiceImpl implements AzureClientService {
     }
 
 
-    private String genGetWorkItemByIdUri(int id, String projectName) {
+    private String genGetWorkItemByIdUri(int id) {
         return GET_WORK_ITEM_BY_ID_URI_TEMPLATE.formatted(
                 AZURE_DEVOPS_BASE_URL,
                 ORGANIZATION_NAME,
-                projectName,
                 id,
                 API_VERSION
         );
@@ -597,7 +572,7 @@ public class AzureClientServiceImpl implements AzureClientService {
         );
     }
 
-    private List<WorkItem> filterFinishedAndUnassignedCodeReviews(List<WorkItem> codeReviewItemList) throws JsonProcessingException {
+    private List<WorkItem> filterFinishedAndUnassignedCodeReviews(List<WorkItem> codeReviewItemList) {
         return codeReviewItemList
                 .stream()
                 .filter(workItem -> workItem.getFields().getAssignedTo() != null)
@@ -625,7 +600,7 @@ public class AzureClientServiceImpl implements AzureClientService {
                 .collect(Collectors.partitioningBy(workItem -> !doneStates.contains(workItem.getFields().getState())));
     }
 
-    private List<WorkItem> filterFinishedCodeReviews(List<WorkItem> codeReviewItemList) throws JsonProcessingException {
+    private List<WorkItem> filterFinishedCodeReviews(List<WorkItem> codeReviewItemList) {
         return codeReviewItemList
                 .stream()
                 .filter(workItem -> !doneStates.contains(workItem.getFields().getState()))
@@ -633,7 +608,7 @@ public class AzureClientServiceImpl implements AzureClientService {
     }
 
     private Set<CodeReviewerDTS> mapWorkItemListToCodeReviewerDTSSet(
-            List<WorkItem> filteredWorkItemList, Map<String, CodeReviewerDTS> projectReviewersMap) throws JsonProcessingException {
+            List<WorkItem> filteredWorkItemList, Map<String, CodeReviewerDTS> projectReviewersMap) {
 
         filteredWorkItemList.forEach(workItem -> {
             String uniqueName = workItem.getFields().getAssignedTo().getUniqueName();
@@ -646,7 +621,7 @@ public class AzureClientServiceImpl implements AzureClientService {
     }
 
     private Set<CodeReviewerStatDTS> mapWorkItemListToUserReviewStatDTSSet(
-            Map<Boolean, List<WorkItem>> filteredWorkItemList, Map<String, CodeReviewerStatDTS> projectReviewersMap) throws JsonProcessingException {
+            Map<Boolean, List<WorkItem>> filteredWorkItemList, Map<String, CodeReviewerStatDTS> projectReviewersMap) {
 
         //not done
         filteredWorkItemList.get(true).forEach(workItem -> {

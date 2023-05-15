@@ -12,6 +12,7 @@ import { INotification } from "../interfaces/INotification";
 import { IProjectNameState } from "../interfaces/IProjectNameState";
 import { IProjectLeaderboard } from "../interfaces/IProjectLeaderboard";
 import { formatDateShort } from "../utils/helpers";
+import { IUnassignedReview } from "../interfaces/IUnassignedReview";
 
 
 axios.defaults.baseURL = process.env.REACT_APP_BASE_URL + "/api";
@@ -175,6 +176,14 @@ const Reviewers = {
     ),
 };
 
+const WorkItems = {
+  getById: (id: string) => requests.get<IUnassignedReview>(`/azure/work-items/${id}`)
+    .then((review) => {
+      review.createdDate = new Date(review.createdDate);
+      return review;
+    }),
+};
+
 const agent = {
   Auth,
   Leaderboard,
@@ -182,6 +191,7 @@ const agent = {
   Projects,
   Reviews,
   Reviewers,
+  WorkItems
 };
 
 export default agent;
