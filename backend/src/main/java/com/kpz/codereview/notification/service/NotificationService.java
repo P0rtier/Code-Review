@@ -11,5 +11,7 @@ public interface NotificationService {
 
     void deleteAll(List<Long> ids);
 
+    void deleteAllForUser(String userUUID);
+
     void saveNotification(Notification notification);
 }

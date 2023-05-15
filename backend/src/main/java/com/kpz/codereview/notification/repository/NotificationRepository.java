@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface NotificationRepository extends ListCrudRepository<Notification, Long> {
     List<Notification> findByUserEmail(String userEmail);
+    void deleteAllByUserEmail(String email);
 }

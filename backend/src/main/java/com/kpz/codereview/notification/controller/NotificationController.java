@@ -36,6 +36,12 @@ public class NotificationController {
     }
 
     @DeleteMapping
+    void deleteAllUserNotifications(@RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
+        var userUUID = jwtService.getSubjectWithoutPrefix(token);
+        notificationService.deleteAllForUser(userUUID);
+    }
+
+    @DeleteMapping("/list")
     void deleteAllSpecifiedNotifications(@RequestBody IdQuery query) {
         notificationService.deleteAll(query.getIds());
     }

@@ -5,6 +5,7 @@ import com.kpz.codereview.notification.model.Notification;
 import com.kpz.codereview.notification.repository.NotificationRepository;
 import com.kpz.codereview.notification.service.NotificationService;
 import com.kpz.codereview.user.account.service.AccountService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -39,5 +40,14 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     public void saveNotification(Notification notification) {
         notificationRepository.save(notification);
+    }
+
+    @Transactional
+    @Override
+    public void deleteAllForUser(String userUUID) {
+        var user = accountService.findById(UUID.fromString(userUUID))
+                .orElseThrow(EntityNotFoundException::new);
+
+        notificationRepository.deleteAllByUserEmail(user.getEmail());
     }
 }
