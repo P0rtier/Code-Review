@@ -1,0 +1,16 @@
+@import "../../../../assets/styles/fonts.module";
+
+.topbar {
+    width: 100%;
+    height: 3rem;
+    margin-bottom: 2rem;
+    display: grid;
+    grid-template-columns: 96px 120px auto 96px;
+
+    p {
+        padding: 0.5rem;
+        font-family: $fontMono;
+        font-size: 1.25rem;
+        font-weight: 700;
+    }
+}

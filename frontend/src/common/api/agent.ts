@@ -9,7 +9,10 @@ import { router } from "../../pages/app/App";
 import { IProject } from "../interfaces/IProject";
 import { IReviewer } from "../interfaces/IReviewer";
 import { INotification } from "../interfaces/INotification";
+import { IProjectNameState } from "../interfaces/IProjectNameState";
+import { IProjectLeaderboard } from "../interfaces/IProjectLeaderboard";
 import { formatDateShort } from "../utils/helpers";
+
 
 axios.defaults.baseURL = process.env.REACT_APP_BASE_URL + "/api";
 
@@ -125,9 +128,17 @@ const Auth = {
     }),
 };
 
+const Leaderboard = {
+  getUserStandings: (projectId: string) => requests.get<IProjectLeaderboard>(`/leaderboards/${projectId}`),
+};
+
 const Notifications = {
   getMine: () => requests.get<INotification[]>('/notifications'),
   delete: (id: string) => requests.del(`/notifications/${id}`),
+};
+
+const Projects = {
+  getNames: () => requests.get<IProjectNameState[]>('/azure/projects'),
 };
 
 const Reviews = {
@@ -166,7 +177,9 @@ const Reviewers = {
 
 const agent = {
   Auth,
+  Leaderboard,
   Notifications,
+  Projects,
   Reviews,
   Reviewers,
 };

@@ -4,6 +4,7 @@ import { Home } from "../home/Home";
 import { Navbar } from "../../components/navbar/Navbar";
 import { Stats } from "../stats/Stats";
 import { ReviewerChoice } from "../reviewer-choice/ReviewerChoice";
+import { Leaderboard } from "../leaderboard/Leaderboard";
 import { Box, useStyleConfig } from "@chakra-ui/react";
 import { StyledComponents } from "../../common/enums/StyledComponents";
 import Login from "../login/Login";
@@ -35,6 +36,10 @@ export const router = createBrowserRouter([
       {
         path: "reviewer",
         element: <PrivateRoute Component={ReviewerChoice} />,
+      },
+      {
+        path: "leaderboard",
+        element: <PrivateRoute Component={Leaderboard} />,
       },
       {
         path: "login",

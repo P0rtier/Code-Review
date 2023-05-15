@@ -5,6 +5,7 @@ import styles from "./Navbar.module.scss";
 import { HomeIcon } from "../../assets/icons/HomeIcon";
 import { StatsIcon } from "../../assets/icons/StatsIcon";
 import { LogoutIcon } from "../../assets/icons/LogoutIcon";
+import { TrophyIcon } from "../../assets/icons/TrophyIcon";
 import ToggleThemeButton from "../toggle-theme-button/ToggleThemeButton";
 import { Box, IconButton, useStyleConfig } from "@chakra-ui/react";
 import { StyledComponents } from "../../common/enums/StyledComponents";
@@ -48,6 +49,9 @@ export const Navbar = () => {
                 <NotificationsPopover />
                 <Link to="/stats">
                   <StatsIcon />
+                </Link>
+                <Link to="/leaderboard">
+                  <TrophyIcon />
                 </Link>
               </>
             )}

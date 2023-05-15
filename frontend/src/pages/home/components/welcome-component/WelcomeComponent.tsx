@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import styles from "./WelcomeComponent.module.scss";
-import { ProjectDropdown } from "./components/ProjectDropdown";
+import { ProjectDropdown } from "../../../../components/project-dropdown/ProjectDropdown";
 import workersImage from "../../../../assets/images/programming.svg";
 import { Box, useStyleConfig } from "@chakra-ui/react";
 import { StyledComponents } from "../../../../common/enums/StyledComponents";

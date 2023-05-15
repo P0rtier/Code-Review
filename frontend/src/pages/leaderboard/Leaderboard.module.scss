@@ -1,0 +1,39 @@
+@import "../../assets/styles/colors.module";
+@import "../../assets/styles/fonts.module";
+
+.container {
+    display: grid;
+    grid-template-columns: minmax(auto, 30%) minmax(auto, 70%);
+    justify-content: center;
+    align-items: flex-start;
+    width: 100%;
+    column-gap: 5%;
+
+    .projectSelector {
+        grid-column: 1 / 2;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: flex-start;
+        padding: 2rem 2rem;
+
+        .title {
+            font-family: $fontMain;
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .button {
+            width: 40%;
+            margin-top: 1.5rem;
+        }
+    }
+
+    .userStandingsContainer {
+        grid-column: 2 / 3;
+        display: flex;
+        flex-direction: column;
+    }
+}
