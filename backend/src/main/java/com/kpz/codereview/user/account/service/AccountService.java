@@ -10,5 +10,7 @@ public interface AccountService {
     List<Account> getAll();
     Account getByEmail(String email);
 
+    boolean existsByEmail(String email);
+
     Optional<Account> findById(UUID id);
 }

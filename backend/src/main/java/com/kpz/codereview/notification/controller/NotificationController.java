@@ -24,7 +24,7 @@ public class NotificationController {
     private final JwtService jwtService;
 
     @GetMapping
-    List<Notification> getAllNotifications(@RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
+    List<Notification> getAllUserNotifications(@RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
         var userUUID = jwtService.getSubjectWithoutPrefix(token);
 
         return notificationService.getAllUserNotifications(userUUID);

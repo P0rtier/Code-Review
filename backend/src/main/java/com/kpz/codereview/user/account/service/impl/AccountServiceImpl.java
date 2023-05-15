@@ -22,9 +22,15 @@ public class AccountServiceImpl implements AccountService {
         return repo.findAll();
     }
 
+    @Override
     public Account getByEmail(String email) {
         return repo.findByEmail(email)
                 .orElseThrow(NoSuchElementException::new);
+    }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        return repo.existsByEmail(email);
     }
 
     @Override

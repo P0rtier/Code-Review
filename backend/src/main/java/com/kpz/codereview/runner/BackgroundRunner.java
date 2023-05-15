@@ -13,6 +13,7 @@ import com.kpz.codereview.stats.leaderboard.model.base.TeamMapping;
 import com.kpz.codereview.stats.leaderboard.model.base.User;
 import com.kpz.codereview.stats.leaderboard.model.base.UserStanding;
 import com.kpz.codereview.stats.leaderboard.service.ProjectLeaderboardsService;
+import com.kpz.codereview.user.account.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -20,7 +21,14 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 @RequiredArgsConstructor
 @Component
@@ -47,9 +55,10 @@ public class BackgroundRunner {
     private final AzureClientService azureService;
     private final NotificationService notificationService;
     private final ProjectLeaderboardsService leaderboardsService;
+    private final AccountService accountService;
 
     //Run every work day at 1am every month 0 0 1 ? * MON-FRI / 0 * * ? * *
-    @Scheduled(cron = "0 0 1 ? * MON-FRI")
+    @Scheduled(cron = "0 * * ? * *")
     public void createCodeReviewNotifications() throws JsonProcessingException {
         var projects = azureService.getProjectList();
 
@@ -62,32 +71,7 @@ public class BackgroundRunner {
                         return !doneStates.contains(state);
                     })
                     .filter(codeReview -> codeReview.getFields().getAssignedTo() != null)
-                    .forEach(codeReview -> {
-                        String userEmail = codeReview.getFields()
-                                .getAssignedTo()
-                                .getUniqueName();
-
-                        Date creationDate = codeReview.getFields()
-                                .getCreatedDate();
-
-                        String title = codeReview.getFields()
-                                .getTitle();
-
-                        String link = AZURE_CLIENT_CODE_REVIEW_ACCESS_LINK.formatted(
-                                ORGANIZATION_NAME, project.getName(), codeReview.getId()
-                        );
-
-                        String description = OVERDUE_REVIEW_DESCRIPTION.formatted(title, creationDate);
-
-                        var notification = Notification.builder()
-                                .userEmail(userEmail)
-                                .type(NotificationType.CODE_REVIEW.toString())
-                                .link(link)
-                                .description(description)
-                                .build();
-
-                        notificationService.saveNotification(notification);
-                    });
+                    .forEach(codeReview -> addIfAccountExists(codeReview, project.getName()));
         }
     }
 
@@ -111,6 +95,36 @@ public class BackgroundRunner {
             createAndSaveLeaderboardWithStandings(project, userStandings, teamMappings);
 
             createLeaderboardNotifications(project, userStandings);
+        }
+    }
+
+    private void addIfAccountExists(WorkItem codeReview, String projectName) {
+        String userEmail = codeReview.getFields()
+                .getAssignedTo()
+                .getUniqueName();
+
+        if (accountService.existsByEmail(userEmail)) {
+
+            Date creationDate = codeReview.getFields()
+                    .getCreatedDate();
+
+            String title = codeReview.getFields()
+                    .getTitle();
+
+            String link = AZURE_CLIENT_CODE_REVIEW_ACCESS_LINK.formatted(
+                    ORGANIZATION_NAME, projectName, codeReview.getId()
+            );
+
+            String description = OVERDUE_REVIEW_DESCRIPTION.formatted(title, creationDate);
+
+            var notification = Notification.builder()
+                    .userEmail(userEmail)
+                    .type(NotificationType.CODE_REVIEW.toString())
+                    .link(link)
+                    .description(description)
+                    .build();
+
+            notificationService.saveNotification(notification);
         }
     }
 
@@ -140,20 +154,24 @@ public class BackgroundRunner {
 
     private void createLeaderboardNotifications(Project project, List<UserStanding> userStandings) {
         userStandings.forEach(userStanding -> {
-            var link = LEADERBOARD_ACCESS_LINK.formatted(project.getId());
+            var email = userStanding.getUserEmail();
 
-            var description = LEADERBOARD_DESCRIPTION.formatted(
-                    userStanding.getPlace(), project.getName()
-            );
+            if (accountService.existsByEmail(email)) {
+                var link = LEADERBOARD_ACCESS_LINK.formatted(project.getId());
 
-            var notification = Notification.builder()
-                    .userEmail(userStanding.getUserEmail())
-                    .type(NotificationType.LEADERBOARD.toString())
-                    .link(link)
-                    .description(description)
-                    .build();
+                var description = LEADERBOARD_DESCRIPTION.formatted(
+                        userStanding.getPlace(), project.getName()
+                );
 
-            notificationService.saveNotification(notification);
+                var notification = Notification.builder()
+                        .userEmail(userStanding.getUserEmail())
+                        .type(NotificationType.LEADERBOARD.toString())
+                        .link(link)
+                        .description(description)
+                        .build();
+
+                notificationService.saveNotification(notification);
+            }
         });
     }
 
