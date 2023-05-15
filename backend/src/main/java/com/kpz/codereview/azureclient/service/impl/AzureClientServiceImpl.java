@@ -237,8 +237,8 @@ public class AzureClientServiceImpl implements AzureClientService {
     }
 
     @Override
-    public List<String> getUserProjects(String userEmail) throws JsonProcessingException {
-        List<String> userProjects = new ArrayList<>();
+    public Set<String> getUserProjects(String userEmail) throws JsonProcessingException {
+        Set<String> userProjects = new HashSet<>();
 
         List<Project> projects = getProjectList();
 

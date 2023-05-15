@@ -36,7 +36,7 @@ public interface AzureClientService {
 
     void assignCodeReviewToUser(Integer workItemId, String userUUID, String projectName) throws JsonProcessingException;
 
-    List<String> getUserProjects(String userUUID) throws JsonProcessingException;
+    Set<String> getUserProjects(String userUUID) throws JsonProcessingException;
 
     Set<CodeReviewerDTS> getProjectSortedReviewers(String projectName, String startDate, String endDate) throws JsonProcessingException;
 
