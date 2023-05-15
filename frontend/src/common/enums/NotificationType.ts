@@ -1,4 +1,4 @@
 export enum NotificationType {
-  CodeReview = "codeReview",
-  Stats = "stats",
+    CodeReview = "Code review",
+    Leaderboard = "Leaderboard"
 }

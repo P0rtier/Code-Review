@@ -1,7 +1,7 @@
 export interface INotificationComponentProps {
   id: string;
   type: string;
-  title: string;
+  description: string;
   link: string;
   onDelete: (id: string) => void;
 }

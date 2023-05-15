@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
+import agent from "../../../../common/api/agent";
 import styles from "./NotificationsPopover.module.scss";
 import { NotificationsIcon } from "../../../../assets/icons/NotificationsIcon";
-import { INotification } from "../../../../common/interfaces/INotification";
 import { NotificationComponent } from "./components/NotificationComponent";
 import {
   Popover,
@@ -10,63 +10,48 @@ import {
   PopoverHeader,
   PopoverBody,
 } from "@chakra-ui/react";
+import { NotificationContext } from "../../../../common/providers/NotificationsProvider";
+import { NotificationsActions } from "../../../../common/enums/NotificationsActions";
+import { NotificationsActiveIcon } from "../../../../assets/icons/NotificationsActiveIcon";
 
 export const NotificationsPopover = () => {
-  const [mockData, setMockData] = useState<INotification[]>([
-    {
-      id: "1",
-      type: "codeReview",
-      title: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-      link: "https://dev.azure.com/KPZ-CodeReview/Code-Review/_workitems/edit/10/",
-    },
-    {
-      id: "2",
-      type: "stats",
-      title:
-        "You are #1 on the leaderboard. Click here to see weekly statistics.",
-      link: "/stats",
-    },
-    {
-      id: "3",
-      type: "codeReview",
-      title: "You are late on your code review submission.",
-      link: "https://dev.azure.com/KPZ-CodeReview/Code-Review/_workitems/edit/10/",
-    },
-    {
-      id: "4",
-      type: "diff",
-      title: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-      link: "/home",
-    },
-  ]);
+
+  const { state: notifications, dispatch: dispatchNotifications } = useContext(NotificationContext);
 
   const deleteNotification = (id: string) => {
-    const updatedList = mockData.filter((item) => item.id !== id);
-    setMockData(updatedList);
+    agent.Notifications.delete(id).then(() => {
+      let updatedList = notifications?.filter((item) => item.id !== id);
+      dispatchNotifications({ type: NotificationsActions.SetNotifications, payload: updatedList });
+    });
   };
 
   const getData = () => {
-    return mockData.map((notification) => (
-      <NotificationComponent
-        {...notification}
-        key={notification.id}
-        onDelete={deleteNotification}
-      />
-    ));
+    if (notifications) {
+      return notifications.map((notification) => (
+        <NotificationComponent
+          {...notification}
+          key={notification.id}
+          onDelete={deleteNotification}
+        />
+      ));
+    };
   };
+
+  const notificationsExist = (): boolean => {
+    return ((notifications && notifications.length > 0) ?? false);
+  }
+  const notificationsIcon = notificationsExist() ? (<NotificationsActiveIcon />) : (<NotificationsIcon />);
 
   return (
     <>
-      <Popover isLazy>
+      <Popover>
         <PopoverTrigger>
-          <button>
-            <NotificationsIcon />
+          <button disabled={!notificationsExist()}>
+            {notificationsIcon}
           </button>
         </PopoverTrigger>
-        <PopoverContent w={"30vw"}>
-          <PopoverHeader>
-            <div className={styles.header}>Notifications</div>
-          </PopoverHeader>
+        <PopoverContent w={'30vw'}>
+          <PopoverHeader><div className={styles.header}>Notifications</div></PopoverHeader>
           <PopoverBody>
             <div className={styles.container}>{getData()}</div>
           </PopoverBody>

@@ -13,16 +13,20 @@ import { UserContext } from "../../common/providers/UserProvider";
 import { UserActions } from "../../common/enums/UserActions";
 import { EnvironmentProfiles } from "../../common/enums/EnvironmentProfiles";
 import { NotificationsPopover } from "./components/notifications-popover/NotificationsPopover";
+import { NotificationContext } from "../../common/providers/NotificationsProvider";
+import { NotificationsActions } from "../../common/enums/NotificationsActions";
 
 export const Navbar = () => {
   const navbarStyles = useStyleConfig(StyledComponents.Navbar);
 
-  const { state: user, dispatch } = useContext(UserContext);
+  const { state: user, dispatch: dispatchUser } = useContext(UserContext);
+  const { dispatch: dispatchNotifications } = useContext(NotificationContext);
 
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    dispatch({ type: UserActions.ClearUser });
+    dispatchUser({ type: UserActions.ClearUser });
+    dispatchNotifications({ type: NotificationsActions.ClearNotifications });
     navigate("/login");
   };
 

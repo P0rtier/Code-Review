@@ -4,6 +4,7 @@ import App from "./pages/app/App";
 import { ChakraBaseProvider } from "@chakra-ui/react";
 import theme from "./common/utils/theme";
 import { UserProvider } from "./common/providers/UserProvider";
+import { NotificationProvider } from "./common/providers/NotificationsProvider";
 import "react-toastify/dist/ReactToastify.css";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
@@ -16,7 +17,9 @@ root.render(
   <React.StrictMode>
     <ChakraBaseProvider theme={theme}>
       <UserProvider>
-        <App />
+        <NotificationProvider>
+          <App />
+        </NotificationProvider>
       </UserProvider>
     </ChakraBaseProvider>
   </React.StrictMode>

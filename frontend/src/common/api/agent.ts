@@ -8,6 +8,7 @@ import { CSSProperties } from "react";
 import { router } from "../../pages/app/App";
 import { IProject } from "../interfaces/IProject";
 import { IReviewer } from "../interfaces/IReviewer";
+import { INotification } from "../interfaces/INotification";
 import { formatDateShort } from "../utils/helpers";
 
 axios.defaults.baseURL = process.env.REACT_APP_BASE_URL + "/api";
@@ -125,7 +126,8 @@ const Auth = {
 };
 
 const Notifications = {
-  getAll: () => requests.get("/notifications"),
+  getMine: () => requests.get<INotification[]>('/notifications'),
+  delete: (id: string) => requests.del(`/notifications/${id}`),
 };
 
 const Reviews = {
