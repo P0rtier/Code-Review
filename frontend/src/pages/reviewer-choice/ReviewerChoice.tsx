@@ -21,6 +21,7 @@ import { IUnassignedReview } from "../../common/interfaces/IUnassignedReview";
 import agent from "../../common/api/agent";
 import { addDays } from "date-fns";
 import { Placeholder } from "../../components/placeholders/placeholder/Placeholder";
+import { NoDataComponent } from "../../components/no-data-component/NoDataComponent";
 
 export const ReviewerChoice = () => {
   const primaryComponent = useStyleConfig(StyledComponents.PrimaryComponent);
@@ -134,6 +135,10 @@ export const ReviewerChoice = () => {
   };
 
   const getReviewers = () => {
+    if (searchedReviewers && searchedReviewers.length === 0) {
+      return <NoDataComponent header={"No reviewers found"} />;
+    }
+
     if (searchedReviewers && review) {
       return searchedReviewers.map((reviewer) => (
         <Reviewer
@@ -200,7 +205,7 @@ export const ReviewerChoice = () => {
           {review ? (
             <ReviewToAssignInfo {...review} fullWidth={true} />
           ) : (
-            <Placeholder header={"Loading review..."} />
+            <Placeholder header={""} />
           )}
         </div>
         <div className={styles.filterContainer}>
@@ -227,7 +232,7 @@ export const ReviewerChoice = () => {
             />
           </div>
           {loading ? (
-            <Placeholder header={"Loading reviewers..."} />
+            <Placeholder header={""} />
           ) : (
             <Box className={styles.searchResult} __css={primaryComponent}>
               {getReviewers()}

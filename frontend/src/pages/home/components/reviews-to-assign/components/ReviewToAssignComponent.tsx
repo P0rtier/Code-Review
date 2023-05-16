@@ -21,7 +21,6 @@ export const ReviewToAssignComponent = (
     >
       <Box className={styles.review} __css={secondaryStyles}>
         <BoldRegularText boldText={"Title: "} regularText={review.title} />
-        <BoldRegularText boldText={"Project: "} regularText={review.project} />
         <BoldRegularText
           boldText={"Created date: "}
           regularText={review.createdDate.toLocaleDateString()}

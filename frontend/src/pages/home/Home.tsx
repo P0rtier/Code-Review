@@ -27,7 +27,10 @@ export const Home = () => {
     });
 
     agent.Notifications.getMine().then((response: INotification[]) => {
-      dispatchNotifications({ type: NotificationsActions.SetNotifications, payload: response });
+      dispatchNotifications({
+        type: NotificationsActions.SetNotifications,
+        payload: response,
+      });
     });
   }, [dispatchNotifications]);
 
@@ -47,8 +50,8 @@ export const Home = () => {
       />
       {loading ? (
         <>
-          <Placeholder header={"Reviews to assign"} />
-          <Placeholder header={"Assigned reviews"} />
+          <Placeholder header={""} />
+          <Placeholder header={""} />
         </>
       ) : (
         selectedProject && (

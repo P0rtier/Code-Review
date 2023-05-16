@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "./ProjectDropdown.module.scss";
 import { Button, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
@@ -7,6 +7,15 @@ import { IProjectDropdownProps } from "./IProjectDropdownProps";
 
 export const ProjectDropdown = (props: IProjectDropdownProps) => {
   const { projectNames, selectedProject, selectProject } = props;
+  const [noProjects, setNoProjects] = React.useState<boolean>(false);
+
+  useEffect(() => {
+    if (projectNames.length === 0) {
+      setNoProjects(true);
+    } else {
+      setNoProjects(false);
+    }
+  }, [projectNames]);
 
   return (
     <Menu>
@@ -17,10 +26,14 @@ export const ProjectDropdown = (props: IProjectDropdownProps) => {
         disabled={!!selectedProject}
       >
         <div className={styles.container}>
-          <BoldRegularText
-            boldText={"Project: "}
-            regularText={selectedProject || ""}
-          />
+          {noProjects ? (
+            <BoldRegularText boldText={"No projects found."} regularText={""} />
+          ) : (
+            <BoldRegularText
+              boldText={"Project: "}
+              regularText={selectedProject || ""}
+            />
+          )}
         </div>
       </MenuButton>
       <MenuList>

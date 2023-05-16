@@ -59,5 +59,20 @@
     padding: 0 2rem;
     height: 100%;
     position: relative;
+
+    .noReviewersContainer {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding-top: 2rem;
+
+      .noReviewersHeader {
+        font-family: $fontMain;
+        font-weight: 700;
+        font-size: 1.1rem;
+        padding: 0 1rem;
+      }
+    }
   }
 }

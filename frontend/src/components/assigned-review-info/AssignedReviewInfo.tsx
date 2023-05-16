@@ -24,7 +24,6 @@ export const AssignedReviewInfo = (props: IAssignedReviewInfoProps) => {
             boldText={"Scheduled: "}
             regularText={props.createdDate.toLocaleDateString()}
           />
-          <BoldRegularText boldText={"Project: "} regularText={props.project} />
           <BoldRegularText boldText={"Tags: "} regularText={tags} />
         </div>
       </a>
