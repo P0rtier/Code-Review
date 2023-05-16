@@ -150,4 +150,12 @@
         <sqlFile path="database/mock/add_mock_notifications_259102.sql"/>
     </changeSet>
     
+    <changeSet author="kaleks" id="10">
+        <sqlFile path="database/mock/add_mock_notifications_259102.sql"/>
+    </changeSet>
+
+    <changeSet author="puzarows" id="11">
+        <sqlFile path="database/mock/mock_vacations.sql"/>
+    </changeSet>
+
 </databaseChangeLog>
