@@ -145,4 +145,9 @@
                           startWith="1"
                           tableName="vacations"/>
     </changeSet>
+
+    <changeSet author="Kacper Aleks" id="9">
+        <sqlFile path="database/mock/add_mock_notifications_259102.sql"/>
+    </changeSet>
+    
 </databaseChangeLog>

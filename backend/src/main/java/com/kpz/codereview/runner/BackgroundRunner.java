@@ -58,7 +58,7 @@ public class BackgroundRunner {
     private final AccountService accountService;
 
     //Run every work day at 1am every month 0 0 1 ? * MON-FRI / 0 * * ? * *
-    @Scheduled(cron = "0 * * ? * *")
+    @Scheduled(cron = "0 0 1 ? * MON-FRI")
     public void createCodeReviewNotifications() throws JsonProcessingException {
         var projects = azureService.getProjectList();
 
