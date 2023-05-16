@@ -16,6 +16,7 @@ import { EnvironmentProfiles } from "../../common/enums/EnvironmentProfiles";
 import { NotificationsPopover } from "./components/notifications-popover/NotificationsPopover";
 import { NotificationContext } from "../../common/providers/NotificationsProvider";
 import { NotificationsActions } from "../../common/enums/NotificationsActions";
+import NavbarLogo from "../../assets/images/nav-logo.svg";  
 
 export const Navbar = () => {
   const navbarStyles = useStyleConfig(StyledComponents.Navbar);
@@ -38,7 +39,9 @@ export const Navbar = () => {
       <div className={styles.navbarContainer}>
         <Box className={styles.navbarWrapper} __css={navbarStyles}>
           <Link to={"/home"}>
-            <div className={styles.navbarLogo}>code review</div>
+            <div className={styles.navbarLogo}>
+              <img src={NavbarLogo} className={styles.navbarLogoImg} alt="Code Review Logo" />
+            </div>
           </Link>
           <div className={styles.navbarLinks}>
             {(user || isDev) && (

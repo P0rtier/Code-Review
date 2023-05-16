@@ -25,9 +25,12 @@
     height: 100%;
 
     .navbarLogo {
-      margin-left: 4rem;
-      font-family: $fontLogo;
-      font-size: 1.5rem;
+      margin-left: 2rem;
+      width: 12.5rem;
+    }
+
+    .navbarLogoImg{
+      width: 100%;
     }
 
     .navbarLogo:hover {
