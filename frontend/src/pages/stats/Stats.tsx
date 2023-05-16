@@ -14,6 +14,7 @@ import { StateContext } from "../../common/providers/StatsProvider";
 import { StatsActions } from "../../common/enums/StatsActions";
 import { IDateContainer } from "../../common/interfaces/IDateContainer";
 import { IProjectNameState } from "../../common/interfaces/IProjectNameState";
+import { Placeholder } from "../../components/placeholders/placeholder/Placeholder";
 
 export const Stats = () => {
   const { state, dispatch } = React.useContext(StateContext);
@@ -81,7 +82,13 @@ export const Stats = () => {
             )}
             <StyledDatePicker setCurrentDate={handleDateChange} />
           </Box>
-          <TeamSearchResult teamMembers={state.allTeamMembers} />
+          {loading ? (
+            <div style={{ height: "30rem", width: "100%" }}>
+              <Placeholder header={""} fullHeight={true} />
+            </div>
+          ) : (
+            <TeamSearchResult teamMembers={state.allTeamMembers} />
+          )}
         </div>
         <TeamGraphs teamMembers={state.reducedTeamMembers} loading={loading} />
       </div>
