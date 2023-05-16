@@ -12,8 +12,8 @@ import { INotification } from "../interfaces/INotification";
 import { IProjectNameState } from "../interfaces/IProjectNameState";
 import { IProjectLeaderboard } from "../interfaces/IProjectLeaderboard";
 import { formatDateShort } from "../utils/helpers";
+import { IStatsTeamMember } from "../interfaces/IStatsTeamMember";
 import { IUnassignedReview } from "../interfaces/IUnassignedReview";
-
 
 axios.defaults.baseURL = process.env.REACT_APP_BASE_URL + "/api";
 
@@ -176,6 +176,17 @@ const Reviewers = {
     ),
 };
 
+const Stats = {
+  get: (project: string, startDate: Date, endDate: Date) =>
+    requests.get<IStatsTeamMember[]>("/azure/review-statistics", {
+      params: {
+        project: project,
+        startDate: formatDateShort(startDate),
+        endDate: formatDateShort(endDate),
+      },
+    }),
+};
+
 const WorkItems = {
   getById: (id: string) => requests.get<IUnassignedReview>(`/azure/work-items/${id}`)
     .then((review) => {
@@ -191,7 +202,8 @@ const agent = {
   Projects,
   Reviews,
   Reviewers,
-  WorkItems
+  WorkItems,
+  Stats,
 };
 
 export default agent;

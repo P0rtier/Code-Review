@@ -2,21 +2,31 @@
 @import "../../assets/styles/fonts.module";
 
 .container {
-  display: grid;
-  grid-template-columns: minmax(auto, 30%) minmax(auto, 70%);
-  justify-content: center;
-  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
   width: 100%;
-  column-gap: 5%;
+
+  .topWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    width: 100%;
+    column-gap: 3rem;
+  }
 
   .teamSelector {
     grid-column: 1 / 2;
-    width: 100%;
+    width: max(30rem, 100%);
+    max-width: 30rem;
+    min-height: 33rem;
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: flex-start;
     align-items: flex-start;
     padding: 2rem 2rem;
+    margin-bottom: 4rem;
 
     .title {
       font-family: $fontMain;

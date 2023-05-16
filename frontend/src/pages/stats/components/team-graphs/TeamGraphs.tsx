@@ -1,10 +1,10 @@
 import React from "react";
 import styles from "./TeamGraphs.module.scss";
 import { ITeamGraphsProps } from "./ITeamGraphsProps";
-import { joinClasses } from "../../../../common/utils/joinClasses";
 import { GraphComponent } from "./components/GraphComponent";
 import { Box, useStyleConfig } from "@chakra-ui/react";
 import { StyledComponents } from "../../../../common/enums/StyledComponents";
+import { Placeholder } from "../../../../components/placeholders/placeholder/Placeholder";
 
 export const TeamGraphs = (props: ITeamGraphsProps) => {
   const primaryComponent = useStyleConfig(StyledComponents.PrimaryComponent);
@@ -12,46 +12,56 @@ export const TeamGraphs = (props: ITeamGraphsProps) => {
   const parseDoneData = () => {
     return props.teamMembers.map((teamMember) => ({
       name: teamMember.uniqueName,
-      value: teamMember.reviewsInfo.done,
+      value: teamMember.reviewStats.done,
     }));
   };
 
   const parseActiveData = () => {
     return props.teamMembers.map((teamMember) => ({
       name: teamMember.uniqueName,
-      value: teamMember.reviewsInfo.active,
+      value: teamMember.reviewStats.active,
     }));
   };
 
   const parseAvgTimeData = () => {
     return props.teamMembers.map((teamMember) => ({
       name: teamMember.uniqueName,
-      value: teamMember.reviewsInfo.avgTime,
+      value: teamMember.reviewStats.avgReviewHours,
     }));
   };
 
   return (
     <div className={styles.container}>
-      <Box
-        className={joinClasses(styles.graph, styles.firstColumn)}
-        __css={primaryComponent}
-      >
-        <GraphComponent parseData={parseDoneData} title={"Finished reviews"} />
+      <Box className={styles.graph} __css={primaryComponent}>
+        {props.loading ? (
+          <Placeholder header={""} fullHeight={true} />
+        ) : (
+          <GraphComponent
+            parseData={parseDoneData}
+            title={"Finished reviews"}
+          />
+        )}
       </Box>
-      <Box
-        className={joinClasses(styles.graph, styles.secondColumn)}
-        __css={primaryComponent}
-      >
-        <GraphComponent parseData={parseActiveData} title={"Active reviews"} />
+      <Box className={styles.graph} __css={primaryComponent}>
+        {props.loading ? (
+          <Placeholder header={""} fullHeight={true} />
+        ) : (
+          <GraphComponent
+            parseData={parseActiveData}
+            title={"Active reviews"}
+          />
+        )}
       </Box>
-      <Box
-        className={joinClasses(styles.graph, styles.thirdColumn)}
-        __css={primaryComponent}
-      >
-        <GraphComponent
-          parseData={parseAvgTimeData}
-          title={"Average review time"}
-        />
+      <Box className={styles.graph} __css={primaryComponent}>
+        {props.loading ? (
+          <Placeholder header={""} fullHeight={true} />
+        ) : (
+          <GraphComponent
+            parseData={parseAvgTimeData}
+            title={"Average review time"}
+            isTime={true}
+          />
+        )}
       </Box>
     </div>
   );

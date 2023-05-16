@@ -1,5 +1,6 @@
-import { ITeamMember } from "../../../../common/interfaces/ITeamMember";
+import { IStatsTeamMember } from "../../../../common/interfaces/IStatsTeamMember";
 
 export interface ITeamGraphsProps {
-  teamMembers: ITeamMember[];
+  teamMembers: IStatsTeamMember[];
+  loading: boolean;
 }

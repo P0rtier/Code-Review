@@ -1,33 +1,21 @@
 @import "../../../../assets/styles/fonts.module";
 
 .container {
-  grid-column: 1 / 3;
   width: 100%;
-  height: max(30%, 30vh);
-  display: grid;
+  display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  justify-items: center;
-  grid-template-columns: 1fr 1fr 1fr;
+  justify-content: center;
+  margin-bottom: 4rem;
+  gap: 3rem;
 
   .graph {
     min-height: 400px;
-    height: 80%;
-    width: 80%;
+    height: 400px;
+    min-width: 500px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-  }
-
-  .firstColumn {
-    grid-column: 1 / 2;
-  }
-
-  .secondColumn {
-    grid-column: 2 / 3;
-  }
-
-  .thirdColumn {
-    grid-column: 3 / 4;
   }
 }

@@ -15,6 +15,18 @@ export const getIconColor = (colorMode: string) => {
     : colors.darkTextPrimary;
 };
 
+export const getComponentColorPrimary = (colorMode: string): string => {
+  return isLightMode(colorMode)
+    ? colors.lightComponentLayerPrimary
+    : colors.darkComponentLayerPrimary;
+};
+
+export const getComponentColorSecondary = (colorMode: string): string => {
+  return isLightMode(colorMode)
+    ? colors.lightComponentLayerSecondary
+    : colors.darkComponentLayerSecondary;
+};
+
 export const getComponentColorAttention = (colorMode: string): string => {
   return isLightMode(colorMode)
     ? colors.lightComponentLayerAttention

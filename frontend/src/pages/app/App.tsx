@@ -2,7 +2,6 @@ import React from "react";
 import styles from "./App.module.scss";
 import { Home } from "../home/Home";
 import { Navbar } from "../../components/navbar/Navbar";
-import { Stats } from "../stats/Stats";
 import { ReviewerChoice } from "../reviewer-choice/ReviewerChoice";
 import { Leaderboard } from "../leaderboard/Leaderboard";
 import { Box, useStyleConfig } from "@chakra-ui/react";
@@ -15,6 +14,7 @@ import AnonymousRoute from "../../components/anonymous-route/AnonymousRoute";
 import { ServerError } from "../server-error/ServerError";
 import { NotFound } from "../not-found/NotFound";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { StatsContainer } from "../stats/StatsContainer";
 
 export const router = createBrowserRouter([
   {
@@ -31,7 +31,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "stats",
-        element: <PrivateRoute Component={Stats} />,
+        element: <PrivateRoute Component={StatsContainer} />,
       },
       {
         path: "reviewer/:id",

@@ -13,7 +13,6 @@ export const TeamSearchResult = (props: ITeamSearchResultProps) => {
       <TeamMemberComponent
         displayName={teamMember.displayName}
         uniqueName={teamMember.uniqueName}
-        resolveTeamMember={props.resolveTeamMember}
         key={key}
       />
     ));

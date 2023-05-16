@@ -1,6 +1,6 @@
 .container {
   display: grid;
-  width: calc(100% - 2rem);
+  width: 100%;
   grid-template-columns: 10% 45% 45%;
 
   .column {

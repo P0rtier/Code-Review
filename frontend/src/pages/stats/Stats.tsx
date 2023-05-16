@@ -3,89 +3,87 @@ import styles from "./Stats.module.scss";
 import { PageWrapper } from "../../components/page-wrapper/PageWrapper";
 import { Box, useStyleConfig } from "@chakra-ui/react";
 import { StyledComponents } from "../../common/enums/StyledComponents";
-import { TeamDropdown } from "./components/team-dropdown/TeamDropdown";
-import { ITeamMember } from "../../common/interfaces/ITeamMember";
+import { IStatsTeamMember } from "../../common/interfaces/IStatsTeamMember";
 import { TeamSearchResult } from "./components/team-search-result/TeamSearchResult";
 import { TeamGraphs } from "./components/team-graphs/TeamGraphs";
-
-const teamMembersMock: ITeamMember[] = [
-  {
-    displayName: "Name",
-    uniqueName: "mail@mail.com",
-    teamName: "Alpha",
-    reviewsInfo: {
-      done: 1,
-      active: 2,
-      avgTime: 12,
-    },
-  },
-  {
-    displayName: "Name",
-    uniqueName: "mail@mail.com",
-    teamName: "Alpha",
-    reviewsInfo: {
-      done: 4,
-      active: 8,
-      avgTime: 16,
-    },
-  },
-  {
-    displayName: "Name",
-    uniqueName: "mail@mail.com",
-    teamName: "Beta",
-    reviewsInfo: {
-      done: 8,
-      active: 9,
-      avgTime: 21,
-    },
-  },
-];
-
-const teamMock: string[] = ["Alpha", "Beta", "Gamma", "Delta"];
+import agent from "../../common/api/agent";
+import { ProjectDropdown } from "../../components/project-dropdown/ProjectDropdown";
+import { DropdownPlaceholder } from "../../components/placeholders/dropdown-placeholder/DropdownPlaceholder";
+import { StyledDatePicker } from "../../components/styled-date-picker/StyledDatePicker";
+import { StateContext } from "../../common/providers/StatsProvider";
+import { StatsActions } from "../../common/enums/StatsActions";
+import { IDateContainer } from "../../common/interfaces/IDateContainer";
+import { IProjectNameState } from "../../common/interfaces/IProjectNameState";
 
 export const Stats = () => {
-  const [teamMembers, setTeamMembers] =
-    React.useState<ITeamMember[]>(teamMembersMock);
-  const [reducedTeamMembers, setReducedTeamMembers] =
-    React.useState<ITeamMember[]>(teamMembersMock);
+  const { state, dispatch } = React.useContext(StateContext);
+  const [loading, setLoading] = React.useState<boolean>(true);
 
   const attentionComponent = useStyleConfig(
     StyledComponents.AttentionComponent
   );
 
-  const filterTeamMembersByTeam = (teamName: string) => {
-    setTeamMembers(
-      teamMembersMock.filter((teamMember) => teamMember.teamName === teamName)
-    );
-  };
+  useEffect(() => {
+    agent.Projects.getNames().then((response: IProjectNameState[]) => {
+      dispatch({ type: StatsActions.SetProjectList, payload: response });
+
+      if (response.length > 0) {
+        dispatch({ type: StatsActions.SetProject, payload: response[0] });
+      }
+    });
+  }, []);
 
   useEffect(() => {
-    setReducedTeamMembers(teamMembers);
-  }, [teamMembers]);
+    setLoading(true);
+    if (state.currentProject) {
+      agent.Stats.get(
+        state.currentProject.name,
+        state.currentDate.startDate,
+        state.currentDate.endDate
+      ).then((response: IStatsTeamMember[]) => {
+        dispatch({ type: StatsActions.SetAllTeamMembers, payload: response });
+        dispatch({
+          type: StatsActions.SetReducedTeamMembers,
+          payload: response,
+        });
+        setLoading(false);
+      });
+    }
+  }, [state.currentProject, state.currentDate]);
 
-  const filterTeamMembersByCheckbox = () => {
-    setReducedTeamMembers(
-      teamMembers.filter(
-        (teamMember, key) => document.getElementsByTagName("input")[key].checked
-      )
-    );
+  const handleSelectProject = (projectName: string) => {
+    dispatch({
+      type: StatsActions.SetProject,
+      payload: state.projectList.find(
+        (project) => project.name === projectName
+      ),
+    });
+  };
+
+  const handleDateChange = (date: IDateContainer) => {
+    dispatch({ type: StatsActions.SetCurrentDate, payload: date });
   };
 
   return (
     <PageWrapper smallGap={true}>
       <div className={styles.container}>
-        <Box className={styles.teamSelector} __css={attentionComponent}>
-          <div className={styles.title}>Team stats</div>
-          <TeamDropdown
-            teams={teamMock}
-            setCurrentTeam={filterTeamMembersByTeam}
-          />
-        </Box>
-        <TeamSearchResult
-          teamMembers={teamMembers}
-          resolveTeamMember={filterTeamMembersByCheckbox}
-        />
-        <TeamGraphs teamMembers={reducedTeamMembers} />
+        <div className={styles.topWrapper}>
+          <Box className={styles.teamSelector} __css={attentionComponent}>
+            <div className={styles.title}>Project stats</div>
+            {loading ? (
+              <DropdownPlaceholder header={"Loading projects..."} />
+            ) : (
+              <ProjectDropdown
+                projectNames={state.projectList.map((project) => project.name)}
+                selectedProject={state.currentProject?.name}
+                selectProject={handleSelectProject}
+              />
+            )}
+            <StyledDatePicker setCurrentDate={handleDateChange} />
+          </Box>
+          <TeamSearchResult teamMembers={state.allTeamMembers} />
+        </div>
+        <TeamGraphs teamMembers={state.reducedTeamMembers} loading={loading} />
       </div>
     </PageWrapper>
   );

@@ -1,10 +1,9 @@
-export interface ITeamMember {
+export interface IStatsTeamMember {
   displayName: string;
   uniqueName: string;
-  teamName: string;
-  reviewsInfo: {
+  reviewStats: {
     done: number;
     active: number;
-    avgTime: number;
+    avgReviewHours: number;
   };
 }
