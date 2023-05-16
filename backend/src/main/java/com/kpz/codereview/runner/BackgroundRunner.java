@@ -76,8 +76,8 @@ public class BackgroundRunner {
     }
 
 
-    //Run every monday at 1am every month 0 0 1 ? * MON-FRI / 0 * * ? * *
-    @Scheduled(cron = "0 * * ? * *")
+    //Run every monday at 1am every month 0 0 1 ? * MON / 0 * * ? * *
+    @Scheduled(cron = " 0 0 1 ? * MON")
     public void createLeaderBoardsAndNotifications() throws JsonProcessingException {
         leaderboardsService.deleteAll();
 

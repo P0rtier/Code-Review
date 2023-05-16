@@ -16,7 +16,7 @@ export const ReviewToAssignComponent = (
   return (
     <Link
       className={styles.reviewLink}
-      to={"/reviewer"}
+      to={`/reviewer/${review.id}`}
       state={{ review: review }}
     >
       <Box className={styles.review} __css={secondaryStyles}>
