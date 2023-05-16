@@ -10,6 +10,7 @@ import {
 } from "../../../../../common/utils/helpers";
 import { Payload } from "recharts/types/component/DefaultTooltipContent";
 import { NoDataComponent } from "../../../../../components/no-data-component/NoDataComponent";
+import { graphColors } from "../../../../../assets/styles/graphColors";
 
 export const GraphComponent = (props: IGraphComponentProps) => {
   const { colorMode } = useColorMode();
@@ -87,7 +88,7 @@ export const GraphComponent = (props: IGraphComponentProps) => {
               {data.map((entry, index) => (
                 <Cell
                   key={`cell-${index}`}
-                  fill={getNavbarBlueColor(colorMode)}
+                  fill={graphColors[index % graphColors.length]}
                 />
               ))}
             </Pie>

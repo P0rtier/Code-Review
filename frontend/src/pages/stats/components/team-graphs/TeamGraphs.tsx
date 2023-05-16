@@ -10,21 +10,33 @@ export const TeamGraphs = (props: ITeamGraphsProps) => {
   const primaryComponent = useStyleConfig(StyledComponents.PrimaryComponent);
 
   const parseDoneData = () => {
-    return props.teamMembers.map((teamMember) => ({
+    const data = props.teamMembers.filter((teamMember) => {
+      return teamMember.reviewStats.done > 0;
+    });
+
+    return data.map((teamMember) => ({
       name: teamMember.uniqueName,
       value: teamMember.reviewStats.done,
     }));
   };
 
   const parseActiveData = () => {
-    return props.teamMembers.map((teamMember) => ({
+    const data = props.teamMembers.filter((teamMember) => {
+      return teamMember.reviewStats.active > 0;
+    });
+
+    return data.map((teamMember) => ({
       name: teamMember.uniqueName,
       value: teamMember.reviewStats.active,
     }));
   };
 
   const parseAvgTimeData = () => {
-    return props.teamMembers.map((teamMember) => ({
+    const data = props.teamMembers.filter((teamMember) => {
+      return teamMember.reviewStats.avgReviewHours > 0;
+    });
+
+    return data.map((teamMember) => ({
       name: teamMember.uniqueName,
       value: teamMember.reviewStats.avgReviewHours,
     }));
