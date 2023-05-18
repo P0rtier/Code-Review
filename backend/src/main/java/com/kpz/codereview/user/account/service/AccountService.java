@@ -13,4 +13,5 @@ public interface AccountService {
     boolean existsByEmail(String email);
 
     Optional<Account> findById(UUID id);
+    boolean existsByEmail(String email);
 }

@@ -135,4 +135,14 @@
         </createTable>
     </changeSet>
 
+    <changeSet author="puzarows" id="8">
+        <addAutoIncrement columnDataType="bigint"
+                          columnName="id"
+                          defaultOnNull="false"
+                          generationType="AUTO"
+                          incrementBy="1"
+                          schemaName="public"
+                          startWith="1"
+                          tableName="vacations"/>
+    </changeSet>
 </databaseChangeLog>

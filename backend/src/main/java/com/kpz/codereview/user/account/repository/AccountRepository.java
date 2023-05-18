@@ -10,5 +10,6 @@ public interface AccountRepository extends ListCrudRepository<Account, UUID> {
     Optional<Account> findByEmail(String email);
     boolean existsByEmail(String email);
 
+    boolean existsByEmail(String email);
     Optional<Account> findByRefreshToken(String refreshToken);
 }
