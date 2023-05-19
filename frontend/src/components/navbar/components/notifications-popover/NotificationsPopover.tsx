@@ -9,6 +9,7 @@ import {
   PopoverContent,
   PopoverHeader,
   PopoverBody,
+  Button,
 } from "@chakra-ui/react";
 import { NotificationContext } from "../../../../common/providers/NotificationsProvider";
 import { NotificationsActions } from "../../../../common/enums/NotificationsActions";
@@ -25,6 +26,12 @@ export const NotificationsPopover = () => {
       dispatchNotifications({ type: NotificationsActions.SetNotifications, payload: updatedList });
     });
   };
+
+  const deleteAll = () => {
+    //agent.Notifications.delete("").then(() => {
+      dispatchNotifications({ type: NotificationsActions.ClearNotifications });
+    //});
+  }
 
   const getData = () => {
     if (notifications) {
@@ -43,6 +50,12 @@ export const NotificationsPopover = () => {
   }
   const notificationsIcon = notificationsExist() ? (<NotificationsActiveIcon />) : (<NotificationsIcon />);
 
+  const getDeleteAllButton = () => {
+    if (notificationsExist()) {
+      return (<Button onClick={deleteAll}>Clear all</Button>);
+    }
+  };
+
   return (
     <>
       <Popover>
@@ -52,7 +65,12 @@ export const NotificationsPopover = () => {
           </button>
         </PopoverTrigger>
         <PopoverContent w={'30vw'}>
-          <PopoverHeader><div className={styles.header}>Notifications</div></PopoverHeader>
+          <PopoverHeader>
+            <div className={styles.header}>
+              <h2>Notifications</h2>
+              {getDeleteAllButton()}
+            </div>
+          </PopoverHeader>
           <PopoverBody>
             <div className={styles.container}>
               {notificationsExist() ? getData() : <NoDataComponent header="You have no new notifications" />}
