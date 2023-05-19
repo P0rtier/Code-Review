@@ -30,26 +30,35 @@ export const Leaderboard = () => {
 
   // #endregion States
 
+  // #region Callbacks
+
+  const cachedGetLeaderboard = React.useCallback(getLeaderboard, []);
+
+  // #endregion Callbacks
+
   // #region Effects
+
   React.useEffect(() => {
     agent.Projects.getNames().then((response: IProjectNameState[]) => {
       setProjects(response);
       setProjectsLoading(false);
 
       if (!projectId) {
-        getLeaderbord(response[0].id);
+        cachedGetLeaderboard(response[0].id);
       }
     });
 
 
-  }, []);
+  }, [cachedGetLeaderboard, projectId]);
 
   React.useEffect(() => {
-    getLeaderbord(projectId, true);
-  }, [projectId]);
+    cachedGetLeaderboard(projectId);
+  }, [cachedGetLeaderboard, projectId]);
+
   // #endregion Effects
 
   // #region Functions
+
   const getCurrentProjectName = () => {
     if (projects) {
       return projects.find((project) => project.id === projectId)?.name;
@@ -68,27 +77,26 @@ export const Leaderboard = () => {
     }
   };
 
-  const getLeaderbord = (newProjectId: string | undefined | null, forceGet?: boolean) => {
-    if ((newProjectId && newProjectId !== projectId) || forceGet) {
-      navigate(`/leaderboard?project=${newProjectId}`);
+  function getLeaderboard(newProjectId: string | undefined | null) {
+    setLeaderboardLoading(true);
+    if (newProjectId) {
 
-      setLeaderboardLoading(true);
-      if (newProjectId) {
+      agent.Leaderboard.getUserStandings(newProjectId).then(
+        (response: IProjectLeaderboard) => {
+          setUserStandings(response.userStandings);
+          setLeaderboardLoading(false);
+        });
 
-        agent.Leaderboard.getUserStandings(newProjectId).then(
-          (response: IProjectLeaderboard) => {
-            setUserStandings(response.userStandings);
-            setLeaderboardLoading(false);
-          });
-
-      };
     };
   };
 
   const selectProject = (projectName: string) => {
     let newProjectId = getProjectId(projectName);
 
-    getLeaderbord(newProjectId);
+    if (newProjectId && newProjectId !== projectId) {
+      navigate(`/leaderboard?project=${newProjectId}`);
+      getLeaderboard(newProjectId);
+    }
   };
 
   const getUserStandings = () => {

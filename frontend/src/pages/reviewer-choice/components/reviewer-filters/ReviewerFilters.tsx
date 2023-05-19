@@ -23,7 +23,6 @@ import {
   Tooltip,
 } from "@chakra-ui/react";
 import { TriangleUpIcon, TriangleDownIcon } from "@chakra-ui/icons";
-import { addDays } from "date-fns";
 import { IReviewerFiltersProps } from "./IReviewerFiltersProps";
 import { IReviewerFilters } from "../../../../common/interfaces/IReviewerFilters";
 import { FilterIcon } from "../../../../assets/icons/FilterIcon";
