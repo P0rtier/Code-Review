@@ -20,33 +20,41 @@ export const Leaderboard = () => {
   const navigate = useNavigate();
   const search = useLocation().search;
   const projectId = new URLSearchParams(search).get("project");
+
+  // #region States
+
   const [projects, setProjects] = React.useState<IProjectNameState[]>();
   const [userStandings, setUserStandings] = React.useState<IUserStanding[]>();
   const [projectsLoading, setProjectsLoading] = React.useState<boolean>(true);
-  const [leaderboardLoading, setLeaderboardLoading] =
-    React.useState<boolean>(false);
+  const [leaderboardLoading, setLeaderboardLoading] = React.useState<boolean>(false);
 
+  // #endregion States
+
+  // #region Effects
+  React.useEffect(() => {
+    agent.Projects.getNames().then((response: IProjectNameState[]) => {
+      setProjects(response);
+      setProjectsLoading(false);
+
+      if (!projectId) {
+        getLeaderbord(response[0].id);
+      }
+    });
+
+
+  }, []);
+
+  React.useEffect(() => {
+    getLeaderbord(projectId, true);
+  }, [projectId]);
+  // #endregion Effects
+
+  // #region Functions
   const getCurrentProjectName = () => {
     if (projects) {
       return projects.find((project) => project.id === projectId)?.name;
     }
   };
-
-  React.useEffect(() => {
-    agent.Projects.getNames().then((response: IProjectNameState[]) => {
-      setProjects(response);
-      setProjectsLoading(false);
-    });
-    if (projectId) {
-      setLeaderboardLoading(true);
-      agent.Leaderboard.getUserStandings(projectId).then(
-        (response: IProjectLeaderboard) => {
-          setUserStandings(response.userStandings);
-          setLeaderboardLoading(false);
-        }
-      );
-    }
-  }, [projectId]);
 
   const getProjectNames = () => {
     if (projects) {
@@ -60,21 +68,27 @@ export const Leaderboard = () => {
     }
   };
 
-  const selectProject = (projectName: string) => {
-    let newProjectId = getProjectId(projectName);
-
-    if (newProjectId !== projectId) {
+  const getLeaderbord = (newProjectId: string | undefined | null, forceGet?: boolean) => {
+    if ((newProjectId && newProjectId !== projectId) || forceGet) {
       navigate(`/leaderboard?project=${newProjectId}`);
+
+      setLeaderboardLoading(true);
       if (newProjectId) {
-        setLeaderboardLoading(true);
+
         agent.Leaderboard.getUserStandings(newProjectId).then(
           (response: IProjectLeaderboard) => {
             setUserStandings(response.userStandings);
             setLeaderboardLoading(false);
-          }
-        );
-      }
-    }
+          });
+
+      };
+    };
+  };
+
+  const selectProject = (projectName: string) => {
+    let newProjectId = getProjectId(projectName);
+
+    getLeaderbord(newProjectId);
   };
 
   const getUserStandings = () => {
@@ -84,6 +98,8 @@ export const Leaderboard = () => {
       ));
     }
   };
+
+  // #endregion Functions
 
   return (
     <PageWrapper>

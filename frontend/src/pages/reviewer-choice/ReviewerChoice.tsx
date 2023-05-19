@@ -38,6 +38,8 @@ export const ReviewerChoice = () => {
     endDate: new Date(),
   } as IReviewerFilters;
 
+  // #region States
+
   const [filters, setFilters] = useState<IReviewerFilters>(defaultFilters);
   const [review, setReview] = useState<IUnassignedReview>();
   const [reviewers, setReviewers] = useState<IReviewer[] | undefined>();
@@ -49,19 +51,62 @@ export const ReviewerChoice = () => {
   >();
   const [searchQuery, setSearchQuery] = useState<string>();
   const [loading, setLoading] = useState<boolean>(true);
+  // #endregion States
 
-  const setNewFilters = (newFilters: IReviewerFilters): void => {
-    if (
-      newFilters.startDate !== filters.startDate &&
-      newFilters.endDate !== filters.endDate
-    ) {
-      //get data from backend
+  // #region Callbacks
+
+  const cachedFilterReviewers = React.useCallback(filterReviewers, [
+    filters,
+    reviewers,
+  ]);
+  const cachedFilterSearchReviewers = React.useCallback(filterSearchReviewers, [
+    searchQuery,
+    filteredReviewers,
+  ]);
+
+  // #endregion Callbacks
+
+  // #region Effects
+
+  useEffect(() => {
+    cachedFilterReviewers();
+  }, [cachedFilterReviewers]);
+
+  useEffect(() => {
+    cachedFilterSearchReviewers();
+  }, [cachedFilterSearchReviewers]);
+
+  useEffect(() => {
+    if (!review) return;
+
+    const startDate = new Date();
+    const endDate = addDays(startDate, MAX_DAYS_FROM_TODAY);
+    agent.Reviewers.getAll(review.project, startDate, endDate).then(
+      (response: IReviewer[]) => {
+        setReviewers(response);
+        setLoading(false);
+      }
+    );
+  }, [review]);
+
+  useEffect(() => {
+    if (location.state) {
+      setReview(location.state.review);
+      return;
     }
 
-    setFilters(newFilters);
-  };
+    if (id) {
+      agent.WorkItems.getById(id).then((response: IUnassignedReview) => {
+        setReview(response);
+      });
+    }
+  }, [location.state, id]);
 
-  const filterReviewers = () => {
+  // #endregion Effects
+
+  // #region Functions
+
+  function filterReviewers() {
     let newFilteredReviewers = reviewers;
     let unavailableReviewers: IReviewer[] = [];
 
@@ -72,7 +117,7 @@ export const ReviewerChoice = () => {
             reviewer.activeReviews <=
             (filters.maxReviews ?? Number.MAX_SAFE_INTEGER)
         );
-      }
+      };
 
       if (filters.selectedTeam && filters.selectedTeam !== "") {
         newFilteredReviewers = newFilteredReviewers.filter((reviewer) =>
@@ -80,13 +125,13 @@ export const ReviewerChoice = () => {
             filters.selectedTeam ?? reviewer.teamNames[0]
           )
         );
-      }
+      };
 
       if (filters.isUnavailableShown) {
         unavailableReviewers = newFilteredReviewers.filter(
           (reviewer) => !reviewer.availability
         );
-      }
+      };
 
       newFilteredReviewers = newFilteredReviewers.filter(
         (reviewer) => reviewer.availability
@@ -100,15 +145,16 @@ export const ReviewerChoice = () => {
         newFilteredReviewers = newFilteredReviewers.sort(
           (a, b) => b.activeReviews - a.activeReviews
         );
-      }
+      };
 
-      newFilteredReviewers.concat(unavailableReviewers);
-    }
+      newFilteredReviewers = [...newFilteredReviewers, ...unavailableReviewers];
+
+    };
 
     setFilteredReviewers(newFilteredReviewers);
   };
 
-  const filterSearchReviewers = () => {
+  function filterSearchReviewers() {
     let newSearchedReviewers = filteredReviewers;
 
     if (newSearchedReviewers) {
@@ -155,48 +201,7 @@ export const ReviewerChoice = () => {
     setSearchQuery(e.target.value);
   };
 
-  const cachedFilterReviewers = React.useCallback(filterReviewers, [
-    filters,
-    reviewers,
-  ]);
-  const cachedFilterSearchReviewers = React.useCallback(filterSearchReviewers, [
-    searchQuery,
-    filteredReviewers,
-  ]);
-
-  useEffect(() => {
-    cachedFilterReviewers();
-  }, [cachedFilterReviewers]);
-
-  useEffect(() => {
-    cachedFilterSearchReviewers();
-  }, [cachedFilterSearchReviewers]);
-
-  useEffect(() => {
-    if (!review) return;
-
-    const startDate = new Date();
-    const endDate = addDays(startDate, MAX_DAYS_FROM_TODAY);
-    agent.Reviewers.getAll(review.project, startDate, endDate).then(
-      (response: IReviewer[]) => {
-        setReviewers(response);
-        setLoading(false);
-      }
-    );
-  }, [review]);
-
-  useEffect(() => {
-    if (location.state) {
-      setReview(location.state.review);
-      return;
-    }
-
-    if (id) {
-      agent.WorkItems.getById(id).then((response: IUnassignedReview) => {
-        setReview(response);
-      });
-    }
-  }, [location.state, id]);
+  // #endregion Functions
 
   return (
     <PageWrapper smallGap={true}>
@@ -226,7 +231,7 @@ export const ReviewerChoice = () => {
             </InputGroup>
             <ReviewerFilters
               filters={filters}
-              setFilters={setNewFilters}
+              setFilters={setFilters}
               defaultFilters={defaultFilters}
               teams={getUniqueTeams()}
             />

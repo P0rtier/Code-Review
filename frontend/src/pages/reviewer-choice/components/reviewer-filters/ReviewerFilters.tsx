@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import styles from "./ReviewerFilters.module.scss";
-import { Range, RangeKeyDict } from "react-date-range";
 import {
   useDisclosure,
   Button,
@@ -24,10 +23,10 @@ import {
   Tooltip,
 } from "@chakra-ui/react";
 import { TriangleUpIcon, TriangleDownIcon } from "@chakra-ui/icons";
-import { KebabIcon } from "../../../../assets/icons/KebabIcon";
 import { addDays } from "date-fns";
 import { IReviewerFiltersProps } from "./IReviewerFiltersProps";
 import { IReviewerFilters } from "../../../../common/interfaces/IReviewerFilters";
+import { FilterIcon } from "../../../../assets/icons/FilterIcon";
 
 export const ReviewerFilters = (props: IReviewerFiltersProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -37,14 +36,6 @@ export const ReviewerFilters = (props: IReviewerFiltersProps) => {
     ...props.filters,
   });
 
-  const maxDaysAfterToday: number = 60;
-  const [dateRange, setDateRange] = useState<Range[]>([
-    {
-      startDate: addDays(new Date(), -6),
-      endDate: new Date(),
-      key: "date-selection",
-    },
-  ]);
   //#endregion
 
   //#region handles
@@ -61,32 +52,6 @@ export const ReviewerFilters = (props: IReviewerFiltersProps) => {
   const handleSelectedTeamChange = (e: React.ChangeEvent<HTMLSelectElement>) =>
     setFilters({ ...filters, selectedTeam: e.target.value });
 
-  const handleDateRangeChange = (item: RangeKeyDict) => {
-    let newDateRange: Range = item[dateRange[0].key ?? ""];
-    let newStartDate: Date | undefined = newDateRange.startDate;
-    let newEndDate: Date | undefined = newDateRange.endDate;
-
-    if (newStartDate === undefined || newStartDate < new Date()) {
-      newStartDate = new Date();
-    }
-    if (
-      newEndDate === undefined ||
-      newEndDate > addDays(new Date(), maxDaysAfterToday)
-    ) {
-      newEndDate = addDays(new Date(), maxDaysAfterToday);
-    }
-    if (newEndDate < newStartDate) {
-      newEndDate = newStartDate;
-    }
-
-    newDateRange = {
-      ...newDateRange,
-      startDate: newStartDate,
-      endDate: newEndDate,
-    } as Range;
-    setDateRange([newDateRange]);
-    setFilters({ ...filters, startDate: newStartDate, endDate: newEndDate });
-  };
   //#endregion
 
   //#region functions
@@ -108,13 +73,6 @@ export const ReviewerFilters = (props: IReviewerFiltersProps) => {
 
   const clearFilters = () => {
     setFilters(props.defaultFilters);
-    setDateRange([
-      {
-        ...dateRange[0],
-        startDate: props.defaultFilters.startDate,
-        endDate: props.defaultFilters.endDate,
-      },
-    ]);
   };
 
   const applyFilters = () => {
@@ -125,13 +83,6 @@ export const ReviewerFilters = (props: IReviewerFiltersProps) => {
 
   const onOpenClick = () => {
     setFilters(props.filters);
-    setDateRange([
-      {
-        ...dateRange[0],
-        startDate: props.filters.startDate,
-        endDate: props.filters.endDate,
-      },
-    ]);
 
     onOpen();
   };
@@ -155,7 +106,7 @@ export const ReviewerFilters = (props: IReviewerFiltersProps) => {
           variant={"search"}
           className={styles.filterButton}
         >
-          <KebabIcon />
+          <FilterIcon />
         </Button>
       </Tooltip>
       <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
@@ -199,15 +150,6 @@ export const ReviewerFilters = (props: IReviewerFiltersProps) => {
                   onChange={handleIsUnavailableShownChange}
                 />
               </FormControl>
-
-              {/* <StyledDateRangePicker
-                                editableDateInputs={true}
-                                minDate={new Date()}
-                                maxDate={addDays(new Date(), maxDaysAfterToday)}
-                                onChange={handleDateRangeChange}
-                                moveRangeOnFirstSelection={false}
-                                ranges={dateRange}
-                            /> */}
             </div>
           </DrawerBody>
 

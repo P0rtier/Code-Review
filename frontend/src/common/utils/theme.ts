@@ -41,7 +41,7 @@ const theme = extendTheme({
             focusBorderColor: colors.lightComponentLayerPrimary,
             fontFamily: fonts.fontSecondary,
             fontWeight: "700",
-            width: "95%",
+            width: "100%",
             height: "3em",
             _hover: {
               bg: mode(
@@ -118,8 +118,8 @@ const theme = extendTheme({
       baseStyle: (props: StyleFunctionProps) => ({
         dialog: {
           bg: mode(
-            colors.lightComponentLayerPrimary,
-            colors.darkComponentLayerPrimary
+            colors.lightBackground,
+            colors.darkComponentLayerSecondary
           )(props),
         },
       }),

@@ -13,6 +13,7 @@ import {
 import { NotificationContext } from "../../../../common/providers/NotificationsProvider";
 import { NotificationsActions } from "../../../../common/enums/NotificationsActions";
 import { NotificationsActiveIcon } from "../../../../assets/icons/NotificationsActiveIcon";
+import { NoDataComponent } from "../../../no-data-component/NoDataComponent";
 
 export const NotificationsPopover = () => {
 
@@ -46,14 +47,16 @@ export const NotificationsPopover = () => {
     <>
       <Popover>
         <PopoverTrigger>
-          <button disabled={!notificationsExist()}>
+          <button>
             {notificationsIcon}
           </button>
         </PopoverTrigger>
         <PopoverContent w={'30vw'}>
           <PopoverHeader><div className={styles.header}>Notifications</div></PopoverHeader>
           <PopoverBody>
-            <div className={styles.container}>{getData()}</div>
+            <div className={styles.container}>
+              {notificationsExist() ? getData() : <NoDataComponent header="You have no new notifications" />}
+            </div>
           </PopoverBody>
         </PopoverContent>
       </Popover>
