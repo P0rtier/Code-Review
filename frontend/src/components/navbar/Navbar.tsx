@@ -1,4 +1,5 @@
 import * as React from "react";
+import { MouseEvent } from "react";
 import { Outlet, useNavigate } from "react-router";
 import { Link } from "react-router-dom";
 import styles from "./Navbar.module.scss";
@@ -32,11 +33,17 @@ export const Navbar = () => {
     navigate("/login");
   };
 
+  const handleHomeClick = (e: MouseEvent<HTMLAnchorElement>) => {
+    if (!user) {
+      e.preventDefault();
+    }
+  };
+
   return (
     <>
       <div className={styles.navbarContainer}>
         <Box className={styles.navbarWrapper} __css={navbarStyles}>
-          <Link to={"/home"}>
+          <Link to={"/home"} onClick={handleHomeClick}>
             <div className={styles.navbarLogo}>
               <img
                 src={NavbarLogo}
