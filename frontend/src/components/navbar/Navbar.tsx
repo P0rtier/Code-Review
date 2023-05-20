@@ -12,11 +12,11 @@ import { StyledComponents } from "../../common/enums/StyledComponents";
 import { useContext } from "react";
 import { UserContext } from "../../common/providers/UserProvider";
 import { UserActions } from "../../common/enums/UserActions";
-import { EnvironmentProfiles } from "../../common/enums/EnvironmentProfiles";
 import { NotificationsPopover } from "./components/notifications-popover/NotificationsPopover";
 import { NotificationContext } from "../../common/providers/NotificationsProvider";
 import { NotificationsActions } from "../../common/enums/NotificationsActions";
-import NavbarLogo from "../../assets/images/nav-logo.svg";  
+import NavbarLogo from "../../assets/images/nav-logo.svg";
+import { isTestEnv } from "../../common/utils/constants";
 
 export const Navbar = () => {
   const navbarStyles = useStyleConfig(StyledComponents.Navbar);
@@ -32,19 +32,21 @@ export const Navbar = () => {
     navigate("/login");
   };
 
-  const isDev = process.env.REACT_APP_ENV === EnvironmentProfiles.Development;
-
   return (
     <>
       <div className={styles.navbarContainer}>
         <Box className={styles.navbarWrapper} __css={navbarStyles}>
           <Link to={"/home"}>
             <div className={styles.navbarLogo}>
-              <img src={NavbarLogo} className={styles.navbarLogoImg} alt="Code Review Logo" />
+              <img
+                src={NavbarLogo}
+                className={styles.navbarLogoImg}
+                alt="Code Review Logo"
+              />
             </div>
           </Link>
           <div className={styles.navbarLinks}>
-            {(user || isDev) && (
+            {(user || isTestEnv) && (
               <>
                 <Link to="/home">
                   <HomeIcon />
@@ -59,7 +61,7 @@ export const Navbar = () => {
               </>
             )}
             <ToggleThemeButton />
-            {(user || isDev) && (
+            {(user || isTestEnv) && (
               <IconButton
                 icon={<LogoutIcon />}
                 aria-label="logout-button"

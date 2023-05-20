@@ -11,7 +11,7 @@ export const AssignedReviewInfo = (props: IAssignedReviewInfoProps) => {
 
   return (
     <Box className={styles.container} __css={props.style}>
-      <a href={props.link}>
+      <a href={props.link} target="_blank" rel="noreferrer">
         <Box className={styles.header} __css={headerStyles}>
           {props.title}
         </Box>
