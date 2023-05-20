@@ -8,6 +8,8 @@
   align-items: flex-start;
   width: 100%;
   padding: 1rem 2rem;
+  max-height: 40vh;
+  overflow: auto;
 
   .header {
     font-family: $fontMain;
