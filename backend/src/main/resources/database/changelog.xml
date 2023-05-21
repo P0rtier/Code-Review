@@ -155,6 +155,10 @@
     </changeSet>
 
     <changeSet author="puzarows" id="11">
+        <sqlFile path="database/mock/mock_projects.sql"/>
+    </changeSet>
+
+    <changeSet author="puzarows" id="12">
         <sqlFile path="database/mock/mock_leaderboards.sql"/>
     </changeSet>
 </databaseChangeLog>
