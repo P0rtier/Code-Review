@@ -16,6 +16,7 @@ import { Placeholder } from "../../components/placeholders/placeholder/Placehold
 import { AxiosError } from "axios";
 import { toast } from "react-toastify";
 import { StatusCodes } from "../../common/enums/StatusCodes";
+import { NoDataComponent } from "../../components/no-data-component/NoDataComponent";
 
 export const Leaderboard = () => {
   const secondaryComponent = useStyleConfig(StyledComponents.PrimaryComponent);
@@ -29,7 +30,7 @@ export const Leaderboard = () => {
   const [projectsLoading, setProjectsLoading] = React.useState<boolean>(true);
   const [leaderboardLoading, setLeaderboardLoading] = React.useState<boolean>(false);
 
-  const cachedHandleError = useCallback(handleError, [navigate]);
+  const cachedHandleError = useCallback(handleError, []);
   const cachedGetLeaderboard = useCallback(getLeaderboard, [cachedHandleError]);
 
   React.useEffect(() => {
@@ -97,8 +98,6 @@ export const Leaderboard = () => {
     } else {
       toast.error("Unexpected error occured.");
     }
-
-    navigate("/leaderboard");
   };
 
   const selectProject = (projectName: string) => {
@@ -115,6 +114,11 @@ export const Leaderboard = () => {
       return userStandings.map((userStanding) => (
         <UserStandingItem userStanding={userStanding} key={userStanding.id} />
       ));
+    } else {
+      return (
+        <Box className={styles.noDataContainer} __css={secondaryComponent}>
+          <NoDataComponent header="There is no leaderboard to be shown." />
+        </Box>);
     }
   };
 
@@ -135,13 +139,11 @@ export const Leaderboard = () => {
         </Box>
         <div className={styles.userStandingsContainer}>
           <LeaderboardTopbar />
-          <div>
-            {leaderboardLoading ? (
-              <Placeholder header={""} />
-            ) : (
-              getUserStandings()
-            )}
-          </div>
+          {leaderboardLoading ? (
+            <Placeholder header={""} />
+          ) : (
+            getUserStandings()
+          )}
         </div>
       </div>
     </PageWrapper>

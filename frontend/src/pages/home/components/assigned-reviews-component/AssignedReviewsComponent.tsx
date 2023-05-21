@@ -24,10 +24,8 @@ export const AssignedReviewsComponent = ({
 
   return (
     <Box className={styles.container} __css={primaryStyles}>
-      <div className={styles.wrapper}>
-        <div className={styles.header}>Assigned reviews</div>
-        <div className={styles.reviewContainer}>{getData()}</div>
-      </div>
+      <div className={styles.header}>Assigned reviews</div>
+      <div className={styles.reviewContainer}>{getData()}</div>
     </Box>
   );
 };

@@ -55,7 +55,7 @@ export const NotificationsPopover = () => {
           <PopoverHeader><div className={styles.header}>Notifications</div></PopoverHeader>
           <PopoverBody>
             <div className={styles.container}>
-              {notificationsExist() ? getData() : <NoDataComponent header="There are no new notifications" />}
+              {notificationsExist() ? getData() : <NoDataComponent header="There are no new notifications." />}
             </div>
           </PopoverBody>
         </PopoverContent>
