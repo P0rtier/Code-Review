@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import styles from "./Leaderboard.module.scss";
 import { PageWrapper } from "../../components/page-wrapper/PageWrapper";
 import { Box, useStyleConfig } from "@chakra-ui/react";
@@ -13,6 +13,9 @@ import { UserStandingItem } from "./components/user-standing-item/UserStandingIt
 import { ProjectDropdown } from "../../components/project-dropdown/ProjectDropdown";
 import { DropdownPlaceholder } from "../../components/placeholders/dropdown-placeholder/DropdownPlaceholder";
 import { Placeholder } from "../../components/placeholders/placeholder/Placeholder";
+import { toast } from "react-toastify";
+import { AxiosError } from "axios";
+import { StatusCodes } from "../../common/enums/StatusCodes";
 
 export const Leaderboard = () => {
   const secondaryComponent = useStyleConfig(StyledComponents.PrimaryComponent);
@@ -32,6 +35,25 @@ export const Leaderboard = () => {
     }
   };
 
+  const handleError = (error: AxiosError) => {
+    if (!error.response) {
+      toast.error("Unexpected error occured.");
+      return;
+    }
+
+    const { status } = error.response;
+
+    if (status === StatusCodes.NotFound) {
+      toast.error("Leaderboard for this project does not exist.");
+    } else {
+      toast.error("Unexpected error occured.");
+    }
+
+    navigate("/leaderboard");
+  };
+
+  const cachedHandleError = useCallback(handleError, [navigate]);
+
   React.useEffect(() => {
     agent.Projects.getNames().then((response: IProjectNameState[]) => {
       setProjects(response);
@@ -39,14 +61,16 @@ export const Leaderboard = () => {
     });
     if (projectId) {
       setLeaderboardLoading(true);
-      agent.Leaderboard.getUserStandings(projectId).then(
-        (response: IProjectLeaderboard) => {
+      agent.Leaderboard.getUserStandings(projectId)
+        .then((response: IProjectLeaderboard) => {
           setUserStandings(response.userStandings);
+        })
+        .catch(cachedHandleError)
+        .finally(() => {
           setLeaderboardLoading(false);
-        }
-      );
+        });
     }
-  }, [projectId]);
+  }, [projectId, cachedHandleError]);
 
   const getProjectNames = () => {
     if (projects) {
