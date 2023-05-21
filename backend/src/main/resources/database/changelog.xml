@@ -161,4 +161,8 @@
     <changeSet author="puzarows" id="12">
         <sqlFile path="database/mock/mock_leaderboards.sql"/>
     </changeSet>
+
+    <changeSet author="kAleks12" id="13">
+        <sqlFile path="database/mock/mock_users_and_teams.sql"/>
+    </changeSet>
 </databaseChangeLog>
