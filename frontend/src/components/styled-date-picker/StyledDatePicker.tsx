@@ -11,6 +11,7 @@ import { IStyledDatePickerProps } from "./IStyledDatePickerProps";
 export const StyledDatePicker = (props: IStyledDatePickerProps) => {
   const { colorMode } = useColorMode();
   const attentionColor = getComponentColorAttention(colorMode);
+  const { setCurrentDate } = props;
 
   const [pickedDate, setPickedDate] = React.useState<
     {
@@ -28,12 +29,12 @@ export const StyledDatePicker = (props: IStyledDatePickerProps) => {
 
   useEffect(() => {
     if (pickedDate) {
-      props.setCurrentDate({
+      setCurrentDate({
         startDate: pickedDate[0].startDate as Date,
         endDate: pickedDate[0].endDate as Date,
       });
     }
-  }, [pickedDate]);
+  }, [pickedDate, setCurrentDate]);
 
   return (
     <div className={styles.container}>
