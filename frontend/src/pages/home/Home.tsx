@@ -14,7 +14,7 @@ export const Home = () => {
 
   useEffect(() => {
     agent.Reviews.getMine().then((response: IProject[]) => {
-      setProjects(response);
+      setProjects(response.sort((a, b) => a.name.localeCompare(b.name)));
       if (response.length > 0) {
         setSelectedProject(response[0]);
       }

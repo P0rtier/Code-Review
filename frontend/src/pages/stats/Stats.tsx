@@ -32,7 +32,7 @@ export const Stats = () => {
         dispatch({ type: StatsActions.SetProject, payload: response[0] });
       }
     });
-  }, [dispatch]);
+  }, []);
 
   useEffect(() => {
     setLoading(true);
@@ -50,7 +50,7 @@ export const Stats = () => {
         setLoading(false);
       });
     }
-  }, [state.currentProject, state.currentDate, dispatch]);
+  }, [state.currentProject, state.currentDate]);
 
   const handleSelectProject = (projectName: string) => {
     dispatch({

@@ -18,9 +18,10 @@ export const GraphComponent = (props: IGraphComponentProps) => {
   const [noData, setNoData] = React.useState<boolean>(true);
 
   useEffect(() => {
-    data.forEach((entry) => {
+    data.map((entry) => {
       if (entry.value > 0) {
         setNoData(false);
+        return
       }
     });
   }, [data]);

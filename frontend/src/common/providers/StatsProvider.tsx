@@ -15,13 +15,16 @@ export const StateContext = React.createContext<IStatsInitialState>({
   dispatch: () => null,
 });
 
+const date = new Date();
+const dateNow = new Date(Date.now() + 3600 * 1000 * 24);
+
 export const StatsProvider = ({ children }: PropsWithChildren) => {
   const [state, dispatch] = React.useReducer(StatsReducer, {
     projectList: [],
     currentProject: undefined,
     currentDate: {
-      startDate: new Date(),
-      endDate: new Date(Date.now() + 3600 * 1000 * 24),
+      startDate: date,
+      endDate: dateNow,
     },
     allTeamMembers: [],
     reducedTeamMembers: [],

@@ -29,7 +29,7 @@ export const Leaderboard = () => {
   const [projectsLoading, setProjectsLoading] = React.useState<boolean>(true);
   const [leaderboardLoading, setLeaderboardLoading] = React.useState<boolean>(false);
 
-  const cachedHandleError = useCallback(handleError, [navigate]);
+  const cachedHandleError = useCallback(handleError, []);
   const cachedGetLeaderboard = useCallback(getLeaderboard, [cachedHandleError]);
 
   React.useEffect(() => {
@@ -97,8 +97,6 @@ export const Leaderboard = () => {
     } else {
       toast.error("Unexpected error occured.");
     }
-
-    navigate("/leaderboard");
   };
 
   const selectProject = (projectName: string) => {

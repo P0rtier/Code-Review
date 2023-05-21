@@ -22,7 +22,7 @@ export const TeamMemberComponent = (props: ITeamMemberComponentProps) => {
         payload: props.uniqueName,
       });
     }
-  }, [checked, dispatch, props.uniqueName]);
+  }, [checked]);
 
   const handleClick = () => {
     setChecked(!checked);

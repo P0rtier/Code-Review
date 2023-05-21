@@ -4,7 +4,7 @@ import "react-date-range/dist/theme/default.css";
 import "./DateRangePickerStyleOverride.scss";
 import styles from "./StyledDatePicker.module.scss";
 import { DateRange } from "react-date-range";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { getComponentColorAttention } from "../../common/utils/helpers";
 import { IStyledDatePickerProps } from "./IStyledDatePickerProps";
 
@@ -12,6 +12,9 @@ export const StyledDatePicker = (props: IStyledDatePickerProps) => {
   const { colorMode } = useColorMode();
   const attentionColor = getComponentColorAttention(colorMode);
   const { setCurrentDate } = props;
+
+  const startDate = useRef<Date>(new Date(Date.now() - 3600 * 1000 * 24));
+  const endDate = useRef<Date>(new Date());
 
   const [pickedDate, setPickedDate] = React.useState<
     {
@@ -21,8 +24,8 @@ export const StyledDatePicker = (props: IStyledDatePickerProps) => {
     }[]
   >([
     {
-      startDate: new Date(Date.now() - 3600 * 1000 * 24),
-      endDate: new Date(),
+      startDate: startDate.current,
+      endDate: endDate.current,
       key: "selection",
     },
   ]);
@@ -34,7 +37,7 @@ export const StyledDatePicker = (props: IStyledDatePickerProps) => {
         endDate: pickedDate[0].endDate as Date,
       });
     }
-  }, [pickedDate, setCurrentDate]);
+  }, [pickedDate]);
 
   return (
     <div className={styles.container}>
