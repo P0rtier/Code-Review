@@ -3,6 +3,4 @@ export interface IReviewerFilters {
   isUnavailableShown: boolean;
   maxReviews?: number;
   selectedTeam?: string;
-  startDate: Date;
-  endDate: Date;
 }

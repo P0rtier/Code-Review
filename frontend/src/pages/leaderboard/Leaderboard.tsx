@@ -13,8 +13,8 @@ import { UserStandingItem } from "./components/user-standing-item/UserStandingIt
 import { ProjectDropdown } from "../../components/project-dropdown/ProjectDropdown";
 import { DropdownPlaceholder } from "../../components/placeholders/dropdown-placeholder/DropdownPlaceholder";
 import { Placeholder } from "../../components/placeholders/placeholder/Placeholder";
-import { toast } from "react-toastify";
 import { AxiosError } from "axios";
+import { toast } from "react-toastify";
 import { StatusCodes } from "../../common/enums/StatusCodes";
 
 export const Leaderboard = () => {
@@ -23,11 +23,32 @@ export const Leaderboard = () => {
   const navigate = useNavigate();
   const search = useLocation().search;
   const projectId = new URLSearchParams(search).get("project");
+
   const [projects, setProjects] = React.useState<IProjectNameState[]>();
   const [userStandings, setUserStandings] = React.useState<IUserStanding[]>();
   const [projectsLoading, setProjectsLoading] = React.useState<boolean>(true);
-  const [leaderboardLoading, setLeaderboardLoading] =
-    React.useState<boolean>(false);
+  const [leaderboardLoading, setLeaderboardLoading] = React.useState<boolean>(false);
+
+  const cachedHandleError = useCallback(handleError, [navigate]);
+  const cachedGetLeaderboard = useCallback(getLeaderboard, [cachedHandleError]);
+
+  React.useEffect(() => {
+    agent.Projects.getNames().then((response: IProjectNameState[]) => {
+      setProjects(response);
+      setProjectsLoading(false);
+
+      if (!projectId) {
+        navigate(`/leaderboard?project=${response[0].id}`);
+        cachedGetLeaderboard(response[0].id);
+      }
+    });
+
+
+  }, [cachedGetLeaderboard, projectId, navigate]);
+
+  React.useEffect(() => {
+    cachedGetLeaderboard(projectId);
+  }, [cachedGetLeaderboard, projectId]);
 
   const getCurrentProjectName = () => {
     if (projects) {
@@ -35,7 +56,35 @@ export const Leaderboard = () => {
     }
   };
 
-  const handleError = (error: AxiosError) => {
+  const getProjectNames = () => {
+    if (projects) {
+      return projects.map((project) => project.name);
+    }
+  };
+
+  const getProjectId = (projectName: string) => {
+    if (projects) {
+      return projects.find((project) => project.name === projectName)?.id;
+    }
+  };
+
+  function getLeaderboard(newProjectId: string | undefined | null) {
+    setLeaderboardLoading(true);
+    if (newProjectId) {
+
+      agent.Leaderboard.getUserStandings(newProjectId).then(
+        (response: IProjectLeaderboard) => {
+          setUserStandings(response.userStandings);
+        })
+        .catch(cachedHandleError)
+        .finally(() => {
+          setLeaderboardLoading(false);
+        });
+    }
+
+  };
+
+  function handleError(error: AxiosError) {
     if (!error.response) {
       toast.error("Unexpected error occured.");
       return;
@@ -52,52 +101,12 @@ export const Leaderboard = () => {
     navigate("/leaderboard");
   };
 
-  const cachedHandleError = useCallback(handleError, [navigate]);
-
-  React.useEffect(() => {
-    agent.Projects.getNames().then((response: IProjectNameState[]) => {
-      setProjects(response);
-      setProjectsLoading(false);
-    });
-    if (projectId) {
-      setLeaderboardLoading(true);
-      agent.Leaderboard.getUserStandings(projectId)
-        .then((response: IProjectLeaderboard) => {
-          setUserStandings(response.userStandings);
-        })
-        .catch(cachedHandleError)
-        .finally(() => {
-          setLeaderboardLoading(false);
-        });
-    }
-  }, [projectId, cachedHandleError]);
-
-  const getProjectNames = () => {
-    if (projects) {
-      return projects.map((project) => project.name);
-    }
-  };
-
-  const getProjectId = (projectName: string) => {
-    if (projects) {
-      return projects.find((project) => project.name === projectName)?.id;
-    }
-  };
-
   const selectProject = (projectName: string) => {
     let newProjectId = getProjectId(projectName);
 
-    if (newProjectId !== projectId) {
+    if (newProjectId && newProjectId !== projectId) {
       navigate(`/leaderboard?project=${newProjectId}`);
-      if (newProjectId) {
-        setLeaderboardLoading(true);
-        agent.Leaderboard.getUserStandings(newProjectId).then(
-          (response: IProjectLeaderboard) => {
-            setUserStandings(response.userStandings);
-            setLeaderboardLoading(false);
-          }
-        );
-      }
+      getLeaderboard(newProjectId);
     }
   };
 

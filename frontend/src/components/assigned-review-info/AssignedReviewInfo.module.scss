@@ -31,6 +31,7 @@
 }
 
 .container:hover {
+  cursor: pointer;
   border-bottom-right-radius: 50px;
   border-top-left-radius: 50px;
   transform: scale(1.05);
