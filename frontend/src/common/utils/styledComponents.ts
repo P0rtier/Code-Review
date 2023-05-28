@@ -78,7 +78,7 @@ export const DateRangePicker = (props: StyleFunctionProps) => {
     ".rdrDayDisabled": {
       bg: mode(
         colors.lightComponentLayerAttention + "30",
-        colors.darkComponentLayerAttention + "18"
+        colors.darkComponentLayerAttention + "30"
       )(props),
     },
   };

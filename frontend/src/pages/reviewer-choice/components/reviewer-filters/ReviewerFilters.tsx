@@ -30,14 +30,10 @@ import { FilterIcon } from "../../../../assets/icons/FilterIcon";
 export const ReviewerFilters = (props: IReviewerFiltersProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  //#region variables
   const [filters, setFilters] = useState<IReviewerFilters>({
     ...props.filters,
   });
 
-  //#endregion
-
-  //#region handles
   const toggleSortDir = () =>
     setFilters({ ...filters, isAscending: !filters.isAscending });
 
@@ -51,9 +47,6 @@ export const ReviewerFilters = (props: IReviewerFiltersProps) => {
   const handleSelectedTeamChange = (e: React.ChangeEvent<HTMLSelectElement>) =>
     setFilters({ ...filters, selectedTeam: e.target.value });
 
-  //#endregion
-
-  //#region functions
   const getTeamsSelect = () => {
     return (
       <Select
@@ -85,7 +78,6 @@ export const ReviewerFilters = (props: IReviewerFiltersProps) => {
 
     onOpen();
   };
-  //#endregion
 
   const sortButton = filters.isAscending ? (
     <div className={styles.sortButton}>
@@ -111,7 +103,6 @@ export const ReviewerFilters = (props: IReviewerFiltersProps) => {
       <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
         <DrawerOverlay />
         <DrawerContent w={"20vw"}>
-          {/* <DrawerContent maxW={"fit-content"}> */}
           <DrawerCloseButton />
           <DrawerHeader>Filters</DrawerHeader>
 

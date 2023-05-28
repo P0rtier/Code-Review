@@ -304,7 +304,7 @@ public class AzureClientServiceImpl implements AzureClientService {
 
         codeReviewerDTSSetToSort.forEach(person ->
             person.setAvailability(
-                    vacationService.userAvailability(person.getUniqueName(),
+                    vacationService.vacationOverlapValidation(person.getUniqueName(),
                             LocalDate.parse(startDate),
                             LocalDate.parse(endDate)
                     )));

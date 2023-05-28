@@ -53,6 +53,10 @@ axios.interceptors.response.use(
       case StatusCodes.Unauthorized:
         return refreshToken(error);
 
+      case StatusCodes.Gone:
+        router.navigate("/not-found");
+        break;
+
       case StatusCodes.InternalServerError:
         router.navigate("/server-error");
         break;

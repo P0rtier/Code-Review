@@ -1,10 +1,13 @@
 package com.kpz.codereview.exception.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kpz.codereview.exception.model.BadAzureAPIResponse;
 import com.kpz.codereview.exception.model.BadRequestBodyException;
 import com.kpz.codereview.exception.model.EntityNotFoundException;
 import com.kpz.codereview.exception.model.ErrorResponse;
+import lombok.SneakyThrows;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -32,6 +35,7 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
 
     private static final String BAD_AZURE_RESPONSE_EXCEPTION_TYPE = "/errors/azure/bad-request";
     private static final String BAD_AZURE_RESPONSE_EXCEPTION_TITLE = "Azure API returned error response";
+    private static final String BAD_AZURE_RESPONSE_EXCEPTION_MESSAGE = "message";
 
     private static final String ENTITY_NOT_FOUND_EXCEPTION_TYPE = "/errors/general/not-found";
     private static final String ENTITY_NOT_FOUND_EXCEPTION_TITLE = "Entity does not exist";
@@ -91,6 +95,14 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
         var status = HttpStatus.GONE;
         var detail = ex.getMessage();
         var instance = request.getRequest().getRequestURI();
+
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode jsonNode = mapper.readTree(detail);
+            detail = jsonNode.get(BAD_AZURE_RESPONSE_EXCEPTION_MESSAGE).asText();
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
 
         var error = ErrorResponse.builder()
                 .timestamp(timeStamp)

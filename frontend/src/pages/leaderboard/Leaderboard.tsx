@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import styles from "./Leaderboard.module.scss";
 import { PageWrapper } from "../../components/page-wrapper/PageWrapper";
 import { Box, useStyleConfig } from "@chakra-ui/react";
@@ -13,6 +13,10 @@ import { UserStandingItem } from "./components/user-standing-item/UserStandingIt
 import { ProjectDropdown } from "../../components/project-dropdown/ProjectDropdown";
 import { DropdownPlaceholder } from "../../components/placeholders/dropdown-placeholder/DropdownPlaceholder";
 import { Placeholder } from "../../components/placeholders/placeholder/Placeholder";
+import { AxiosError } from "axios";
+import { toast } from "react-toastify";
+import { StatusCodes } from "../../common/enums/StatusCodes";
+import { NoDataComponent } from "../../components/no-data-component/NoDataComponent";
 
 export const Leaderboard = () => {
   const secondaryComponent = useStyleConfig(StyledComponents.PrimaryComponent);
@@ -21,22 +25,13 @@ export const Leaderboard = () => {
   const search = useLocation().search;
   const projectId = new URLSearchParams(search).get("project");
 
-  // #region States
-
   const [projects, setProjects] = React.useState<IProjectNameState[]>();
   const [userStandings, setUserStandings] = React.useState<IUserStanding[]>();
   const [projectsLoading, setProjectsLoading] = React.useState<boolean>(true);
   const [leaderboardLoading, setLeaderboardLoading] = React.useState<boolean>(false);
 
-  // #endregion States
-
-  // #region Callbacks
-
-  const cachedGetLeaderboard = React.useCallback(getLeaderboard, []);
-
-  // #endregion Callbacks
-
-  // #region Effects
+  const cachedHandleError = useCallback(handleError, []);
+  const cachedGetLeaderboard = useCallback(getLeaderboard, [cachedHandleError]);
 
   React.useEffect(() => {
     agent.Projects.getNames().then((response: IProjectNameState[]) => {
@@ -44,20 +39,17 @@ export const Leaderboard = () => {
       setProjectsLoading(false);
 
       if (!projectId) {
+        navigate(`/leaderboard?project=${response[0].id}`);
         cachedGetLeaderboard(response[0].id);
       }
     });
 
 
-  }, [cachedGetLeaderboard, projectId]);
+  }, [cachedGetLeaderboard, projectId, navigate]);
 
   React.useEffect(() => {
     cachedGetLeaderboard(projectId);
   }, [cachedGetLeaderboard, projectId]);
-
-  // #endregion Effects
-
-  // #region Functions
 
   const getCurrentProjectName = () => {
     if (projects) {
@@ -84,10 +76,28 @@ export const Leaderboard = () => {
       agent.Leaderboard.getUserStandings(newProjectId).then(
         (response: IProjectLeaderboard) => {
           setUserStandings(response.userStandings);
+        })
+        .catch(cachedHandleError)
+        .finally(() => {
           setLeaderboardLoading(false);
         });
+    }
 
-    };
+  };
+
+  function handleError(error: AxiosError) {
+    if (!error.response) {
+      toast.error("Unexpected error occured.");
+      return;
+    }
+
+    const { status } = error.response;
+
+    if (status === StatusCodes.NotFound) {
+      toast.error("Leaderboard for this project does not exist.");
+    } else {
+      toast.error("Unexpected error occured.");
+    }
   };
 
   const selectProject = (projectName: string) => {
@@ -104,10 +114,13 @@ export const Leaderboard = () => {
       return userStandings.map((userStanding) => (
         <UserStandingItem userStanding={userStanding} key={userStanding.id} />
       ));
+    } else {
+      return (
+        <Box className={styles.noDataContainer} __css={secondaryComponent}>
+          <NoDataComponent header="There is no leaderboard to be shown." />
+        </Box>);
     }
   };
-
-  // #endregion Functions
 
   return (
     <PageWrapper>
@@ -126,13 +139,11 @@ export const Leaderboard = () => {
         </Box>
         <div className={styles.userStandingsContainer}>
           <LeaderboardTopbar />
-          <div>
-            {leaderboardLoading ? (
-              <Placeholder header={""} />
-            ) : (
-              getUserStandings()
-            )}
-          </div>
+          {leaderboardLoading ? (
+            <Placeholder header={""} />
+          ) : (
+            getUserStandings()
+          )}
         </div>
       </div>
     </PageWrapper>

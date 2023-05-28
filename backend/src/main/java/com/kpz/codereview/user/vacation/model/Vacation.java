@@ -6,6 +6,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.GenerationType;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -16,8 +18,10 @@ import java.util.UUID;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name="vacations")
+@Builder
 public class Vacation {
 
     @Id
@@ -40,3 +44,10 @@ public class Vacation {
         return Objects.hash(email, startDate, endDate);
     }
 }
+
+
+
+
+
+
+

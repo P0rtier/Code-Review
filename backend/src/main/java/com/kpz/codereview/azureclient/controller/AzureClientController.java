@@ -15,6 +15,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -245,6 +246,7 @@ public class AzureClientController {
     }
 
     @GetMapping("/review-statistics")
+    @Cacheable(value = "reviewStats", key = "{#projectName, #startDate, #endDate}")
     public Set<CodeReviewerStatDTS> getReviewersStatistics(@RequestParam(name = "project") String projectName,
                                                            @RequestParam(name = "startDate") String startDate,
                                                            @RequestParam(name = "endDate") String endDate) throws JsonProcessingException, ParseException {

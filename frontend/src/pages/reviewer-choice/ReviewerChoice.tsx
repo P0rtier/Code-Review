@@ -38,8 +38,6 @@ export const ReviewerChoice = () => {
     endDate: new Date(),
   } as IReviewerFilters;
 
-  // #region States
-
   const [filters, setFilters] = useState<IReviewerFilters>(defaultFilters);
   const [review, setReview] = useState<IUnassignedReview>();
   const [reviewers, setReviewers] = useState<IReviewer[] | undefined>();
@@ -51,9 +49,6 @@ export const ReviewerChoice = () => {
   >();
   const [searchQuery, setSearchQuery] = useState<string>();
   const [loading, setLoading] = useState<boolean>(true);
-  // #endregion States
-
-  // #region Callbacks
 
   const cachedFilterReviewers = React.useCallback(filterReviewers, [
     filters,
@@ -63,10 +58,6 @@ export const ReviewerChoice = () => {
     searchQuery,
     filteredReviewers,
   ]);
-
-  // #endregion Callbacks
-
-  // #region Effects
 
   useEffect(() => {
     cachedFilterReviewers();
@@ -101,10 +92,6 @@ export const ReviewerChoice = () => {
       });
     }
   }, [location.state, id]);
-
-  // #endregion Effects
-
-  // #region Functions
 
   function filterReviewers() {
     let newFilteredReviewers = reviewers;
@@ -200,8 +187,6 @@ export const ReviewerChoice = () => {
   const handleSearchChanged = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
   };
-
-  // #endregion Functions
 
   return (
     <PageWrapper smallGap={true}>
