@@ -140,7 +140,7 @@ const Leaderboard = {
 const Notifications = {
   getMine: () => requests.get<INotification[]>('/notifications'),
   delete: (id: string) => requests.del(`/notifications/${id}`),
-  deleteAll: () => requests.del(`/notifications/`),
+  deleteAll: () => requests.del('/notifications'),
 };
 
 const Projects = {

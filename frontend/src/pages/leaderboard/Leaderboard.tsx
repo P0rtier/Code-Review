@@ -75,7 +75,9 @@ export const Leaderboard = () => {
 
       agent.Leaderboard.getUserStandings(newProjectId).then(
         (response: IProjectLeaderboard) => {
-          setUserStandings(response.userStandings);
+          setUserStandings(response.userStandings.sort(
+            (a, b) => a.place - b.place
+          ));
         })
         .catch(cachedHandleError)
         .finally(() => {

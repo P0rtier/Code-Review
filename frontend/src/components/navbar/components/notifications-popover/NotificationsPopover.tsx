@@ -28,9 +28,9 @@ export const NotificationsPopover = () => {
   };
 
   const deleteAll = () => {
-    //agent.Notifications.delete("").then(() => {
+    agent.Notifications.deleteAll().then(() => {
       dispatchNotifications({ type: NotificationsActions.ClearNotifications });
-    //});
+    });
   }
 
   const getData = () => {

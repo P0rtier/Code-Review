@@ -13,6 +13,11 @@ export const NotificationComponent = (props: INotificationComponentProps) => {
 
     const secondaryStyles = useStyleConfig(StyledComponents.SecondaryComponent);
 
+    const onNotificationClick = () => {
+        props.onDelete(props.id);
+        window.location.href = props.link;
+    };
+
     const getIcon = () => {
         switch (props.type) {
             case NotificationType.CodeReview:
@@ -27,7 +32,7 @@ export const NotificationComponent = (props: INotificationComponentProps) => {
     return (
 
         <Box className={styles.container} _hover={secondaryStyles}>
-            <a href={props.link}>
+            <button onClick={onNotificationClick} >
                 <div className={styles.leftContainer}>
                     <div className={styles.icon}>{getIcon()}</div>
 
@@ -35,7 +40,7 @@ export const NotificationComponent = (props: INotificationComponentProps) => {
                         <p>{props.description}</p>
                     </div>
                 </div>
-            </a>
+            </button>
             <button className={`${styles.columnTwo} ${styles.icon}`} onClick={() => props.onDelete(props.id)}>
                 <TrashIcon />
             </button>
