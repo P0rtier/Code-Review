@@ -16,13 +16,16 @@ import { NotificationsActiveIcon } from "../../../../assets/icons/NotificationsA
 import { NoDataComponent } from "../../../no-data-component/NoDataComponent";
 
 export const NotificationsPopover = () => {
-
-  const { state: notifications, dispatch: dispatchNotifications } = useContext(NotificationContext);
+  const { state: notifications, dispatch: dispatchNotifications } =
+    useContext(NotificationContext);
 
   const deleteNotification = (id: string) => {
     agent.Notifications.delete(id).then(() => {
       let updatedList = notifications?.filter((item) => item.id !== id);
-      dispatchNotifications({ type: NotificationsActions.SetNotifications, payload: updatedList });
+      dispatchNotifications({
+        type: NotificationsActions.SetNotifications,
+        payload: updatedList,
+      });
     });
   };
 
@@ -35,27 +38,35 @@ export const NotificationsPopover = () => {
           onDelete={deleteNotification}
         />
       ));
-    };
+    }
   };
 
   const notificationsExist = (): boolean => {
-    return ((notifications && notifications.length > 0) ?? false);
-  }
-  const notificationsIcon = notificationsExist() ? (<NotificationsActiveIcon />) : (<NotificationsIcon />);
+    return (notifications && notifications.length > 0) ?? false;
+  };
+  const notificationsIcon = notificationsExist() ? (
+    <NotificationsActiveIcon />
+  ) : (
+    <NotificationsIcon />
+  );
 
   return (
     <>
       <Popover>
         <PopoverTrigger>
-          <button>
-            {notificationsIcon}
-          </button>
+          <button>{notificationsIcon}</button>
         </PopoverTrigger>
-        <PopoverContent w={'30vw'}>
-          <PopoverHeader><div className={styles.header}>Notifications</div></PopoverHeader>
+        <PopoverContent w={"clamp(500px, 30vw, 700px)"}>
+          <PopoverHeader>
+            <div className={styles.header}>Notifications</div>
+          </PopoverHeader>
           <PopoverBody>
             <div className={styles.container}>
-              {notificationsExist() ? getData() : <NoDataComponent header="There are no new notifications." />}
+              {notificationsExist() ? (
+                getData()
+              ) : (
+                <NoDataComponent header="There are no new notifications." />
+              )}
             </div>
           </PopoverBody>
         </PopoverContent>

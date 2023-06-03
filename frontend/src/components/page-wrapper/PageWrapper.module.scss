@@ -12,9 +12,8 @@
     justify-content: center;
     gap: 3rem;
     margin-top: 10rem;
-    max-width: 1200px;
     justify-self: center;
-    width: 100%
+    width: clamp(1100px, 100%, 1200px);
   }
 
   .smallGap {
