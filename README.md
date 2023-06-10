@@ -1,10 +1,11 @@
 # A system to streamline the code review process in a development team
 
-![logo](./screenshots/logo.svg)
+![logo](./screenshots/logo.png)
 
 ### Table of contents
 * [General info](#general-info)
     - [Features](#features)
+* [Authors](#authors)
 * [Backend](#backend)
     - [Build and run the app](#build-and-run-the-app-backend-directory)
     - [Config file structure](#current-envproperties-file-structure)
@@ -18,7 +19,6 @@
     - [Configurations](#configurations)
     - [Config file structure](#env-file-structure)
     - [Requirements](#requirements-docker)
-* [Authors](#authors)
 * [Screenshots](#screenshots)
 
 ## General info
@@ -42,6 +42,13 @@ This project was created for Wrocław University of Science and Technology's [Te
 - Code reviewers assignment to pull requests.
 - Automated notifications and reminders about pending code reviews.
 - Code review statistics and leaderboards.
+
+## Authors
+- [Kamil Bauer](https://www.linkedin.com/in/kamil-bauer-678392239/)
+- [Damian Gnieciak](https://www.linkedin.com/in/damian-gnieciak-057a50207/)
+- [Igor Stalmach](https://www.linkedin.com/in/igorstalmach/)
+- [Kacper Aleks](https://www.linkedin.com/in/kacper-aleks-2b0585266/)
+- [Patryk Uzarowski](https://www.linkedin.com/in/patryk-uzarowski-764b26238/)
 
 ## Backend
 
@@ -142,13 +149,6 @@ __.env__ file is required to run the container and should be placed in `deploy` 
 - Docker compose installed
 - .jar file with backend application
 - .env file in `deploy` directory
-
-## Authors
-- [Kamil Bauer](https://www.linkedin.com/in/kamil-bauer-678392239/)
-- [Damian Gnieciak](https://www.linkedin.com/in/damian-gnieciak-057a50207/)
-- [Igor Stalmach](https://www.linkedin.com/in/igorstalmach/)
-- [Kacper Aleks](https://www.linkedin.com/in/kacper-aleks-2b0585266/)
-- [Patryk Uzarowski](https://www.linkedin.com/in/patryk-uzarowski-764b26238/)
 
 ## Screenshots
 - Home screen of the app.
