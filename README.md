@@ -40,8 +40,11 @@ This project was created for Wrocław University of Science and Technology's [Te
 ### Features
 - Automated reviewer suggestions for pull requests based on availability.
 - Code reviewers assignment to pull requests.
-- Automated notifications and reminders about pending code reviews.
-- Code review statistics and leaderboards.
+- Automated reminders and notifications about pending code reviews and statistics.
+- Code review statistics (finished and active reviews, average review time) filtered by user, project, and time period).
+- User leaderboards filtered by project.
+- Light and dark mode.
+- Distinction between different code review types (assigned to a user, yet to be assigned to a team member).
 
 ### Authors
 - [Kamil Bauer](https://www.linkedin.com/in/kamil-bauer-678392239/)
@@ -67,6 +70,7 @@ This project was created for Wrocław University of Science and Technology's [Te
 ```
 
 ### Current env.properties file structure
+`SPRING_AZURE_ACCESS_TOKEN` needs to be supplied with an [Azure DevOps Access Token](https://learn.microsoft.com/en-us/azure/devops/organizations/accounts/use-personal-access-tokens-to-authenticate?view=azure-devops&tabs=Windows).
 ```
 SPRING_DATASOURCE_USER={exampleUser}
 SPRING_DATASOURCE_PASSWORD={examplePassword}
