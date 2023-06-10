@@ -17,6 +17,10 @@ const theme = extendTheme({
     global: (props: StyleFunctionProps) => ({
       body: {
         color: mode(colors.lightTextPrimary, colors.darkTextPrimary)(props),
+        backgroundColor: mode(
+          colors.lightBackground,
+          colors.darkBackground
+        )(props),
       },
       ...DateRangePicker(props),
     }),

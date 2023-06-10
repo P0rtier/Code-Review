@@ -37,7 +37,7 @@ export const AttentionComponent = defineStyleConfig({
 
 export const Background = defineStyleConfig({
   baseStyle: (props: StyleFunctionProps) => ({
-    background: mode(colors.lightBackground, colors.darkBackground)(props),
+    backgroundColor: mode(colors.lightBackground, colors.darkBackground)(props),
     backgroundAttachment: "fixed",
   }),
 });

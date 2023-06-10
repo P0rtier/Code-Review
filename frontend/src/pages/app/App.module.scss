@@ -7,7 +7,7 @@
 
 .appContainer {
   min-height: 100dvh;
-  width: 100%;
+  width: max(1200px, 100%);
   position: absolute;
   z-index: -10;
 }
