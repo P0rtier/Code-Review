@@ -1,5 +1,7 @@
 # A system to streamline the code review process in a development team
 
+![logo](./screenshots/logo.svg)
+
 ### Table of contents
 * [General info](#general-info)
     - [Features](#features)
@@ -93,7 +95,7 @@ REACT_APP_BASE_URL={REACT_APP_BASE_URL}
 REACT_APP_ENV={REACT_APP_ENV}
 ```
 
-__ENV_PROFILE__ may be one of the following:
+ENV_PROFILE may be one of the following:
 - DEV - development profile 
 - TEST - test profile with disabled security
 - PROD - production profile
