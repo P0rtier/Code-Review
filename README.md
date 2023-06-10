@@ -26,12 +26,9 @@ and sending reminders to users regarding pending code reviews.
 The system also provides a set of statistics
 that can be used to analyze the code review process and improve it in the future.
 
-The project consists of two parts:
+The system works as an Azure DevOps VCS extension. It consists of two parts:
 - Backend application (Java with Spring Boot framework).
 - Frontend application (TypeScript with ReactJS framework).
-
-The system works as an Azure DevOps VCS extension.
-The backend application connects directly to the project's Azure DevOps API.
 
 This project was created for Wrocław University of Science and Technology's [Team Projects Committee 2023](https://kpz.pwr.edu.pl).
 
@@ -43,7 +40,7 @@ This project was created for Wrocław University of Science and Technology's [Te
 
 ## Backend
 
-#### Build and run the app (`backend` directory):
+### Build and run the app (`backend` directory)
 - Clean build of backend application.
 ```
 ./gradlew clean build
@@ -57,7 +54,7 @@ This project was created for Wrocław University of Science and Technology's [Te
 ./gradlew bootRun --args='--spring.profiles.active=test'
 ```
 
-#### Current env.properties file structure
+### Current env.properties file structure
 ```
 SPRING_DATASOURCE_USER={exampleUser}
 SPRING_DATASOURCE_PASSWORD={examplePassword}
@@ -70,14 +67,14 @@ SPRING_REFRESH_TOKEN_EXPIRATION_DAYS={exampleDays}
 SPRING_ACCESS_TOKEN_EXPIRATION_MINUTES={exampleMinutes}
 ```
 
-#### Requirements (backend):
+### Requirements (backend)
 - Java @17
 - Gradle @7.6.1 (optional)
 - .env.properties file in `backend/src/main/resources`
 
 ## Frontend
 
-#### Build and run the app (`frontend` directory):
+### Build and run the app (`frontend` directory)
 - Install required dependencies.
 ```
 npm install
@@ -87,7 +84,7 @@ npm install
 npm start
 ```
 
-#### Current .env file structure
+### Current .env file structure
 ```
 REACT_APP_BASE_URL={REACT_APP_BASE_URL}
 REACT_APP_ENV={REACT_APP_ENV}
@@ -100,25 +97,25 @@ __ENV_PROFILE__ may be one of the following:
 
 Instead of __.env__ file you can use __.env.local__, which will be ignored by git.
 
-#### Requirements (frontend):
+### Requirements (frontend)
 - node.js @16.18 ([nvm](https://github.com/nvm-sh/nvm) suggested)
 - npm @7.10
 - .env file in `frontend`
 
 ## Docker
 
-#### Create docker container
+### Create docker container
 To create and run container, use command:
 ```
 docker-compose up -d
 ```
 - -d flag is optional and runs container in the background.
 
-#### Configurations
+### Configurations
 While deploying the app using docker, local __.env__ (frontend) and __.env.properties__ (backend) files are ignored.
-Instead, __.env__ file in `deploy` directory is used.
+__.env__ file in `deploy` directory is used instead.
 
-#### __.env__ file structure
+### __.env__ file structure
 ```
 BACKEND_PORT={BACKEND_PORT}
 FRONTEND_PORT={FRONTEND_PORT}
@@ -134,7 +131,7 @@ AZURE_ACCESS_TOKEN={ACCESS_TOKEN}
 
 __.env__ file is required to run the container and should be placed in `deploy` directory, where docker-compose.yml file is located.
 
-#### Requirements (Docker):
+### Requirements (Docker)
 - Docker installed
 - Docker daemon running
 - Docker compose installed
@@ -150,8 +147,10 @@ __.env__ file is required to run the container and should be placed in `deploy` 
 
 ## Screenshots
 - Home screen of the app.
+
 ![home](./screenshots/home.png)
 
 
 - The app is also available in dark mode.
+
 ![dark-home](./screenshots/dark-home.png)
