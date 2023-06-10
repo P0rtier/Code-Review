@@ -68,6 +68,11 @@ This project was created for Wrocław University of Science and Technology's [Te
 ```
 ./gradlew bootRun --args='--spring.profiles.active=test'
 ```
+Profile may be one of the following:
+- DEV - development profile (PostgreSQL database)
+- TEST - test profile (H2 database)
+- PROD - production profile (PostgreSQL database, environment variables from Docker)
+
 
 ### Current env.properties file structure
 `SPRING_AZURE_ACCESS_TOKEN` needs to be supplied with an [Azure DevOps Access Token](https://learn.microsoft.com/en-us/azure/devops/organizations/accounts/use-personal-access-tokens-to-authenticate?view=azure-devops&tabs=Windows).
