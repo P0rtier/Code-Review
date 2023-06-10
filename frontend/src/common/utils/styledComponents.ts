@@ -37,7 +37,7 @@ export const AttentionComponent = defineStyleConfig({
 
 export const Background = defineStyleConfig({
   baseStyle: (props: StyleFunctionProps) => ({
-    background: mode(colors.lightBackground, colors.darkBackground)(props),
+    backgroundColor: mode(colors.lightBackground, colors.darkBackground)(props),
     backgroundAttachment: "fixed",
   }),
 });
@@ -59,27 +59,67 @@ export const ReviewHeader = defineStyleConfig({
 export const DateRangePicker = (props: StyleFunctionProps) => {
   return {
     ".rdrDayNumber span": {
-      color: mode(colors.lightTextPrimary, colors.darkTextPrimary)(props),
-    },
-    ".rdrDayPassive .rdrDayNumber span": {
-      color: mode(colors.lightTextPrimary, colors.darkTextPrimary)(props),
-      opacity: "0.5",
+      filter: "auto",
+      invert: mode("0", "1")(props),
     },
     ".rdrWeekDay": {
-      color: mode(colors.lightTextSecondary, colors.darkTextSecondary)(props),
-      opacity: "0.7",
+      filter: "auto",
+      invert: mode("0", "1")(props),
     },
-    ".rdrDayToday .rdrDayNumber span:after": {
-      bg: mode(
-        colors.lightComponentLayerAttention,
-        colors.darkComponentLayerAttention
-      )(props),
+    ".rdrDayNumber span:after": {
+      filter: "auto",
+      invert: mode("0", "1")(props),
     },
     ".rdrDayDisabled": {
       bg: mode(
         colors.lightComponentLayerAttention + "30",
         colors.darkComponentLayerAttention + "30"
       )(props),
+    },
+    ".rdrDateDisplayWrapper": {
+      bg: mode(
+        colors.lightComponentLayerSecondary,
+        colors.darkComponentLayerSecondary
+      )(props),
+    },
+    ".rdrDateDisplayItem": {
+      bg: mode(
+        colors.lightComponentLayerPrimary,
+        colors.darkComponentLayerPrimary
+      )(props),
+    },
+    ".rdrDateDisplayItem input": {
+      color: mode(colors.lightTextPrimary, colors.darkTextPrimary)(props),
+    },
+    ".rdrNextPrevButton": {
+      bg: mode(
+        colors.lightComponentLayerAttention,
+        colors.darkComponentLayerAttention
+      )(props),
+    },
+    ".rdrNextPrevButton i": {
+      filter: "auto",
+      invert: mode("0", "1")(props),
+    },
+    ".rdrMonthAndYearWrapper": {
+      bg: mode(
+        colors.lightComponentLayerSecondary,
+        colors.darkComponentLayerSecondary
+      )(props),
+    },
+    ".rdrMonthsVertical": {
+      bg: mode(
+        colors.lightComponentLayerSecondary,
+        colors.darkComponentLayerSecondary
+      )(props),
+    },
+    ".rdrMonthPicker select": {
+      filter: "auto",
+      invert: mode("0", "1")(props),
+    },
+    ".rdrYearPicker select": {
+      filter: "auto",
+      invert: mode("0", "1")(props),
     },
   };
 };
