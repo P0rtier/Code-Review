@@ -16,6 +16,8 @@
     - [Configurations](#configurations)
     - [Config file structure](#env-file-structure)
     - [Requirements](#requirements-docker)
+* [Authors](#authors)
+* [Screenshots](#screenshots)
 
 ## General info
 
@@ -116,7 +118,7 @@ docker-compose up -d
 While deploying the app using docker, local __.env__ (frontend) and __.env.properties__ (backend) files are ignored.
 __.env__ file in `deploy` directory is used instead.
 
-### __.env__ file structure
+#### __.env__ file structure
 ```
 BACKEND_PORT={BACKEND_PORT}
 FRONTEND_PORT={FRONTEND_PORT}
