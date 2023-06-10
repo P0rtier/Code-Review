@@ -2,6 +2,7 @@
 
 ### Table of contents
 * [General info](#general-info)
+    - [Features](#features)
 * [Backend](#backend)
     - [Build and run the app](#build-and-run-the-app-backend-directory)
     - [Config file structure](#current-envproperties-file-structure)
@@ -32,7 +33,7 @@ The system works as an Azure DevOps VCS extension. It consists of two parts:
 
 This project was created for Wrocław University of Science and Technology's [Team Projects Committee 2023](https://kpz.pwr.edu.pl).
 
-## Features
+### Features
 - Automated reviewer suggestions for pull requests based on availability.
 - Code reviewers assignment to pull requests.
 - Automated notifications and reminders about pending code reviews.
@@ -139,11 +140,11 @@ __.env__ file is required to run the container and should be placed in `deploy` 
 - .env file in `deploy` directory
 
 ## Authors
-- Kamil Bauer
-- Damian Gnieciak
-- Igor Stalmach
-- Kacper Aleks
-- Patryk Uzarowski
+- [Kamil Bauer](https://www.linkedin.com/in/kamil-bauer-678392239/)
+- [Damian Gnieciak](https://www.linkedin.com/in/damian-gnieciak-057a50207/)
+- [Igor Stalmach](https://www.linkedin.com/in/igorstalmach/)
+- [Kacper Aleks](https://www.linkedin.com/in/kacper-aleks-2b0585266/)
+- [Patryk Uzarowski](https://www.linkedin.com/in/patryk-uzarowski-764b26238/)
 
 ## Screenshots
 - Home screen of the app.
