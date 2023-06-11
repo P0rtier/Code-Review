@@ -9,6 +9,7 @@ import {
   PopoverContent,
   PopoverHeader,
   PopoverBody,
+  Button,
 } from "@chakra-ui/react";
 import { NotificationContext } from "../../../../common/providers/NotificationsProvider";
 import { NotificationsActions } from "../../../../common/enums/NotificationsActions";
@@ -28,6 +29,12 @@ export const NotificationsPopover = () => {
       });
     });
   };
+
+  const deleteAll = () => {
+    agent.Notifications.deleteAll().then(() => {
+      dispatchNotifications({ type: NotificationsActions.ClearNotifications });
+    });
+  }
 
   const getData = () => {
     if (notifications) {
@@ -50,6 +57,12 @@ export const NotificationsPopover = () => {
     <NotificationsIcon />
   );
 
+  const getDeleteAllButton = () => {
+    if (notificationsExist()) {
+      return (<Button onClick={deleteAll}>Clear all</Button>);
+    }
+  };
+
   return (
     <>
       <Popover>
@@ -58,7 +71,10 @@ export const NotificationsPopover = () => {
         </PopoverTrigger>
         <PopoverContent w={"clamp(500px, 30vw, 700px)"}>
           <PopoverHeader>
-            <div className={styles.header}>Notifications</div>
+            <div className={styles.header}>
+              <h2>Notifications</h2>
+              {getDeleteAllButton()}
+            </div>
           </PopoverHeader>
           <PopoverBody>
             <div className={styles.container}>
