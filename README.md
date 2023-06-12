@@ -111,7 +111,7 @@ REACT_APP_BASE_URL={REACT_APP_BASE_URL}
 REACT_APP_ENV={REACT_APP_ENV}
 ```
 
-ENV_PROFILE may be one of the following:
+`REACT_APP_ENV` may be one of the following:
 - DEV - development profile 
 - TEST - test profile with disabled security
 - PROD - production profile
