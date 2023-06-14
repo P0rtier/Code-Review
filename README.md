@@ -17,7 +17,7 @@
 * [Docker](#docker)
     - [Create docker container](#create-docker-container)
     - [Configurations](#configurations)
-      - [Config file structure](#env-file-structure)
+    - [Config file structure](#env-file-structure)
     - [Requirements](#requirements-docker)
 * [Screenshots](#screenshots)
 
